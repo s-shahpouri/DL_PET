@@ -1,0 +1,1199 @@
+train set: 160
+validation set: 24
+max_epochs: 50
+val_interval: 2
+model.channels: (16, 32, 64)
+----------
+epoch 1/50
+1/20, train_loss: 1.3286
+2/20, train_loss: 0.8736
+3/20, train_loss: 1.0028
+4/20, train_loss: 0.9877
+5/20, train_loss: 1.1150
+6/20, train_loss: 0.8139
+7/20, train_loss: 0.9422
+8/20, train_loss: 1.2636
+9/20, train_loss: 0.6794
+10/20, train_loss: 0.7103
+11/20, train_loss: 0.7309
+12/20, train_loss: 0.6931
+13/20, train_loss: 1.1261
+14/20, train_loss: 1.0473
+15/20, train_loss: 0.9398
+16/20, train_loss: 0.7596
+17/20, train_loss: 1.1419
+18/20, train_loss: 0.6214
+19/20, train_loss: 0.6875
+20/20, train_loss: 0.9075
+epoch 1 average loss: 0.9186
+----------
+epoch 2/50
+1/20, train_loss: 0.8187
+2/20, train_loss: 0.9248
+3/20, train_loss: 0.8065
+4/20, train_loss: 0.9205
+5/20, train_loss: 0.8705
+6/20, train_loss: 0.6195
+7/20, train_loss: 0.9409
+8/20, train_loss: 0.8944
+9/20, train_loss: 0.6801
+10/20, train_loss: 0.7273
+11/20, train_loss: 1.0088
+12/20, train_loss: 0.7469
+13/20, train_loss: 0.6355
+14/20, train_loss: 0.6795
+15/20, train_loss: 0.5736
+16/20, train_loss: 0.6547
+17/20, train_loss: 0.7745
+18/20, train_loss: 0.8994
+19/20, train_loss: 0.7464
+20/20, train_loss: 0.7604
+epoch 2 average loss: 0.7842
+Validation loss: 0.6913
+Saved model_1_16_16_38.pth model, best_metric: 0.6913, epoch: 2 
+----------
+epoch 3/50
+1/20, train_loss: 0.6901
+2/20, train_loss: 0.5972
+3/20, train_loss: 0.9872
+4/20, train_loss: 0.7203
+5/20, train_loss: 0.8504
+6/20, train_loss: 0.7656
+7/20, train_loss: 0.7320
+8/20, train_loss: 0.6507
+9/20, train_loss: 0.6976
+10/20, train_loss: 0.7250
+11/20, train_loss: 0.6618
+12/20, train_loss: 0.5250
+13/20, train_loss: 0.4899
+14/20, train_loss: 1.0341
+15/20, train_loss: 0.8057
+16/20, train_loss: 0.7396
+17/20, train_loss: 0.6540
+18/20, train_loss: 0.8141
+19/20, train_loss: 0.7423
+20/20, train_loss: 0.7162
+epoch 3 average loss: 0.7299
+----------
+epoch 4/50
+1/20, train_loss: 0.9080
+2/20, train_loss: 0.4971
+3/20, train_loss: 0.7905
+4/20, train_loss: 1.0645
+5/20, train_loss: 0.4499
+6/20, train_loss: 0.7501
+7/20, train_loss: 0.7261
+8/20, train_loss: 0.4882
+9/20, train_loss: 0.7285
+10/20, train_loss: 0.5405
+11/20, train_loss: 0.6879
+12/20, train_loss: 0.6817
+13/20, train_loss: 0.6952
+14/20, train_loss: 0.6478
+15/20, train_loss: 0.8534
+16/20, train_loss: 0.6044
+17/20, train_loss: 0.8609
+18/20, train_loss: 0.4538
+19/20, train_loss: 0.5134
+20/20, train_loss: 0.6120
+epoch 4 average loss: 0.6777
+Validation loss: 0.5523
+Saved model_1_16_16_41.pth model, best_metric: 0.5523, epoch: 4 
+----------
+epoch 5/50
+1/20, train_loss: 0.7720
+2/20, train_loss: 0.7270
+3/20, train_loss: 0.8663
+4/20, train_loss: 0.7431
+5/20, train_loss: 0.8655
+6/20, train_loss: 0.6909
+7/20, train_loss: 0.4973
+8/20, train_loss: 0.3775
+9/20, train_loss: 0.5355
+10/20, train_loss: 0.4310
+11/20, train_loss: 0.4290
+12/20, train_loss: 0.6161
+13/20, train_loss: 0.6567
+14/20, train_loss: 0.5109
+15/20, train_loss: 0.8746
+16/20, train_loss: 0.5378
+17/20, train_loss: 0.5667
+18/20, train_loss: 0.7376
+19/20, train_loss: 0.4660
+20/20, train_loss: 0.7412
+epoch 5 average loss: 0.6321
+----------
+epoch 6/50
+1/20, train_loss: 0.7777
+2/20, train_loss: 0.5700
+3/20, train_loss: 0.5776
+4/20, train_loss: 0.7669
+5/20, train_loss: 0.5569
+6/20, train_loss: 0.5077
+7/20, train_loss: 0.5494
+8/20, train_loss: 0.5128
+9/20, train_loss: 0.4309
+10/20, train_loss: 0.5413
+11/20, train_loss: 0.5920
+12/20, train_loss: 0.6304
+13/20, train_loss: 0.8323
+14/20, train_loss: 0.4424
+15/20, train_loss: 0.4459
+16/20, train_loss: 0.4727
+17/20, train_loss: 0.4977
+18/20, train_loss: 0.6108
+19/20, train_loss: 0.8864
+20/20, train_loss: 0.5937
+epoch 6 average loss: 0.5898
+Validation loss: 0.4665
+Saved model_1_16_16_44.pth model, best_metric: 0.4665, epoch: 6 
+----------
+epoch 7/50
+1/20, train_loss: 0.4933
+2/20, train_loss: 0.4386
+3/20, train_loss: 0.4907
+4/20, train_loss: 0.4341
+5/20, train_loss: 0.4847
+6/20, train_loss: 0.5604
+7/20, train_loss: 0.5897
+8/20, train_loss: 0.6139
+9/20, train_loss: 0.8934
+10/20, train_loss: 0.7205
+11/20, train_loss: 0.5839
+12/20, train_loss: 0.4806
+13/20, train_loss: 0.3126
+14/20, train_loss: 0.7454
+15/20, train_loss: 0.3443
+16/20, train_loss: 0.5427
+17/20, train_loss: 0.4890
+18/20, train_loss: 0.6428
+19/20, train_loss: 0.3528
+20/20, train_loss: 0.7307
+epoch 7 average loss: 0.5472
+----------
+epoch 8/50
+1/20, train_loss: 0.3395
+2/20, train_loss: 0.4812
+3/20, train_loss: 0.6236
+4/20, train_loss: 0.5891
+5/20, train_loss: 0.5329
+6/20, train_loss: 0.4569
+7/20, train_loss: 0.4614
+8/20, train_loss: 0.4788
+9/20, train_loss: 0.2765
+10/20, train_loss: 0.6097
+11/20, train_loss: 0.5169
+12/20, train_loss: 0.7504
+13/20, train_loss: 0.5047
+14/20, train_loss: 0.5408
+15/20, train_loss: 0.7678
+16/20, train_loss: 0.3534
+17/20, train_loss: 0.2977
+18/20, train_loss: 0.4261
+19/20, train_loss: 0.6972
+20/20, train_loss: 0.4605
+epoch 8 average loss: 0.5083
+Validation loss: 0.4033
+Saved model_1_16_16_47.pth model, best_metric: 0.4033, epoch: 8 
+----------
+epoch 9/50
+1/20, train_loss: 0.6155
+2/20, train_loss: 0.5958
+3/20, train_loss: 0.3174
+4/20, train_loss: 0.4404
+5/20, train_loss: 0.5326
+6/20, train_loss: 0.4919
+7/20, train_loss: 0.3193
+8/20, train_loss: 0.4552
+9/20, train_loss: 0.5261
+10/20, train_loss: 0.4665
+11/20, train_loss: 0.4192
+12/20, train_loss: 0.3000
+13/20, train_loss: 0.6731
+14/20, train_loss: 0.3100
+15/20, train_loss: 0.4320
+16/20, train_loss: 0.3299
+17/20, train_loss: 0.4230
+18/20, train_loss: 0.7956
+19/20, train_loss: 0.4436
+20/20, train_loss: 0.5992
+epoch 9 average loss: 0.4743
+----------
+epoch 10/50
+1/20, train_loss: 0.2247
+2/20, train_loss: 0.3483
+3/20, train_loss: 0.5804
+4/20, train_loss: 0.4964
+5/20, train_loss: 0.3860
+6/20, train_loss: 0.5925
+7/20, train_loss: 0.5237
+8/20, train_loss: 0.2739
+9/20, train_loss: 0.4724
+10/20, train_loss: 0.5460
+11/20, train_loss: 0.5136
+12/20, train_loss: 0.5931
+13/20, train_loss: 0.3470
+14/20, train_loss: 0.2704
+15/20, train_loss: 0.3116
+16/20, train_loss: 0.4251
+17/20, train_loss: 0.5772
+18/20, train_loss: 0.4230
+19/20, train_loss: 0.7273
+20/20, train_loss: 0.3494
+epoch 10 average loss: 0.4491
+Validation loss: 0.4015
+Saved model_1_16_16_49.pth model, best_metric: 0.4015, epoch: 10 
+----------
+epoch 11/50
+1/20, train_loss: 0.3886
+2/20, train_loss: 0.4317
+3/20, train_loss: 0.4211
+4/20, train_loss: 0.5717
+5/20, train_loss: 0.2544
+6/20, train_loss: 0.5144
+7/20, train_loss: 0.3670
+8/20, train_loss: 0.3700
+9/20, train_loss: 0.3890
+10/20, train_loss: 0.2829
+11/20, train_loss: 0.5333
+12/20, train_loss: 0.3707
+13/20, train_loss: 0.3092
+14/20, train_loss: 0.5116
+15/20, train_loss: 0.4193
+16/20, train_loss: 0.7435
+17/20, train_loss: 0.4356
+18/20, train_loss: 0.3222
+19/20, train_loss: 0.5649
+20/20, train_loss: 0.3986
+epoch 11 average loss: 0.4300
+----------
+epoch 12/50
+1/20, train_loss: 0.3140
+2/20, train_loss: 0.2860
+3/20, train_loss: 0.4694
+4/20, train_loss: 0.4134
+5/20, train_loss: 0.3169
+6/20, train_loss: 0.2686
+7/20, train_loss: 0.3835
+8/20, train_loss: 0.5477
+9/20, train_loss: 0.4124
+10/20, train_loss: 0.5700
+11/20, train_loss: 0.2643
+12/20, train_loss: 0.2770
+13/20, train_loss: 0.4974
+14/20, train_loss: 0.7517
+15/20, train_loss: 0.4529
+16/20, train_loss: 0.5329
+17/20, train_loss: 0.4611
+18/20, train_loss: 0.2672
+19/20, train_loss: 0.3134
+20/20, train_loss: 0.4292
+epoch 12 average loss: 0.4115
+Validation loss: 0.3364
+Saved model_1_16_16_52.pth model, best_metric: 0.3364, epoch: 12 
+----------
+epoch 13/50
+1/20, train_loss: 0.6314
+2/20, train_loss: 0.4575
+3/20, train_loss: 0.5379
+4/20, train_loss: 0.5167
+5/20, train_loss: 0.4192
+6/20, train_loss: 0.5049
+7/20, train_loss: 0.3496
+8/20, train_loss: 0.3478
+9/20, train_loss: 0.2711
+10/20, train_loss: 0.2700
+11/20, train_loss: 0.2728
+12/20, train_loss: 0.3061
+13/20, train_loss: 0.3092
+14/20, train_loss: 0.2144
+15/20, train_loss: 0.4753
+16/20, train_loss: 0.4028
+17/20, train_loss: 0.4799
+18/20, train_loss: 0.3357
+19/20, train_loss: 0.5589
+20/20, train_loss: 0.3033
+epoch 13 average loss: 0.3982
+----------
+epoch 14/50
+1/20, train_loss: 0.3246
+2/20, train_loss: 0.3640
+3/20, train_loss: 0.4648
+4/20, train_loss: 0.2819
+5/20, train_loss: 0.4512
+6/20, train_loss: 0.7122
+7/20, train_loss: 0.2740
+8/20, train_loss: 0.3680
+9/20, train_loss: 0.3635
+10/20, train_loss: 0.3261
+11/20, train_loss: 0.3426
+12/20, train_loss: 0.3023
+13/20, train_loss: 0.5525
+14/20, train_loss: 0.2053
+15/20, train_loss: 0.2688
+16/20, train_loss: 0.4791
+17/20, train_loss: 0.7337
+18/20, train_loss: 0.2949
+19/20, train_loss: 0.2660
+20/20, train_loss: 0.3498
+epoch 14 average loss: 0.3863
+Validation loss: 0.3093
+Saved model_1_16_16_55.pth model, best_metric: 0.3093, epoch: 14 
+----------
+epoch 15/50
+1/20, train_loss: 0.2024
+2/20, train_loss: 0.2723
+3/20, train_loss: 0.3129
+4/20, train_loss: 0.3808
+5/20, train_loss: 0.2511
+6/20, train_loss: 0.6202
+7/20, train_loss: 0.3480
+8/20, train_loss: 0.5031
+9/20, train_loss: 0.5515
+10/20, train_loss: 0.4190
+11/20, train_loss: 0.2202
+12/20, train_loss: 0.3820
+13/20, train_loss: 0.3818
+14/20, train_loss: 0.3235
+15/20, train_loss: 0.4471
+16/20, train_loss: 0.6706
+17/20, train_loss: 0.2300
+18/20, train_loss: 0.4204
+19/20, train_loss: 0.2455
+20/20, train_loss: 0.4134
+epoch 15 average loss: 0.3798
+----------
+epoch 16/50
+1/20, train_loss: 0.3638
+2/20, train_loss: 0.1892
+3/20, train_loss: 0.2521
+4/20, train_loss: 0.3964
+5/20, train_loss: 0.4102
+6/20, train_loss: 0.3747
+7/20, train_loss: 0.3132
+8/20, train_loss: 0.3412
+9/20, train_loss: 0.5574
+10/20, train_loss: 0.2474
+11/20, train_loss: 0.4178
+12/20, train_loss: 0.3869
+13/20, train_loss: 0.4451
+14/20, train_loss: 0.3936
+15/20, train_loss: 0.3290
+16/20, train_loss: 0.4467
+17/20, train_loss: 0.2858
+18/20, train_loss: 0.2488
+19/20, train_loss: 0.3795
+20/20, train_loss: 0.5410
+epoch 16 average loss: 0.3660
+Validation loss: 0.3257
+----------
+epoch 17/50
+1/20, train_loss: 0.7492
+2/20, train_loss: 0.5185
+3/20, train_loss: 0.2134
+4/20, train_loss: 0.2994
+5/20, train_loss: 0.3277
+6/20, train_loss: 0.4348
+7/20, train_loss: 0.4426
+8/20, train_loss: 0.2133
+9/20, train_loss: 0.2884
+10/20, train_loss: 0.2084
+11/20, train_loss: 0.4786
+12/20, train_loss: 0.4119
+13/20, train_loss: 0.2412
+14/20, train_loss: 0.3189
+15/20, train_loss: 0.2216
+16/20, train_loss: 0.4733
+17/20, train_loss: 0.2610
+18/20, train_loss: 0.4318
+19/20, train_loss: 0.2521
+20/20, train_loss: 0.4576
+epoch 17 average loss: 0.3622
+----------
+epoch 18/50
+1/20, train_loss: 0.2162
+2/20, train_loss: 0.3006
+3/20, train_loss: 0.2885
+4/20, train_loss: 0.3556
+5/20, train_loss: 0.4800
+6/20, train_loss: 0.2094
+7/20, train_loss: 0.3455
+8/20, train_loss: 0.4455
+9/20, train_loss: 0.3099
+10/20, train_loss: 0.3390
+11/20, train_loss: 0.2102
+12/20, train_loss: 0.2838
+13/20, train_loss: 0.3128
+14/20, train_loss: 0.3440
+15/20, train_loss: 0.1853
+16/20, train_loss: 0.4563
+17/20, train_loss: 0.4641
+18/20, train_loss: 0.4669
+19/20, train_loss: 0.4485
+20/20, train_loss: 0.4982
+epoch 18 average loss: 0.3480
+Validation loss: 0.2781
+Saved model_1_16_17_1.pth model, best_metric: 0.2781, epoch: 18 
+----------
+epoch 19/50
+1/20, train_loss: 0.1722
+2/20, train_loss: 0.2524
+3/20, train_loss: 0.1767
+4/20, train_loss: 0.3123
+5/20, train_loss: 0.6544
+6/20, train_loss: 0.2500
+7/20, train_loss: 0.4516
+8/20, train_loss: 0.4061
+9/20, train_loss: 0.2167
+10/20, train_loss: 0.2707
+11/20, train_loss: 0.2787
+12/20, train_loss: 0.2732
+13/20, train_loss: 0.3013
+14/20, train_loss: 0.5675
+15/20, train_loss: 0.3482
+16/20, train_loss: 0.3131
+17/20, train_loss: 0.3128
+18/20, train_loss: 0.6580
+19/20, train_loss: 0.3620
+20/20, train_loss: 0.2719
+epoch 19 average loss: 0.3425
+----------
+epoch 20/50
+1/20, train_loss: 0.2644
+2/20, train_loss: 0.3623
+3/20, train_loss: 0.3301
+4/20, train_loss: 0.8024
+5/20, train_loss: 0.3681
+6/20, train_loss: 0.3781
+7/20, train_loss: 0.1825
+8/20, train_loss: 0.2321
+9/20, train_loss: 0.3266
+10/20, train_loss: 0.2389
+11/20, train_loss: 0.3489
+12/20, train_loss: 0.2408
+13/20, train_loss: 0.1957
+14/20, train_loss: 0.3449
+15/20, train_loss: 0.2857
+16/20, train_loss: 0.2397
+17/20, train_loss: 0.3787
+18/20, train_loss: 0.3856
+19/20, train_loss: 0.2367
+20/20, train_loss: 0.5223
+epoch 20 average loss: 0.3332
+Validation loss: 0.2892
+----------
+epoch 21/50
+1/20, train_loss: 0.3306
+2/20, train_loss: 0.2987
+3/20, train_loss: 0.4925
+4/20, train_loss: 0.2679
+5/20, train_loss: 0.3389
+6/20, train_loss: 0.2279
+7/20, train_loss: 0.2069
+8/20, train_loss: 0.2951
+9/20, train_loss: 0.2182
+10/20, train_loss: 0.4969
+11/20, train_loss: 0.2650
+12/20, train_loss: 0.2371
+13/20, train_loss: 0.3383
+14/20, train_loss: 0.5665
+15/20, train_loss: 0.3099
+16/20, train_loss: 0.2377
+17/20, train_loss: 0.1718
+18/20, train_loss: 0.5743
+19/20, train_loss: 0.4137
+20/20, train_loss: 0.2634
+epoch 21 average loss: 0.3276
+----------
+epoch 22/50
+1/20, train_loss: 0.2877
+2/20, train_loss: 0.2250
+3/20, train_loss: 0.5308
+4/20, train_loss: 0.2877
+5/20, train_loss: 0.2448
+6/20, train_loss: 0.2837
+7/20, train_loss: 0.2103
+8/20, train_loss: 0.3332
+9/20, train_loss: 0.3790
+10/20, train_loss: 0.3827
+11/20, train_loss: 0.2094
+12/20, train_loss: 0.3575
+13/20, train_loss: 0.1729
+14/20, train_loss: 0.4159
+15/20, train_loss: 0.3623
+16/20, train_loss: 0.3591
+17/20, train_loss: 0.1722
+18/20, train_loss: 0.4604
+19/20, train_loss: 0.2549
+20/20, train_loss: 0.4000
+epoch 22 average loss: 0.3165
+Validation loss: 0.2481
+Saved model_1_16_17_9.pth model, best_metric: 0.2481, epoch: 22 
+----------
+epoch 23/50
+1/20, train_loss: 0.3274
+2/20, train_loss: 0.2954
+3/20, train_loss: 0.2072
+4/20, train_loss: 0.2483
+5/20, train_loss: 0.3169
+6/20, train_loss: 0.2088
+7/20, train_loss: 0.3759
+8/20, train_loss: 0.1831
+9/20, train_loss: 0.2024
+10/20, train_loss: 0.2932
+11/20, train_loss: 0.3308
+12/20, train_loss: 0.4503
+13/20, train_loss: 0.6772
+14/20, train_loss: 0.3085
+15/20, train_loss: 0.4541
+16/20, train_loss: 0.3903
+17/20, train_loss: 0.2251
+18/20, train_loss: 0.2278
+19/20, train_loss: 0.2834
+20/20, train_loss: 0.1875
+epoch 23 average loss: 0.3097
+----------
+epoch 24/50
+1/20, train_loss: 0.2826
+2/20, train_loss: 0.2727
+3/20, train_loss: 0.2447
+4/20, train_loss: 0.4834
+5/20, train_loss: 0.4703
+6/20, train_loss: 0.1854
+7/20, train_loss: 0.3508
+8/20, train_loss: 0.1728
+9/20, train_loss: 0.4936
+10/20, train_loss: 0.2228
+11/20, train_loss: 0.3265
+12/20, train_loss: 0.4400
+13/20, train_loss: 0.2811
+14/20, train_loss: 0.2122
+15/20, train_loss: 0.3335
+16/20, train_loss: 0.3007
+17/20, train_loss: 0.3119
+18/20, train_loss: 0.1391
+19/20, train_loss: 0.2939
+20/20, train_loss: 0.2728
+epoch 24 average loss: 0.3045
+Validation loss: 0.2421
+Saved model_1_16_17_12.pth model, best_metric: 0.2421, epoch: 24 
+----------
+epoch 25/50
+1/20, train_loss: 0.2625
+2/20, train_loss: 0.1952
+3/20, train_loss: 0.1654
+4/20, train_loss: 0.3550
+5/20, train_loss: 0.3431
+6/20, train_loss: 0.2966
+7/20, train_loss: 0.1462
+8/20, train_loss: 0.3018
+9/20, train_loss: 0.2375
+10/20, train_loss: 0.4240
+11/20, train_loss: 0.2987
+12/20, train_loss: 0.2820
+13/20, train_loss: 0.2785
+14/20, train_loss: 0.1557
+15/20, train_loss: 0.3851
+16/20, train_loss: 0.2204
+17/20, train_loss: 0.3006
+18/20, train_loss: 0.5047
+19/20, train_loss: 0.4200
+20/20, train_loss: 0.3819
+epoch 25 average loss: 0.2977
+----------
+epoch 26/50
+1/20, train_loss: 0.2846
+2/20, train_loss: 0.3599
+3/20, train_loss: 0.1734
+4/20, train_loss: 0.2662
+5/20, train_loss: 0.4515
+6/20, train_loss: 0.3492
+7/20, train_loss: 0.3255
+8/20, train_loss: 0.2320
+9/20, train_loss: 0.1769
+10/20, train_loss: 0.2691
+11/20, train_loss: 0.1843
+12/20, train_loss: 0.3258
+13/20, train_loss: 0.4781
+14/20, train_loss: 0.4739
+15/20, train_loss: 0.2364
+16/20, train_loss: 0.2953
+17/20, train_loss: 0.2420
+18/20, train_loss: 0.1950
+19/20, train_loss: 0.3086
+20/20, train_loss: 0.1868
+epoch 26 average loss: 0.2907
+Validation loss: 0.2247
+Saved model_1_16_17_16.pth model, best_metric: 0.2247, epoch: 26 
+----------
+epoch 27/50
+1/20, train_loss: 0.3322
+2/20, train_loss: 0.1415
+3/20, train_loss: 0.3815
+4/20, train_loss: 0.3221
+5/20, train_loss: 0.4256
+6/20, train_loss: 0.1696
+7/20, train_loss: 0.1225
+8/20, train_loss: 0.2477
+9/20, train_loss: 0.1543
+10/20, train_loss: 0.1997
+11/20, train_loss: 0.1681
+12/20, train_loss: 0.3665
+13/20, train_loss: 0.4095
+14/20, train_loss: 0.4080
+15/20, train_loss: 0.1746
+16/20, train_loss: 0.4409
+17/20, train_loss: 0.3531
+18/20, train_loss: 0.3251
+19/20, train_loss: 0.2133
+20/20, train_loss: 0.4343
+epoch 27 average loss: 0.2895
+----------
+epoch 28/50
+1/20, train_loss: 0.1710
+2/20, train_loss: 0.2199
+3/20, train_loss: 0.2721
+4/20, train_loss: 0.1767
+5/20, train_loss: 0.2492
+6/20, train_loss: 0.2998
+7/20, train_loss: 0.2103
+8/20, train_loss: 0.2648
+9/20, train_loss: 0.1749
+10/20, train_loss: 0.2606
+11/20, train_loss: 0.4437
+12/20, train_loss: 0.3886
+13/20, train_loss: 0.4608
+14/20, train_loss: 0.4093
+15/20, train_loss: 0.4611
+16/20, train_loss: 0.2634
+17/20, train_loss: 0.1881
+18/20, train_loss: 0.1695
+19/20, train_loss: 0.4129
+20/20, train_loss: 0.1585
+epoch 28 average loss: 0.2828
+Validation loss: 0.2241
+Saved model_1_16_17_20.pth model, best_metric: 0.2241, epoch: 28 
+----------
+epoch 29/50
+1/20, train_loss: 0.1832
+2/20, train_loss: 0.2305
+3/20, train_loss: 0.2332
+4/20, train_loss: 0.1864
+5/20, train_loss: 0.3956
+6/20, train_loss: 0.1772
+7/20, train_loss: 0.1518
+8/20, train_loss: 0.4141
+9/20, train_loss: 0.1918
+10/20, train_loss: 0.4607
+11/20, train_loss: 0.3739
+12/20, train_loss: 0.1626
+13/20, train_loss: 0.3262
+14/20, train_loss: 0.2122
+15/20, train_loss: 0.2087
+16/20, train_loss: 0.1980
+17/20, train_loss: 0.3266
+18/20, train_loss: 0.4579
+19/20, train_loss: 0.4186
+20/20, train_loss: 0.2114
+epoch 29 average loss: 0.2760
+----------
+epoch 30/50
+1/20, train_loss: 0.1390
+2/20, train_loss: 0.1916
+3/20, train_loss: 0.3388
+4/20, train_loss: 0.2053
+5/20, train_loss: 0.5085
+6/20, train_loss: 0.2022
+7/20, train_loss: 0.1688
+8/20, train_loss: 0.4078
+9/20, train_loss: 0.3973
+10/20, train_loss: 0.1851
+11/20, train_loss: 0.2145
+12/20, train_loss: 0.2843
+13/20, train_loss: 0.2506
+14/20, train_loss: 0.2553
+15/20, train_loss: 0.1883
+16/20, train_loss: 0.3736
+17/20, train_loss: 0.2293
+18/20, train_loss: 0.2015
+19/20, train_loss: 0.2109
+20/20, train_loss: 0.4663
+epoch 30 average loss: 0.2709
+Validation loss: 0.2076
+Saved model_1_16_17_23.pth model, best_metric: 0.2076, epoch: 30 
+----------
+epoch 31/50
+1/20, train_loss: 0.2822
+2/20, train_loss: 0.4514
+3/20, train_loss: 0.2181
+4/20, train_loss: 0.2011
+5/20, train_loss: 0.1569
+6/20, train_loss: 0.1991
+7/20, train_loss: 0.2573
+8/20, train_loss: 0.1973
+9/20, train_loss: 0.3952
+10/20, train_loss: 0.3261
+11/20, train_loss: 0.2698
+12/20, train_loss: 0.2889
+13/20, train_loss: 0.2707
+14/20, train_loss: 0.2554
+15/20, train_loss: 0.4680
+16/20, train_loss: 0.2841
+17/20, train_loss: 0.1523
+18/20, train_loss: 0.2981
+19/20, train_loss: 0.1799
+20/20, train_loss: 0.2448
+epoch 31 average loss: 0.2698
+----------
+epoch 32/50
+1/20, train_loss: 0.2523
+2/20, train_loss: 0.3627
+3/20, train_loss: 0.2284
+4/20, train_loss: 0.2097
+5/20, train_loss: 0.2667
+6/20, train_loss: 0.2194
+7/20, train_loss: 0.2269
+8/20, train_loss: 0.1997
+9/20, train_loss: 0.2280
+10/20, train_loss: 0.3342
+11/20, train_loss: 0.1456
+12/20, train_loss: 0.4474
+13/20, train_loss: 0.3108
+14/20, train_loss: 0.5024
+15/20, train_loss: 0.2140
+16/20, train_loss: 0.1456
+17/20, train_loss: 0.2743
+18/20, train_loss: 0.2051
+19/20, train_loss: 0.2125
+20/20, train_loss: 0.3287
+epoch 32 average loss: 0.2657
+Validation loss: 0.2147
+----------
+epoch 33/50
+1/20, train_loss: 0.3227
+2/20, train_loss: 0.1623
+3/20, train_loss: 0.2571
+4/20, train_loss: 0.2007
+5/20, train_loss: 0.4409
+6/20, train_loss: 0.3361
+7/20, train_loss: 0.2149
+8/20, train_loss: 0.1695
+9/20, train_loss: 0.3159
+10/20, train_loss: 0.3068
+11/20, train_loss: 0.2191
+12/20, train_loss: 0.1245
+13/20, train_loss: 0.1800
+14/20, train_loss: 0.4209
+15/20, train_loss: 0.2697
+16/20, train_loss: 0.2312
+17/20, train_loss: 0.2406
+18/20, train_loss: 0.2285
+19/20, train_loss: 0.3325
+20/20, train_loss: 0.1708
+epoch 33 average loss: 0.2572
+----------
+epoch 34/50
+1/20, train_loss: 0.2467
+2/20, train_loss: 0.1747
+3/20, train_loss: 0.2468
+4/20, train_loss: 0.1806
+5/20, train_loss: 0.3765
+6/20, train_loss: 0.4386
+7/20, train_loss: 0.3074
+8/20, train_loss: 0.2475
+9/20, train_loss: 0.1545
+10/20, train_loss: 0.2832
+11/20, train_loss: 0.1797
+12/20, train_loss: 0.3696
+13/20, train_loss: 0.1382
+14/20, train_loss: 0.2637
+15/20, train_loss: 0.2393
+16/20, train_loss: 0.2534
+17/20, train_loss: 0.5105
+18/20, train_loss: 0.2497
+19/20, train_loss: 0.1664
+20/20, train_loss: 0.1618
+epoch 34 average loss: 0.2594
+Validation loss: 0.2329
+----------
+epoch 35/50
+1/20, train_loss: 0.1382
+2/20, train_loss: 0.4410
+3/20, train_loss: 0.2412
+4/20, train_loss: 0.2405
+5/20, train_loss: 0.3306
+6/20, train_loss: 0.1966
+7/20, train_loss: 0.2201
+8/20, train_loss: 0.1855
+9/20, train_loss: 0.2278
+10/20, train_loss: 0.1567
+11/20, train_loss: 0.2295
+12/20, train_loss: 0.3456
+13/20, train_loss: 0.2856
+14/20, train_loss: 0.2354
+15/20, train_loss: 0.2681
+16/20, train_loss: 0.1813
+17/20, train_loss: 0.1800
+18/20, train_loss: 0.4747
+19/20, train_loss: 0.1308
+20/20, train_loss: 0.2839
+epoch 35 average loss: 0.2497
+----------
+epoch 36/50
+1/20, train_loss: 0.2481
+2/20, train_loss: 0.3402
+3/20, train_loss: 0.1563
+4/20, train_loss: 0.1885
+5/20, train_loss: 0.2145
+6/20, train_loss: 0.2361
+7/20, train_loss: 0.1672
+8/20, train_loss: 0.2930
+9/20, train_loss: 0.4618
+10/20, train_loss: 0.3270
+11/20, train_loss: 0.1903
+12/20, train_loss: 0.2813
+13/20, train_loss: 0.2323
+14/20, train_loss: 0.3046
+15/20, train_loss: 0.1491
+16/20, train_loss: 0.1734
+17/20, train_loss: 0.1371
+18/20, train_loss: 0.3031
+19/20, train_loss: 0.1970
+20/20, train_loss: 0.3077
+epoch 36 average loss: 0.2454
+Validation loss: 0.2155
+----------
+epoch 37/50
+1/20, train_loss: 0.1528
+2/20, train_loss: 0.2218
+3/20, train_loss: 0.2878
+4/20, train_loss: 0.3781
+5/20, train_loss: 0.2003
+6/20, train_loss: 0.3201
+7/20, train_loss: 0.1717
+8/20, train_loss: 0.1969
+9/20, train_loss: 0.1362
+10/20, train_loss: 0.1905
+11/20, train_loss: 0.2047
+12/20, train_loss: 0.1997
+13/20, train_loss: 0.2759
+14/20, train_loss: 0.4346
+15/20, train_loss: 0.1497
+16/20, train_loss: 0.1490
+17/20, train_loss: 0.2440
+18/20, train_loss: 0.1473
+19/20, train_loss: 0.4846
+20/20, train_loss: 0.3505
+epoch 37 average loss: 0.2448
+----------
+epoch 38/50
+1/20, train_loss: 0.2251
+2/20, train_loss: 0.1090
+3/20, train_loss: 0.2046
+4/20, train_loss: 0.3421
+5/20, train_loss: 0.1019
+6/20, train_loss: 0.3582
+7/20, train_loss: 0.1833
+8/20, train_loss: 0.2250
+9/20, train_loss: 0.1369
+10/20, train_loss: 0.2825
+11/20, train_loss: 0.1707
+12/20, train_loss: 0.1933
+13/20, train_loss: 0.3102
+14/20, train_loss: 0.1289
+15/20, train_loss: 0.2605
+16/20, train_loss: 0.4561
+17/20, train_loss: 0.2539
+18/20, train_loss: 0.1715
+19/20, train_loss: 0.1824
+20/20, train_loss: 0.4830
+epoch 38 average loss: 0.2390
+Validation loss: 0.1943
+Saved model_1_16_17_39.pth model, best_metric: 0.1943, epoch: 38 
+----------
+epoch 39/50
+1/20, train_loss: 0.2237
+2/20, train_loss: 0.2915
+3/20, train_loss: 0.1971
+4/20, train_loss: 0.1577
+5/20, train_loss: 0.2348
+6/20, train_loss: 0.1683
+7/20, train_loss: 0.1806
+8/20, train_loss: 0.3128
+9/20, train_loss: 0.1791
+10/20, train_loss: 0.2913
+11/20, train_loss: 0.2192
+12/20, train_loss: 0.1395
+13/20, train_loss: 0.1434
+14/20, train_loss: 0.2475
+15/20, train_loss: 0.2368
+16/20, train_loss: 0.1485
+17/20, train_loss: 0.2556
+18/20, train_loss: 0.2870
+19/20, train_loss: 0.4349
+20/20, train_loss: 0.3439
+epoch 39 average loss: 0.2347
+----------
+epoch 40/50
+1/20, train_loss: 0.2649
+2/20, train_loss: 0.2826
+3/20, train_loss: 0.2400
+4/20, train_loss: 0.1877
+5/20, train_loss: 0.1822
+6/20, train_loss: 0.1775
+7/20, train_loss: 0.2311
+8/20, train_loss: 0.2314
+9/20, train_loss: 0.1105
+10/20, train_loss: 0.1541
+11/20, train_loss: 0.1413
+12/20, train_loss: 0.2744
+13/20, train_loss: 0.2458
+14/20, train_loss: 0.1090
+15/20, train_loss: 0.2496
+16/20, train_loss: 0.1889
+17/20, train_loss: 0.3174
+18/20, train_loss: 0.2243
+19/20, train_loss: 0.4744
+20/20, train_loss: 0.3107
+epoch 40 average loss: 0.2299
+Validation loss: 0.1916
+Saved model_1_16_17_43.pth model, best_metric: 0.1916, epoch: 40 
+----------
+epoch 41/50
+1/20, train_loss: 0.1430
+2/20, train_loss: 0.1403
+3/20, train_loss: 0.2945
+4/20, train_loss: 0.2044
+5/20, train_loss: 0.3265
+6/20, train_loss: 0.3553
+7/20, train_loss: 0.3325
+8/20, train_loss: 0.2019
+9/20, train_loss: 0.1937
+10/20, train_loss: 0.3778
+11/20, train_loss: 0.1120
+12/20, train_loss: 0.1182
+13/20, train_loss: 0.2041
+14/20, train_loss: 0.1197
+15/20, train_loss: 0.0959
+16/20, train_loss: 0.2838
+17/20, train_loss: 0.3207
+18/20, train_loss: 0.2407
+19/20, train_loss: 0.3753
+20/20, train_loss: 0.1402
+epoch 41 average loss: 0.2290
+----------
+epoch 42/50
+1/20, train_loss: 0.1175
+2/20, train_loss: 0.4766
+3/20, train_loss: 0.1253
+4/20, train_loss: 0.2155
+5/20, train_loss: 0.1457
+6/20, train_loss: 0.3610
+7/20, train_loss: 0.1725
+8/20, train_loss: 0.1174
+9/20, train_loss: 0.1960
+10/20, train_loss: 0.1432
+11/20, train_loss: 0.1425
+12/20, train_loss: 0.2132
+13/20, train_loss: 0.2827
+14/20, train_loss: 0.2372
+15/20, train_loss: 0.2696
+16/20, train_loss: 0.2829
+17/20, train_loss: 0.2801
+18/20, train_loss: 0.2634
+19/20, train_loss: 0.2815
+20/20, train_loss: 0.1619
+epoch 42 average loss: 0.2243
+Validation loss: 0.1762
+Saved model_1_16_17_46.pth model, best_metric: 0.1762, epoch: 42 
+----------
+epoch 43/50
+1/20, train_loss: 0.6195
+2/20, train_loss: 0.1313
+3/20, train_loss: 0.1902
+4/20, train_loss: 0.1597
+5/20, train_loss: 0.2512
+6/20, train_loss: 0.2091
+7/20, train_loss: 0.1519
+8/20, train_loss: 0.1237
+9/20, train_loss: 0.1837
+10/20, train_loss: 0.3333
+11/20, train_loss: 0.3271
+12/20, train_loss: 0.2576
+13/20, train_loss: 0.1063
+14/20, train_loss: 0.2018
+15/20, train_loss: 0.2128
+16/20, train_loss: 0.2071
+17/20, train_loss: 0.3264
+18/20, train_loss: 0.1111
+19/20, train_loss: 0.1806
+20/20, train_loss: 0.1514
+epoch 43 average loss: 0.2218
+----------
+epoch 44/50
+1/20, train_loss: 0.2552
+2/20, train_loss: 0.2116
+3/20, train_loss: 0.1406
+4/20, train_loss: 0.2288
+5/20, train_loss: 0.2522
+6/20, train_loss: 0.1438
+7/20, train_loss: 0.2344
+8/20, train_loss: 0.1884
+9/20, train_loss: 0.2750
+10/20, train_loss: 0.1561
+11/20, train_loss: 0.1744
+12/20, train_loss: 0.2082
+13/20, train_loss: 0.2234
+14/20, train_loss: 0.1491
+15/20, train_loss: 0.1590
+16/20, train_loss: 0.0886
+17/20, train_loss: 0.2296
+18/20, train_loss: 0.2770
+19/20, train_loss: 0.2289
+20/20, train_loss: 0.5703
+epoch 44 average loss: 0.2197
+Validation loss: 0.1769
+----------
+epoch 45/50
+1/20, train_loss: 0.2431
+2/20, train_loss: 0.2460
+3/20, train_loss: 0.2826
+4/20, train_loss: 0.2475
+5/20, train_loss: 0.1082
+6/20, train_loss: 0.1534
+7/20, train_loss: 0.1998
+8/20, train_loss: 0.1132
+9/20, train_loss: 0.1387
+10/20, train_loss: 0.2189
+11/20, train_loss: 0.2194
+12/20, train_loss: 0.2936
+13/20, train_loss: 0.2977
+14/20, train_loss: 0.1785
+15/20, train_loss: 0.1183
+16/20, train_loss: 0.1671
+17/20, train_loss: 0.2550
+18/20, train_loss: 0.2393
+19/20, train_loss: 0.4823
+20/20, train_loss: 0.1718
+epoch 45 average loss: 0.2187
+----------
+epoch 46/50
+1/20, train_loss: 0.1726
+2/20, train_loss: 0.2323
+3/20, train_loss: 0.2882
+4/20, train_loss: 0.1771
+5/20, train_loss: 0.4348
+6/20, train_loss: 0.1019
+7/20, train_loss: 0.4072
+8/20, train_loss: 0.2093
+9/20, train_loss: 0.3173
+10/20, train_loss: 0.1479
+11/20, train_loss: 0.1753
+12/20, train_loss: 0.1689
+13/20, train_loss: 0.2400
+14/20, train_loss: 0.1245
+15/20, train_loss: 0.2270
+16/20, train_loss: 0.3021
+17/20, train_loss: 0.1136
+18/20, train_loss: 0.1333
+19/20, train_loss: 0.1602
+20/20, train_loss: 0.1204
+epoch 46 average loss: 0.2127
+Validation loss: 0.1641
+Saved model_1_16_17_54.pth model, best_metric: 0.1641, epoch: 46 
+----------
+epoch 47/50
+1/20, train_loss: 0.1647
+2/20, train_loss: 0.2424
+3/20, train_loss: 0.3931
+4/20, train_loss: 0.1468
+5/20, train_loss: 0.5843
+6/20, train_loss: 0.2242
+7/20, train_loss: 0.1138
+8/20, train_loss: 0.2240
+9/20, train_loss: 0.0937
+10/20, train_loss: 0.2144
+11/20, train_loss: 0.1470
+12/20, train_loss: 0.1711
+13/20, train_loss: 0.1924
+14/20, train_loss: 0.2141
+15/20, train_loss: 0.1692
+16/20, train_loss: 0.2697
+17/20, train_loss: 0.2818
+18/20, train_loss: 0.1192
+19/20, train_loss: 0.1372
+20/20, train_loss: 0.1491
+epoch 47 average loss: 0.2126
+----------
+epoch 48/50
+1/20, train_loss: 0.2660
+2/20, train_loss: 0.3134
+3/20, train_loss: 0.1958
+4/20, train_loss: 0.1207
+5/20, train_loss: 0.1210
+6/20, train_loss: 0.3946
+7/20, train_loss: 0.2081
+8/20, train_loss: 0.2378
+9/20, train_loss: 0.1447
+10/20, train_loss: 0.1134
+11/20, train_loss: 0.1481
+12/20, train_loss: 0.2637
+13/20, train_loss: 0.2742
+14/20, train_loss: 0.1880
+15/20, train_loss: 0.1807
+16/20, train_loss: 0.1573
+17/20, train_loss: 0.3677
+18/20, train_loss: 0.1684
+19/20, train_loss: 0.1287
+20/20, train_loss: 0.1639
+epoch 48 average loss: 0.2078
+Validation loss: 0.1573
+Saved model_1_16_17_58.pth model, best_metric: 0.1573, epoch: 48 
+----------
+epoch 49/50
+1/20, train_loss: 0.1929
+2/20, train_loss: 0.3269
+3/20, train_loss: 0.1466
+4/20, train_loss: 0.2495
+5/20, train_loss: 0.2470
+6/20, train_loss: 0.2869
+7/20, train_loss: 0.1784
+8/20, train_loss: 0.3304
+9/20, train_loss: 0.0971
+10/20, train_loss: 0.1459
+11/20, train_loss: 0.1311
+12/20, train_loss: 0.1470
+13/20, train_loss: 0.1620
+14/20, train_loss: 0.2317
+15/20, train_loss: 0.2522
+16/20, train_loss: 0.3076
+17/20, train_loss: 0.2565
+18/20, train_loss: 0.2381
+19/20, train_loss: 0.0923
+20/20, train_loss: 0.1385
+epoch 49 average loss: 0.2079
+----------
+epoch 50/50
+1/20, train_loss: 0.1941
+2/20, train_loss: 0.3401
+3/20, train_loss: 0.2639
+4/20, train_loss: 0.0799
+5/20, train_loss: 0.1218
+6/20, train_loss: 0.2475
+7/20, train_loss: 0.0999
+8/20, train_loss: 0.2994
+9/20, train_loss: 0.1845
+10/20, train_loss: 0.2480
+11/20, train_loss: 0.2266
+12/20, train_loss: 0.1815
+13/20, train_loss: 0.3372
+14/20, train_loss: 0.3125
+15/20, train_loss: 0.1575
+16/20, train_loss: 0.1097
+17/20, train_loss: 0.2880
+18/20, train_loss: 0.1363
+19/20, train_loss: 0.1053
+20/20, train_loss: 0.1223
+epoch 50 average loss: 0.2028
+Validation loss: 0.1553
+Saved model_1_16_18_1.pth model, best_metric: 0.1553, epoch: 50 
