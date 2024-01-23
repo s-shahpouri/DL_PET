@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import os
 import glob
 import torch.nn as nn
-from google.colab import drive
+
 from datetime import datetime
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
@@ -31,7 +31,7 @@ data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, ta
 
 # making  smaller input to save time for practing stage:
 train_files, val_files =  data_dicts[:160], data_dicts[-24:]
-# train_files, val_files =  data_dicts[-2:], data_dicts[-1:]
+# train_files, val_files =  data_dicts[:16], data_dicts[-4:]
 
 print(len(train_files))
 print(len(val_files))
@@ -41,13 +41,13 @@ set_determinism(seed=0)
 
 
 
-crop_size = (180, 180, 312)  # Adjusted based on my data
+# crop_size = (180, 180, 312)  # Adjusted based on my data
 
 train_transforms = Compose(
     [   LoadImaged(keys=["image", "target"]),
         EnsureChannelFirstd(keys=["image", "target"]),
         Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
-        Resized(keys=["image", "target"], spatial_size=crop_size, mode='trilinear'),
+        Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
         # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
     ])
 
@@ -55,16 +55,16 @@ val_transforms = Compose(
     [   LoadImaged(keys=["image", "target"]),
         EnsureChannelFirstd(keys=["image", "target"]),
         Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
-        Resized(keys=["image", "target"], spatial_size=crop_size, mode=('trilinear')),
+        Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode=('trilinear')),
         # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
 
     ])
 
-train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=1)
-train_loader = DataLoader(train_ds, batch_size=8, shuffle=True, num_workers=1)
+train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=8)
+train_loader = DataLoader(train_ds, batch_size=16, shuffle=True, num_workers=8)
 
-val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=1)
-val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=1)
+val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=8)
+val_loader = DataLoader(val_ds, batch_size=8, shuffle=False, num_workers=8)
 
 
 
@@ -183,7 +183,7 @@ model = UNet(
     spatial_dims=3,
     in_channels=1,
     out_channels=1,
-    channels=(32, 64, 128),
+    channels=(16, 32, 64),
     # default=[32, 64, 128, 256, 512, 32] MRI Recon
     act=(nn.ReLU6, {"inplace": True}),
     strides=(2, 2),
@@ -194,7 +194,7 @@ model = UNet(
 loss_function = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), 1e-4)
 
-max_epochs = 500
+max_epochs = 600
 val_interval = 2
 best_metric = float('inf')
 best_metric_epoch = -1
@@ -210,39 +210,3 @@ trainer.log()
 trainer.train()
 
 
-
-
-log_filepath = "/home/shahpouriz/Data/Practic/LOG/model_1_16_8_57.pth"
-bestmodel_filename, best_metric, best_epoch = log_filepath, 0.5745, 6
-
-# Define a function for visualization
-def visualize_results(val_data, model, n, title):
-
-    val_outputs = sliding_window_inference(val_data["image"].to(device), roi_size,
-                          sw_batch_size, model, overlap=0.30) # using ov= 0.9 best image ever I have.
-
-    plt.figure("check", (18, 6))
-    plt.subplot(1, 3, 1)
-    plt.title(f"Input")
-    plt.imshow(val_data["image"][0, 0, :, :, n], cmap="gist_yarg")
-
-    plt.subplot(1, 3, 2)
-    plt.title(f"Target")
-    plt.imshow(val_data["target"][0, 0, :, :, n], cmap="gist_yarg")
-
-    plt.subplot(1, 3, 3)
-    plt.title(title)
-    output_slice = val_outputs.detach().cpu()[0, 0, :, :, n]
-    plt.imshow(output_slice, cmap="gist_yarg") # "gist_yarg")
-    plt.show()
-
-
-roi_size = (80, 80, 80)
-sw_batch_size = 64 # Increase the overlap by using a higher sw_batch_size
-with torch.no_grad():
-    for i, val_data in enumerate(val_loader):
-
-        n = 200
-        visualize_results(val_data, model, n, f"{bestmodel_filename},epoch: { best_epoch}, best_metric: {best_metric}")
-        if i == 0:
-            break
