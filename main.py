@@ -1,12 +1,12 @@
 import json
-from data_preparation import prepare_data
+from Practic.data_preparation import prepare_data
 import torch
 from torch import nn
 from monai.networks.nets import UNet
 from monai.networks.layers import Norm
 
-from data_preparation import prepare_data  # Import from your data preparation script
-from model_training import ModelTrainer  # Import from your training script
+from Practic.data_preparation import prepare_data  # Import from your data preparation script
+from Practic.model_training import ModelTrainer  # Import from your training script
 
 # Function to read JSON config file
 def read_config(config_path):

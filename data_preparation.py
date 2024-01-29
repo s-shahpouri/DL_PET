@@ -41,7 +41,10 @@ def split_data_for_center(center_data, train_ratio, val_ratio, data_dir, seed=No
     test_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples + val_samples:]]
     return train_set, val_set, test_set
 
-def prepare_dataloaders(train_files, val_files, config):
+def prepare_dataloaders(train_files, val_files, test_files, config, loaders_to_prepare):
+    loaders = {}
+
+
     train_transforms = Compose(
         [   LoadImaged(keys=["image", "target"]),
             EnsureChannelFirstd(keys=["image", "target"]),
@@ -56,29 +59,47 @@ def prepare_dataloaders(train_files, val_files, config):
             Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
         ])
 
-    train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=config['num_workers'])
-    train_loader = DataLoader(train_ds, batch_size=config['batch_size'], shuffle=True, num_workers=config['num_workers'])
-
-    val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=config['num_workers'])
-    val_loader = DataLoader(val_ds, batch_size=config['val_batch_size'], shuffle=False, num_workers=config['num_workers'])
-
-    return train_loader, val_loader
+    if "train" in loaders_to_prepare:
+        train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=config['num_workers'])
+        train_loader = DataLoader(train_ds, batch_size=config['batch_size'], shuffle=True, num_workers=config['num_workers'])
+        loaders["train"] = train_loader
 
 
-def prepare_data(config):
-    print("Preparing data using config:", config[0])
+    if "val" in loaders_to_prepare:
+
+        val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=config['num_workers'])
+        val_loader = DataLoader(val_ds, batch_size=config['val_batch_size'], shuffle=False, num_workers=config['num_workers'])
+        loaders["val"] = val_loader
+
+
+    if "test" in loaders_to_prepare:
+        test_ds = CacheDataset(data=test_files, transform=val_transforms, cache_rate=1.0, num_workers=config['num_workers'])
+        test_loader = DataLoader(test_ds, batch_size=config['val_batch_size'], shuffle=False, num_workers=config['num_workers'])
+        loaders["test"] = test_loader
+
+
+
+
+    return loaders
+
+
+def prepare_data(config, loaders_to_prepare=["train", "val", "test"]):
+    print("Preparing data using config:", config)
     data_dir = config["data_dir"]
     data_dicts = load_data(data_dir)
     center_dict = group_patients_by_center(data_dicts)
 
     train_files, val_files, test_files = [], [], []
     for _, patients in center_dict.items():
-        center_train, center_val, center_test = split_data_for_center(patients, config['train_ratio'], config['val_ratio'], data_dir, seed=config['seed_random'])
+        center_train, center_val, center_test = split_data_for_center(
+            patients, config['train_ratio'], config['val_ratio'],
+            data_dir, seed=config['seed_random'])
+        
         train_files.extend(center_train)
         val_files.extend(center_val)
         test_files.extend(center_test)
 
-    train_loader, val_loader = prepare_dataloaders(train_files, val_files, config)
+    loaders = prepare_dataloaders(train_files, val_files, test_files, config, loaders_to_prepare)
 
-    return train_loader, val_loader
+    return loaders
 
