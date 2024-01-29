@@ -4,6 +4,13 @@ import glob
 import random
 import warnings
 from collections import defaultdict
+from monai.utils import first, set_determinism
+from monai.transforms import (EnsureChannelFirstd, Compose, CropForegroundd, LoadImaged, Orientationd, RandCropByPosNegLabeld, ScaleIntensityRanged, Spacingd)
+from monai.networks.nets import UNet
+from monai.networks.layers import Norm
+from monai.inferers import sliding_window_inference
+from monai.data import CacheDataset, DataLoader, Dataset
+from monai.transforms import Resized
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
 
 
@@ -39,21 +46,18 @@ def group_patients_by_center(data_dicts):
         center_dict[center].append(filename)
     return center_dict
 
-def split_data_for_center(center_data, train_ratio, val_ratio, seed=None):
-    '''Spliting data for each center based on ratios'''
-
-    random.seed(seed)  # Using fixed seed for repeatability
-
+def split_data_for_center(center_data, train_ratio, val_ratio, data_dir, seed=None):
+    random.seed(seed)
     total_samples = len(center_data)
     train_samples = int(total_samples * train_ratio)
     val_samples = int(total_samples * val_ratio)
-    # test_samples = total_samples - train_samples - val_samples
 
     random.shuffle(center_data)
-    train_set = center_data[:train_samples]
-    val_set = center_data[train_samples:train_samples + val_samples]
-    test_set = center_data[train_samples + val_samples:]
+    train_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[:train_samples]]
+    val_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples:train_samples + val_samples]]
+    test_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples + val_samples:]]
     return train_set, val_set, test_set
+
 
 # Fixed seed for repeatability
 seed_random = 42
@@ -62,35 +66,31 @@ center_dict = group_patients_by_center(data_dicts)
 train_files, val_files, test_files = [], [], []
 
 for center, patients in center_dict.items():
-    center_train, center_val, center_test = split_data_for_center(patients, train_ratio, val_ratio, seed=seed_random)
+    center_train, center_val, center_test = split_data_for_center(patients, train_ratio, val_ratio, data_dir, seed=seed_random)
     train_files.extend(center_train)
     val_files.extend(center_val)
     test_files.extend(center_test)
 
+train_transforms = Compose(
+    [   LoadImaged(keys=["image", "target"]),
+        EnsureChannelFirstd(keys=["image", "target"]),
+        Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
+        Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
+        # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
+    ])
 
-# center_dict = group_patients_by_center(data_dicts)
+val_transforms = Compose(
+    [   LoadImaged(keys=["image", "target"]),
+        EnsureChannelFirstd(keys=["image", "target"]),
+        Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
+        Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode=('trilinear')),
+        # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
 
-# train_files, val_files, test_files = [], [], []
+    ])
 
-# # Set the random seed for replayability
-# random.seed(seed_random)
+train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=8)
+train_loader = DataLoader(train_ds, batch_size=16, shuffle=True, num_workers=8)
 
-# # Split data for each center and combine
-# for center, patients in center_dict.items():
-#     center_train, center_val, center_test = split_data_for_center(patients, train_ratio, val_ratio, test_ratio, seed=seed_random)
-#     train_files.extend(center_train)
-#     val_files.extend(center_val)
-#     test_files.extend(center_test)
+val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=8)
+val_loader = DataLoader(val_ds, batch_size=8, shuffle=False, num_workers=8)
 
-# # Optionally, shuffle the combined lists if needed
-# random.shuffle(train_files)
-# random.shuffle(val_files)
-# random.shuffle(test_files)
-
-# print(train_files)
-# print(val_files)
-# print(test_files)
-
-# print(len(train_files))
-# print(len(val_files))
-# print(len(test_files))
