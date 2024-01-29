@@ -1,0 +1,15 @@
+{
+    "data_dir": "/home/shahpouriz/Data/Practic/ASC-PET-001",
+    "log_dir": "/home/shahpouriz/Data/Practic/LOG",
+    "train_ratio": 0.7,
+    "val_ratio": 0.1,
+    "test_ratio": 0.2,
+    "num_workers": 8,
+    "batch_size": 16,
+    "val_batch_size": 8,
+    "seed_random": 42,
+    "max_epochs": 230,
+    "val_interval": 2,
+    "learning_rate": 0.0001 
+
+}
