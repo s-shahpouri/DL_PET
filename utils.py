@@ -41,16 +41,16 @@ def find_last_best_model(log_filepath):
 
 
 def find_model_info(log_filepath, model_filename):
-    best_metric = None
+    metric = None
     epoch = None
     with open(log_filepath, 'r') as file:
         for line in file:
             if model_filename in line:
                 parts = line.split(',')
-                best_metric = float(parts[1].split(': ')[1])  # Extract best metric
+                metric = float(parts[1].split(': ')[1])  # Extract best metric
                 epoch = int(parts[2].split(': ')[1])  # Extract epoch number
-                return model_filename, best_metric, epoch
-    return model_filename, best_metric, epoch
+                return model_filename, metric, epoch
+    return model_filename, metric, epoch
 
 # # Info about the data
 # import nibabel as nib

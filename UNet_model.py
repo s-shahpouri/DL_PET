@@ -10,7 +10,7 @@ def create_unet():
         out_channels=1,
         channels=(32, 64, 128, 256),
         act=(nn.ReLU6, {"inplace": True}),
-        strides=(2, 2, 2),
+        strides=(2, 2, 2, 2),
         num_res_units=2,
         norm=Norm.BATCH,
     )

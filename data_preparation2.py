@@ -6,7 +6,11 @@ import warnings
 from collections import defaultdict
 from monai.transforms import (EnsureChannelFirstd, Compose, LoadImaged, Spacingd, Resized)
 from monai.data import CacheDataset, DataLoader
-
+from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, ScaleIntensityRanged, ScaleIntensity
+from monai.transforms import (
+    Compose, LoadImaged, EnsureChannelFirstd, Spacingd,
+    SpatialPadd, ScaleIntensityd, CenterSpatialCropd
+)
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
 
 class DataHandling:
@@ -37,7 +41,7 @@ class DataHandling:
         return center_dict
 
     def split_data_for_center(self, center_data, seed=None):
-        random.seed(seed if seed is not None else self.seed_random)
+        random.seed(self.seed_random)
         total_samples = len(center_data)
         train_samples = int(total_samples * self.train_ratio)
         val_samples = int(total_samples * self.val_ratio)
@@ -48,40 +52,39 @@ class DataHandling:
         test_set = [{"image": os.path.join(self.data_dir, "NAC", data), "target": os.path.join(self.data_dir, "MAC", data)} for data in center_data[train_samples + val_samples:]]
         return train_set, val_set, test_set
 
-    def prepare_dataloaders(self, train_files, val_files, test_files, config, loaders_to_prepare):
+    def prepare_dataloaders(self, train_files, val_files, test_files, loaders_to_prepare):
         loaders = {}
+        
+
+        roi_size = [168, 168, 320]
+
+        val_transforms = Compose([
+            LoadImaged(keys=["image", "target"]),
+            EnsureChannelFirstd(keys=["image", "target"]),
+            Spacingd(keys=["image", "target"], pixdim=(4.07, 4.07, 3.00)),  # Adjust spacing as needed
+            SpatialPadd(keys=["image", "target"], spatial_size=(200, 200, 350), mode='constant'),  # Pad to ensure minimum size
+            # ScaleIntensityd(keys=["image", "target"], minv=0.0, maxv=1.0),
+            CenterSpatialCropd(keys=["image", "target"], roi_size=roi_size),  # Crop to ensure exact size
+        ])
 
 
-        train_transforms = Compose(
-            [   LoadImaged(keys=["image", "target"]),
-                EnsureChannelFirstd(keys=["image", "target"]),
-                Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
-                Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
-            ])
-
-        val_transforms = Compose(
-            [   LoadImaged(keys=["image", "target"]),
-                EnsureChannelFirstd(keys=["image", "target"]),
-                Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
-                Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
-            ])
 
         if "train" in loaders_to_prepare:
-            train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=config['num_workers'])
-            train_loader = DataLoader(train_ds, batch_size=config['batch_size'], shuffle=True, num_workers=config['num_workers'])
+            train_ds = CacheDataset(data=train_files, transform=val_transforms, cache_rate=1.0, num_workers=self.config['num_workers'])
+            train_loader = DataLoader(train_ds, batch_size=self.config['batch_size'], shuffle=True, num_workers=self.config['num_workers'])
             loaders["train"] = train_loader
 
 
         if "val" in loaders_to_prepare:
 
-            val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=config['num_workers'])
-            val_loader = DataLoader(val_ds, batch_size=config['val_batch_size'], shuffle=False, num_workers=config['num_workers'])
+            val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=self.config['num_workers'])
+            val_loader = DataLoader(val_ds, batch_size=self.config['val_batch_size'], shuffle=False, num_workers=self.config['num_workers'])
             loaders["val"] = val_loader
 
 
         if "test" in loaders_to_prepare:
-            test_ds = CacheDataset(data=test_files, transform=val_transforms, cache_rate=1.0, num_workers=config['num_workers'])
-            test_loader = DataLoader(test_ds, batch_size=config['val_batch_size'], shuffle=False, num_workers=config['num_workers'])
+            test_ds = CacheDataset(data=test_files, transform=val_transforms, cache_rate=1.0, num_workers=self.config['num_workers'])
+            test_loader = DataLoader(test_ds, batch_size=self.config['val_batch_size'], shuffle=False, num_workers=self.config['num_workers'])
             loaders["test"] = test_loader
 
 
@@ -102,7 +105,7 @@ class DataHandling:
             test_files.extend(center_test)
 
         # Pass self.config to prepare_dataloaders
-        loaders = self.prepare_dataloaders(train_files, val_files, test_files, self.config, loaders_to_prepare)
+        loaders = self.prepare_dataloaders(train_files, val_files, test_files, loaders_to_prepare)
         
         return loaders, val_files, test_files
 

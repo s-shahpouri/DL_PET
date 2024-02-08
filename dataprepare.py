@@ -4,12 +4,8 @@ import glob
 import random
 import warnings
 from collections import defaultdict
-from monai.utils import first, set_determinism
-from monai.transforms import (EnsureChannelFirstd, Compose, CropForegroundd, LoadImaged, Orientationd, RandCropByPosNegLabeld, ScaleIntensityRanged, Spacingd)
-from monai.networks.nets import UNet
-from monai.networks.layers import Norm
-from monai.inferers import sliding_window_inference
-from monai.data import CacheDataset, DataLoader, Dataset
+from monai.transforms import (EnsureChannelFirstd, Compose, LoadImaged, Spacingd)
+from monai.data import CacheDataset, DataLoader
 from monai.transforms import Resized
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
 
@@ -42,7 +38,7 @@ def group_patients_by_center(data_dicts):
     center_dict = defaultdict(list)
     for item in data_dicts:
         filename = os.path.basename(item["image"])
-        center = filename.split('_')[1]  #Center name is the 2th part of the filename
+        center = filename.split('_')[1]  #Center name is the 2end part of the filename
         center_dict[center].append(filename)
     return center_dict
 
@@ -76,7 +72,6 @@ train_transforms = Compose(
         EnsureChannelFirstd(keys=["image", "target"]),
         Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
         Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode='trilinear'),
-        # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
     ])
 
 val_transforms = Compose(
@@ -84,8 +79,6 @@ val_transforms = Compose(
         EnsureChannelFirstd(keys=["image", "target"]),
         Spacingd(keys=["image", "target"], pixdim=(1.5, 1.5, 2.0)),
         Resized(keys=["image", "target"], spatial_size=(96, 96, 96), mode=('trilinear')),
-        # CenterSpatialCropd(keys=["image", "target"], roi_size=crop_size, lazy=True),
-
     ])
 
 train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=8)

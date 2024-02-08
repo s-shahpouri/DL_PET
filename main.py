@@ -1,12 +1,13 @@
 import json
-from Practic.data_preparation import prepare_data
 import torch
 from torch import nn
 from monai.networks.nets import UNet
 from monai.networks.layers import Norm
 
-from Practic.data_preparation import prepare_data  # Import from your data preparation script
-from Practic.model_training import ModelTrainer  # Import from your training script
+from data_preparation2 import DataHandling  # Import from your data preparation script
+
+from model_training import ModelTrainer  # Import from your training script
+from UNet_model import create_unet
 
 # Function to read JSON config file
 def read_config(config_path):
@@ -15,20 +16,13 @@ def read_config(config_path):
 
 def main(config):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    train_loader, val_loader = prepare_data(config)
+    data_handling = DataHandling(config)
+    loaders, _, _ = data_handling.prepare_data(loaders_to_prepare=["train", "val", "test"])
+    val_loader = loaders.get("val")
+    train_loader = loaders.get("train")
+    # test_loader = loaders.get("test")
     # Initialize model, loss function, and optimizer
-    model = UNet(
-        spatial_dims=3,
-        in_channels=1,
-        out_channels=1,
-        channels=(32, 64, 128, 256),
-        act=(nn.ReLU6, {"inplace": True}),
-        strides=(2, 2, 2),
-        num_res_units=2,
-        norm=Norm.BATCH,
-    ).to(device)
-
+    model = create_unet().to(device)
     loss_function = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), 1e-4)
 
@@ -48,7 +42,7 @@ def main(config):
     trainer.train()
 if __name__ == "__main__":
     print("Starting preparing data ...")
-    config_path = "/home/shahpouriz/Data/Practic/training_params.json"
+    config_path = "/homes/zshahpouri/DLP/Practic/training_params.json"
     config = read_config(config_path)
     main(config)
 
