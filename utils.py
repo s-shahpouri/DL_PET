@@ -1,6 +1,9 @@
 import os
 import random
 from collections import defaultdict
+import nibabel as nib
+import torch
+
 
 def group_patients_by_center(data_dicts):
     '''Gathering patients from different centers'''
@@ -76,3 +79,40 @@ def find_model_info(log_filepath, model_filename):
 
 #     print(f"Image: {os.path.basename(image_path)}, Shape: {image_shape}, Size: {image_size}")
 #     print(f"Target: {os.path.basename(target_path)}, Shape: {target_shape}, Size: {target_size}")
+
+
+
+# def get_nifti_header(file_path):
+#     nifti_img = nib.load(file_path)
+#     header_info = nifti_img.header
+#     return header_info
+# # Dictionary to hold header information of test files before transformations
+# test_headers_before = {}
+
+# for file_dict in test_files:
+#     image_path = file_dict["image"]
+#     target_path = file_dict["target"]
+#     image_header = get_nifti_header(image_path)
+#     target_header = get_nifti_header(target_path)
+#     # Extracting filename without extension for key
+#     file_key = os.path.splitext(os.path.basename(image_path))[0]
+#     test_headers_before[file_key] = {"image_header": image_header, "target_header": target_header}
+
+
+# def save_nifti(data, filename, affine):
+#     """Save the data as a NIfTI file with the provided affine matrix."""
+#     nifti_img = nib.Nifti1Image(data, affine)
+#     nib.save(nifti_img, filename)
+
+# def save_output_with_affine(test_data, model, output_dir, file_names, affine_matrices):
+#     """Save model output for test data to NIfTI files, preserving affine matrices."""
+#     model.eval()
+#     with torch.no_grad():
+#         test_outputs = model(test_data["image"].to(device))
+
+#     # Loop over each item in the batch and save outputs with the corresponding affine matrix
+#     for i in range(test_outputs.shape[0]):  # Adjust based on your model's output shape
+#         output_data = test_outputs[i, 0, :, :, :].detach().cpu().numpy()  # Assuming single-channel output
+#         output_file_path = os.path.join(output_dir, f"DL_{file_names[i]}.gz")
+#         affine = affine_matrices[file_names[i]]
+#         save_nifti(output_data, output_file_path, affine)

@@ -9,7 +9,7 @@ from monai.data import CacheDataset, DataLoader
 from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, ScaleIntensityRanged, ScaleIntensity
 from monai.transforms import (
     Compose, LoadImaged, EnsureChannelFirstd, Spacingd,
-    SpatialPadd, ScaleIntensityd, CenterSpatialCropd
+    SpatialPadd, RandCropByPosNegLabeld, CenterSpatialCropd
 )
 warnings.filterwarnings("ignore", category=UserWarning, module="torch.nn.functional")
 
@@ -56,21 +56,36 @@ class DataHandling:
         loaders = {}
         
 
-        roi_size = [168, 168, 320]
+        train_transforms = Compose(
+            [   LoadImaged(keys=["image", "target"]),
+                EnsureChannelFirstd(keys=["image", "target"]),
+                Spacingd(keys=["image", "target"], pixdim=(4.07, 4.07, 3.00), mode= 'trilinear'),
+                
+                SpatialPadd(keys=["image", "target"], spatial_size=(168, 168, 320), mode='constant'),  # Pad to ensure minimum size
+                
+                RandCropByPosNegLabeld(
+                    keys=["image", "target"],
+                    label_key="target",
+                    spatial_size=(168, 168, 32),
+                    pos=1,
+                    neg=1,
+                    num_samples=4,
+                    image_key="image",
+                    image_threshold=0,
+                ),        ])
 
-        val_transforms = Compose([
-            LoadImaged(keys=["image", "target"]),
-            EnsureChannelFirstd(keys=["image", "target"]),
-            Spacingd(keys=["image", "target"], pixdim=(4.07, 4.07, 3.00)),  # Adjust spacing as needed
-            SpatialPadd(keys=["image", "target"], spatial_size=(200, 200, 350), mode='constant'),  # Pad to ensure minimum size
-            # ScaleIntensityd(keys=["image", "target"], minv=0.0, maxv=1.0),
-            CenterSpatialCropd(keys=["image", "target"], roi_size=roi_size),  # Crop to ensure exact size
-        ])
+        val_transforms = Compose(
+            [   LoadImaged(keys=["image", "target"]),
+                EnsureChannelFirstd(keys=["image", "target"]),
+                Spacingd(keys=["image", "target"], pixdim=(4.07, 4.07, 3.00), mode= 'trilinear'),
+                SpatialPadd(keys=["image", "target"], spatial_size=(168, 168, 320), mode='constant'),  # Ensure minimum size
+                CenterSpatialCropd(keys=["image", "target"], roi_size=(168, 168, 320)),  # Ensure uniform size
+            ])
 
 
 
         if "train" in loaders_to_prepare:
-            train_ds = CacheDataset(data=train_files, transform=val_transforms, cache_rate=1.0, num_workers=self.config['num_workers'])
+            train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=self.config['num_workers'])
             train_loader = DataLoader(train_ds, batch_size=self.config['batch_size'], shuffle=True, num_workers=self.config['num_workers'])
             loaders["train"] = train_loader
 
