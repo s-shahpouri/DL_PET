@@ -16,40 +16,63 @@ import torch.nn as nn
 import json
 from datetime import datetime
 from data_preparation2 import DataHandling 
-from UNet_model import create_unet
+from DL_PET.model_maker import create_unet
 import numpy as np
 import nibabel as nib
 from monai.transforms import (
     Compose, LoadImaged, EnsureChannelFirstd, Spacingd,
     SpatialPadd, ScaleIntensityd, CenterSpatialCropd
 )
+from monai.transforms import NormalizeIntensityd, RandWeightedCropd, RandSpatialCropSamplesd
 
+import random
 import math
+from collections import defaultdict
 
 data_dir = '/homes/zshahpouri/DLP/ASC-PET-001'
-adcm_dir = '/homes/zshahpouri/DLP/ASC-PET-001/ADCM'
-directory = '/homes/zshahpouri/DLP/Practic/LOGTEST'
+directory = '/homes/zshahpouri/DLP/Practic/LOG'
 output_dir = '/homes/zshahpouri/DLP/Practic/OUT'
 
 
-train_images = sorted(glob.glob(os.path.join(data_dir, "ADCM", "*.nii.gz")))
+train_images = sorted(glob.glob(os.path.join(data_dir, "NAC", "*.nii.gz")))
 target_images = sorted(glob.glob(os.path.join(data_dir, "MAC", "*.nii.gz")))
-
-# data_dicts = [{"image": img, "target": tar} for img in train_images]
 data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
 
 
-# Calculate split sizes
-total_size = len(data_dicts)
-train_size = math.floor(total_size * 0.7)
-val_size = math.floor(total_size * 0.2)
-# The test set gets the remaining data points
-test_size = total_size - train_size - val_size
+random.seed(42)
+# Separate data based on the center
+data_by_center = defaultdict(list)
+for data in data_dicts:
+    center = data["image"].split('/')[-1].split('_')[1]  # Assuming the format is always like /path/Cx_...
+    # print(center)
+    data_by_center[center].append(data)
+# print(len(data_by_center['C5']))
+# Initialize test set with all data from C5
+test_files = data_by_center.pop('C5', [])
 
-# Split the dataset
-train_files = data_dicts[:train_size]
-val_files = data_dicts[train_size:(train_size + val_size)]
-test_files = data_dicts[(train_size + val_size):]
+# From each remaining center, randomly select 2 for the test set and ensure they're removed from the training set
+for center, files in data_by_center.items():
+    if len(files) > 2:  # Ensure there are more than 2 files to choose from
+        selected_for_test = random.sample(files, 2)
+        test_files.extend(selected_for_test)
+        # Remove selected files from the original list
+        for selected in selected_for_test:
+            files.remove(selected)
+    else:
+        test_files.extend(files)
+        data_by_center[center] = []  # Empty the list as all files have been moved to test
+
+# Recombine the remaining files for training and validation
+remaining_files = [file for files in data_by_center.values() for file in files]
+# print(len(remaining_files))
+random.shuffle(remaining_files)  # Shuffle to ensure random distribution
+
+total_size = len(remaining_files)
+train_size = math.floor(total_size * 0.8)
+
+train_files = remaining_files[:train_size]
+val_files = remaining_files[train_size:]
+
 
 patch_size = [168, 168, 16]
 spacing = [4.07, 4.07, 3.00]
@@ -62,16 +85,8 @@ train_transforms = Compose(
         
         SpatialPadd(keys=["image", "target"], spatial_size=spatial_size, mode='constant'),  # Pad to ensure minimum size
         
-        RandCropByPosNegLabeld(
-            keys=["image", "target"],
-            label_key="target",
-            spatial_size = patch_size,
-            pos=1,
-            neg=1,
-            num_samples=4,
-            image_key="image",
-            image_threshold=0,
-        ),        ])
+        RandSpatialCropSamplesd(keys=["image", "target"], roi_size=patch_size, num_samples=20),       
+        ])
 
 val_transforms = Compose(
     [   LoadImaged(keys=["image", "target"]),
@@ -81,23 +96,14 @@ val_transforms = Compose(
         CenterSpatialCropd(keys=["image", "target"], roi_size=spatial_size),  # Ensure uniform size
     ])
 
-# test_transforms = Compose(
-#     [   LoadImaged(keys=["image", "target"]),
-#         EnsureChannelFirstd(keys=["image", "target"]),
-#         Spacingd(keys=["image", "target"], pixdim=(4.07, 4.07, 3.00), mode= 'trilinear'),
-#         SpatialPadd(keys=["image", "target"], spatial_size=(168, 168, 320), mode='constant'),  # Ensure minimum size
-#         CenterSpatialCropd(keys=["image", "target"], roi_size=(168, 168, 320)),  # Ensure uniform size
-#     ])
 
 
-train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=4)
-train_loader = DataLoader(train_ds, batch_size=16, shuffle=True, num_workers=4)
+train_ds = CacheDataset(data=train_files, transform=train_transforms, cache_rate=1.0, num_workers=2)
+train_loader = DataLoader(train_ds, batch_size=4, shuffle=True, num_workers=2)
 
-val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=4)
-val_loader = DataLoader(val_ds, batch_size=2, shuffle=False, num_workers=4)
+val_ds = CacheDataset(data=val_files, transform=val_transforms, cache_rate=1.0, num_workers=2)
+val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=2)
 
-# test_ds = CacheDataset(data=test_files, transform=test_transforms, cache_rate=1.0, num_workers=8)
-# test_loader = DataLoader(test_ds, batch_size=1, shuffle=False, num_workers=8)
 
 
 import os
@@ -135,7 +141,7 @@ class TrainingLogger:
 
 
 starting_epoch = 0
-decay_epoch = 5
+decay_epoch = 4
 learning_rate = 0.001
 
 import torch
@@ -220,7 +226,7 @@ loss_function = torch.nn.MSELoss()
 print('Defining optimizer...')
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999))
 
-max_epochs = 250
+max_epochs = 500
 val_interval = 2
 best_metric = float('inf')
 best_metric_epoch = -1
@@ -327,6 +333,13 @@ class ModelTrainer:
                     targets = torch.squeeze(targets, dim=1)  # Adjust for channel dimension if necessary
                     loss = loss_function(outputs, targets)
                 
+# # L1 Regularization
+#         l1_reg = torch.tensor(0., requires_grad=True).to(device)
+#         for name, param in model.named_parameters():
+#             l1_reg = l1_reg + torch.norm(param, 1)
+        
+#         loss += lambda_reg * l1_reg
+
 
                 # loss = self.loss_function(outputs, targets)
                 loss.backward()

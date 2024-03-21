@@ -116,3 +116,33 @@ def find_model_info(log_filepath, model_filename):
 #         output_file_path = os.path.join(output_dir, f"DL_{file_names[i]}.gz")
 #         affine = affine_matrices[file_names[i]]
 #         save_nifti(output_data, output_file_path, affine)
+
+
+def find_last_saved_model(log_filepath):
+    last_saved_model = None
+    best_metric = None
+    epoch = None
+    with open(log_filepath, 'r') as file:
+        for line in file:
+            if "Saved" in line and ".pth" in line:
+                parts = line.split(',')
+                last_saved_model = parts[0].split()[1]  # Extract model filename
+                best_metric = float(parts[1].split(': ')[1])  # Extract best metric
+                epoch = int(parts[2].split(': ')[1])  # Extract epoch number
+    return last_saved_model, best_metric, epoch
+
+
+# Function to parse the loss values from the log file
+def parse_loss_values(log_filepath):
+    train_losses = []
+    val_losses = []
+    with open(log_filepath, 'r') as file:
+        for line in file:
+            if 'average loss:' in line:
+                loss_value = float(line.split(': ')[-1])
+                train_losses.append(loss_value)
+            if 'Validation loss:' in line:
+                val_loss_value = float(line.split(': ')[-1])
+                val_losses.append(val_loss_value)
+    return train_losses, val_losses
+

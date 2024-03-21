@@ -7,7 +7,7 @@ from monai.networks.layers import Norm
 from data_preparation2 import DataHandling  # Import from your data preparation script
 
 from model_training import TrainingLogger, ModelTrainer  # Import from your training script
-from UNet_model import create_unet
+from DL_PET.model_maker import create_unet
 
 # Function to read JSON config file
 def read_config(config_path):

@@ -16,7 +16,7 @@ import torch.nn as nn
 import json
 from datetime import datetime
 from data_preparation2 import DataHandling 
-from UNet_model import create_unet
+from DL_PET.model_maker import create_unet
 import numpy as np
 import nibabel as nib
 from monai.transforms import (
