@@ -146,3 +146,30 @@ def parse_loss_values(log_filepath):
                 val_losses.append(val_loss_value)
     return train_losses, val_losses
 
+
+import glob
+class PairFinder:
+    def __init__(self, data_dir, output_dir, hint):
+        self.data_dir = data_dir
+        self.output_dir = output_dir
+        self.hint = hint
+
+    def extract_common_name(self, filename):
+        # Extracts the common name from a filename by removing the hint and extension
+        return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
+
+    def find_file_pairs(self):
+        # Finds pairs of files based on the hint and directories specified
+        dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
+        test_dict_list = []
+        for dl_path in dl_files:
+            common_name = self.extract_common_name(dl_path)
+            search_pattern = os.path.join(self.data_dir, f'{common_name}*.nii.gz')
+            found_org_files = glob.glob(search_pattern)
+            if found_org_files:
+                pair_dict = {
+                    'predicted': dl_path,
+                    'reference': found_org_files[0]
+                }
+                test_dict_list.append(pair_dict)
+        return test_dict_list
