@@ -55,6 +55,7 @@ def find_model_info(log_filepath, model_filename):
                 return model_filename, metric, epoch
     return model_filename, metric, epoch
 
+
 # # Info about the data
 # import nibabel as nib
 # import os
@@ -173,3 +174,71 @@ class PairFinder:
                 }
                 test_dict_list.append(pair_dict)
         return test_dict_list
+    
+
+import numpy as np
+import torch
+from skimage.metrics import structural_similarity as ssim
+from math import log10, sqrt
+
+def mean_error(predicted, reference):
+    return np.mean(predicted - reference)
+
+def mean_absolute_error(predicted, reference):
+    return np.mean(np.abs(predicted - reference))
+
+def relative_error(predicted, reference, epsilon=0.3):
+    return np.mean((predicted - reference) / (reference + epsilon)) * 100
+
+def absolute_relative_error(predicted, reference, epsilon=0.3):
+    return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
+
+def rmse(predicted, reference):
+    return sqrt(np.mean((predicted - reference) ** 2))
+
+def psnr(predicted, reference, peak):
+    mse = np.mean((predicted - reference) ** 2)
+    return 20 * log10(peak / sqrt(mse))
+
+def calculate_ssim(predicted, reference):
+    return ssim(predicted, reference, data_range=reference.max() - reference.min())
+
+
+
+import nibabel as nib
+import numpy as np
+from skimage.metrics import structural_similarity as ssim
+from math import log10, sqrt
+
+def load_nifti_image(path):
+    """Load a NIfTI image and return its data as a NumPy array."""
+    return nib.load(path).get_fdata()
+
+def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=7):
+    """
+    Calculate metrics for a single pair of images, applying a scaling factor to the images.
+    """
+    predicted_img = load_nifti_image(predicted_path) * scaling_factor
+    reference_img = load_nifti_image(reference_path) * scaling_factor
+    
+
+    peak = np.max([predicted_img.max(), reference_img.max()])
+    metrics = {
+        "mean_error": mean_error(predicted_img, reference_img),
+        "mean_absolute_error": mean_absolute_error(predicted_img, reference_img),
+        "relative_error": relative_error(predicted_img, reference_img),
+        "absolute_relative_error": absolute_relative_error(predicted_img, reference_img),
+        "rmse": rmse(predicted_img, reference_img),
+        "psnr": psnr(predicted_img, reference_img, peak),
+        "ssim": calculate_ssim(predicted_img, reference_img)
+    }
+    return metrics
+
+def aggregate_metrics(metrics_list):
+    """Aggregate metrics across all pairs and calculate mean and standard deviation."""
+    aggregated_metrics = {key: [] for key in metrics_list[0]}
+    for metrics in metrics_list:
+        for key, value in metrics.items():
+            aggregated_metrics[key].append(value)
+    
+    return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}

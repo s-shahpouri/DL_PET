@@ -56,62 +56,89 @@ class DataHandling:
             raise ValueError("Invalid split name. Choose among 'train', 'val', or 'test'.")
 
 
+class ExtrenalRadioSetSetHandling:
+    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC"):
+        self.data_dir = data_dir
+        self.train_mode = train_mode
+        self.target_mode = target_mode
+        self.data_dicts = []
+
+        self._load_data()
+        
+    def _load_data(self):
+        train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
+        target_images = sorted(glob.glob(os.path.join(self.data_dir, self.target_mode, "*.nii.gz")))
+        self.data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
+
+    def get_data(self):
+            return self.data_dicts
+
+
 
 from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, RandSpatialCropSamplesd, CenterSpatialCropd
 from monai.data import CacheDataset, DataLoader, Dataset
 
+from monai.transforms import NormalizeIntensityd
+
 class LoaderFactory:
-    def __init__(self, train_files=None, val_files=None, test_files=None, patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00], spatial_size = (168, 168, 320)):
+    def __init__(self, train_files=None, val_files=None, test_files=None,
+                 patch_size=[168, 168, 16], spacing=[4.07, 4.07, 3.00],
+                 spatial_size=(168, 168, 320), normalize=False):
         self.train_files = train_files
         self.val_files = val_files
         self.test_files = test_files
-        
         self.patch_size = patch_size
         self.spacing = spacing
         self.spatial_size = spatial_size
-        
-        self.train_transforms = Compose([
+        self.normalize = normalize
+
+        # Define a list of common preprocessing steps
+        common_transforms = [
             LoadImaged(keys=["image", "target"]),
             EnsureChannelFirstd(keys=["image", "target"]),
             Spacingd(keys=["image", "target"], pixdim=self.spacing, mode='trilinear'),
             SpatialPadd(keys=["image", "target"], spatial_size=self.spatial_size, mode='constant'),
+        ]
+
+        # Optionally add normalization to the transformation pipeline
+        if self.normalize:
+            common_transforms.append(NormalizeIntensityd(keys=["image", "target"]))
+
+        self.train_transforms = Compose(common_transforms + [
             RandSpatialCropSamplesd(keys=["image", "target"], roi_size=self.patch_size, num_samples=20),
         ])
         
-        self.val_transforms = Compose([
-            LoadImaged(keys=["image", "target"]),
-            EnsureChannelFirstd(keys=["image", "target"]),
-            Spacingd(keys=["image", "target"], pixdim=self.spacing, mode='trilinear'),
-            SpatialPadd(keys=["image", "target"], spatial_size=self.spatial_size, mode='constant'),
+        self.val_transforms = Compose(common_transforms + [
             CenterSpatialCropd(keys=["image", "target"], roi_size=self.spatial_size),
         ])
 
-        self.test_transforms = Compose([
-            LoadImaged(keys=["image", "target"]),
-            EnsureChannelFirstd(keys=["image", "target"]),
-            Spacingd(keys=["image", "target"], pixdim=self.spacing, mode='trilinear'),
-            SpatialPadd(keys=["image", "target"], spatial_size=self.spatial_size, mode='constant'),
+        self.test_transforms = Compose(common_transforms + [
             CenterSpatialCropd(keys=["image", "target"], roi_size=self.spatial_size),
         ])
+
     def get_test_transforms(self):
         return self.test_transforms
     
-
     def get_loader(self, dataset_type="train", batch_size=4, num_workers=2, shuffle=True):
-        if dataset_type == "train" and self.train_files is not None:
-            ds = CacheDataset(data=self.train_files, transform=self.train_transforms, cache_rate=1.0, num_workers=num_workers)
-            return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+        data_files = None
+        transform = None
         
-        elif dataset_type == "val" and self.val_files is not None:
-            ds = CacheDataset(data=self.val_files, transform=self.val_transforms, cache_rate=1.0, num_workers=num_workers)
-            return DataLoader(ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-        
-        elif dataset_type == "test" and self.test_files is not None:
-            ds = Dataset(data=self.test_files, transform=self.test_transforms)
-            return DataLoader(ds, batch_size=batch_size, num_workers=num_workers, shuffle=False)
-
+        if dataset_type == "train":
+            data_files = self.train_files
+            transform = self.train_transforms
+        elif dataset_type == "val":
+            data_files = self.val_files
+            transform = self.val_transforms
+        elif dataset_type == "test":
+            data_files = self.test_files
+            transform = self.test_transforms
         else:
             raise ValueError(f"No files provided or unknown dataset type: {dataset_type}")
+        
+        if data_files is not None:
+            ds = Dataset(data=data_files, transform=transform) if dataset_type != "train" else CacheDataset(data=data_files, transform=transform, cache_rate=1.0, num_workers=num_workers)
+            return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
+
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -144,7 +171,33 @@ def visualize_axial_slice(data_loader, slice_index):
     
     plt.show()
 
-
+def visualize_axial_slice2(data_loader, slice_index):
+    # Manually iterate through the DataLoader to fetch the first batch
+    for data_batch in data_loader:
+        break  # Only need the first batch
+    
+    # Extract the image and target tensors from the batch
+    image, target = data_batch["image"][0][0], data_batch["target"][0][0]  # Assuming batch size of 1
+    
+    # # Determine global min and max for a unified color scale
+    # vmin = min(image[:, :, slice_index].min(), target[:, :, slice_index].min())
+    # vmax = max(image[:, :, slice_index].max(), target[:, :, slice_index].max())
+    
+    # Visualization
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    plt.suptitle(f"Data Check/Axial slice {slice_index}")
+    
+    img_plot = axes[0].imshow(np.rot90(np.flip(image[:, slice_index, :], axis=1), k=3), cmap="jet")
+    axes[0].set_title("Image Slice")
+    
+    tgt_plot = axes[1].imshow(np.rot90(np.flip(target[:, slice_index, :], axis=1), k=3), cmap="jet")
+    axes[1].set_title("Target Slice")
+   
+    
+    # Add a single colorbar 
+    fig.colorbar(img_plot, ax=axes, fraction=0.021, pad=0.04)
+    
+    plt.show()
 
 def visualize_coronal_slice(data, predict, n, title, Norm = False):
 

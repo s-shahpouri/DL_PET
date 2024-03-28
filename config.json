@@ -2,5 +2,7 @@
     "ga_data_dir": "/students/2023-2024/master/Shahpouri/DATA/Ga-PET",
     "fdg_data_dir": "/students/2023-2024/master/Shahpouri/DATA/FDG-PET",
     "log_dir": "/students/2023-2024/master/Shahpouri/LOG",
-    "output_dir": "/students/2023-2024/master/Shahpouri/OUTPUT"
+    "output_dir": "/students/2023-2024/master/Shahpouri/OUTPUT",
+    "fdg_data_test": "/students/2023-2024/master/Shahpouri/DATA/FDG_TEST"
+
 }
