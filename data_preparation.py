@@ -3,6 +3,11 @@ import os
 import random
 import math
 from collections import defaultdict
+from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, RandSpatialCropSamplesd, CenterSpatialCropd
+from monai.data import CacheDataset, DataLoader, Dataset
+from monai.transforms import NormalizeIntensityd
+import matplotlib.pyplot as plt
+import numpy as np
 
 class DataHandling:
     def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", external_center='C5'):
@@ -74,12 +79,6 @@ class ExtrenalRadioSetSetHandling:
             return self.data_dicts
 
 
-
-from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, RandSpatialCropSamplesd, CenterSpatialCropd
-from monai.data import CacheDataset, DataLoader, Dataset
-
-from monai.transforms import NormalizeIntensityd
-
 class LoaderFactory:
     def __init__(self, train_files=None, val_files=None, test_files=None,
                  patch_size=[168, 168, 16], spacing=[4.07, 4.07, 3.00],
@@ -140,9 +139,6 @@ class LoaderFactory:
             return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
 
-import matplotlib.pyplot as plt
-import numpy as np
-
 def visualize_axial_slice(data_loader, slice_index):
     # Manually iterate through the DataLoader to fetch the first batch
     for data_batch in data_loader:
@@ -171,6 +167,7 @@ def visualize_axial_slice(data_loader, slice_index):
     
     plt.show()
 
+
 def visualize_axial_slice2(data_loader, slice_index):
     # Manually iterate through the DataLoader to fetch the first batch
     for data_batch in data_loader:
@@ -198,6 +195,7 @@ def visualize_axial_slice2(data_loader, slice_index):
     fig.colorbar(img_plot, ax=axes, fraction=0.021, pad=0.04)
     
     plt.show()
+
 
 def visualize_coronal_slice(data, predict, n, title, Norm = False):
 

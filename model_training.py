@@ -170,7 +170,7 @@ class ModelTrainer:
                     for val_data in self.val_loader:
                         val_inputs, val_targets = val_data["image"].to(self.device), val_data["target"].to(self.device)
 
-                        val_outputs = sliding_window_inference(val_inputs, roi_size, sw_batch_size, model)
+                        val_outputs = sliding_window_inference(val_inputs, roi_size, sw_batch_size, self.model)
                         val_loss += self.loss_function(val_outputs, val_targets).item()
 
                 val_loss /= len(self.val_loader)

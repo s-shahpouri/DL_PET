@@ -18,7 +18,12 @@ log_dir = config["log_dir"]
 output_dir = config["output_dir"]
 
 
-data_handler = DataHandling(ga_data_dir, train_mode="NAC", target_mode="ADCM")
+data_handler = DataHandling(
+    ga_data_dir,
+    train_mode="NAC",
+    target_mode="ADCM"
+    )
+
 train_files = data_handler.get_data_split('train')
 val_files = data_handler.get_data_split('val')
 test_files = data_handler.get_data_split('test')
@@ -42,11 +47,11 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 
 starting_epoch = 0
-decay_epoch = 4
+decay_epoch = 10
 learning_rate = 0.001
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
-# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_18_22_10.pth'))
+model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_29_0_30.pth'))
 model = model.to(device)
 
 loss_function = torch.nn.MSELoss()

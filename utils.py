@@ -3,7 +3,11 @@ import random
 from collections import defaultdict
 import nibabel as nib
 import torch
-
+import glob
+import nibabel as nib
+import numpy as np
+from skimage.metrics import structural_similarity as ssim
+from math import log10, sqrt
 
 def group_patients_by_center(data_dicts):
     '''Gathering patients from different centers'''
@@ -14,6 +18,7 @@ def group_patients_by_center(data_dicts):
         center = filename.split('_')[1]  #Center name is the 2end part of the filename
         center_dict[center].append(filename)
     return center_dict
+
 
 def split_data_for_center(center_data, train_ratio, val_ratio, data_dir, seed=None):
     random.seed(seed)
@@ -42,7 +47,6 @@ def find_last_best_model(log_filepath):
     return last_saved_model, best_metric, epoch
 
 
-
 def find_model_info(log_filepath, model_filename):
     metric = None
     epoch = None
@@ -54,69 +58,6 @@ def find_model_info(log_filepath, model_filename):
                 epoch = int(parts[2].split(': ')[1])  # Extract epoch number
                 return model_filename, metric, epoch
     return model_filename, metric, epoch
-
-
-# # Info about the data
-# import nibabel as nib
-# import os
-
-# def get_nifti_info(nifti_file):
-#     """Returns the shape and size of the NIfTI file."""
-#     nifti_img = nib.load(nifti_file)
-#     data = nifti_img.get_fdata()
-#     shape = data.shape
-#     size = data.size
-#     return shape, size
-
-# # Assuming data_dicts is defined as shown above
-# val_files = data_dicts
-
-# for file_dict in val_files:
-#     image_path = file_dict["image"]
-#     target_path = file_dict["target"]
-
-#     image_shape, image_size = get_nifti_info(image_path)
-#     target_shape, target_size = get_nifti_info(target_path)
-
-#     print(f"Image: {os.path.basename(image_path)}, Shape: {image_shape}, Size: {image_size}")
-#     print(f"Target: {os.path.basename(target_path)}, Shape: {target_shape}, Size: {target_size}")
-
-
-
-# def get_nifti_header(file_path):
-#     nifti_img = nib.load(file_path)
-#     header_info = nifti_img.header
-#     return header_info
-# # Dictionary to hold header information of test files before transformations
-# test_headers_before = {}
-
-# for file_dict in test_files:
-#     image_path = file_dict["image"]
-#     target_path = file_dict["target"]
-#     image_header = get_nifti_header(image_path)
-#     target_header = get_nifti_header(target_path)
-#     # Extracting filename without extension for key
-#     file_key = os.path.splitext(os.path.basename(image_path))[0]
-#     test_headers_before[file_key] = {"image_header": image_header, "target_header": target_header}
-
-
-# def save_nifti(data, filename, affine):
-#     """Save the data as a NIfTI file with the provided affine matrix."""
-#     nifti_img = nib.Nifti1Image(data, affine)
-#     nib.save(nifti_img, filename)
-
-# def save_output_with_affine(test_data, model, output_dir, file_names, affine_matrices):
-#     """Save model output for test data to NIfTI files, preserving affine matrices."""
-#     model.eval()
-#     with torch.no_grad():
-#         test_outputs = model(test_data["image"].to(device))
-
-#     # Loop over each item in the batch and save outputs with the corresponding affine matrix
-#     for i in range(test_outputs.shape[0]):  # Adjust based on your model's output shape
-#         output_data = test_outputs[i, 0, :, :, :].detach().cpu().numpy()  # Assuming single-channel output
-#         output_file_path = os.path.join(output_dir, f"DL_{file_names[i]}.gz")
-#         affine = affine_matrices[file_names[i]]
-#         save_nifti(output_data, output_file_path, affine)
 
 
 def find_last_saved_model(log_filepath):
@@ -148,7 +89,6 @@ def parse_loss_values(log_filepath):
     return train_losses, val_losses
 
 
-import glob
 class PairFinder:
     def __init__(self, data_dir, output_dir, hint):
         self.data_dir = data_dir
@@ -159,27 +99,43 @@ class PairFinder:
         # Extracts the common name from a filename by removing the hint and extension
         return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
 
+    def identify_center(self, filename):
+        # Identifies the center from the filename
+        parts = filename.split('_')
+        if len(parts) > 1:
+            return parts[1]  # Assuming the second part of the filename denotes the center
+        return None
+
     def find_file_pairs(self):
         # Finds pairs of files based on the hint and directories specified
         dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
-        test_dict_list = []
+        all_pairs = []
+        c5_pairs = []
+        rest_pairs = []
         for dl_path in dl_files:
             common_name = self.extract_common_name(dl_path)
+            center = self.identify_center(common_name)
             search_pattern = os.path.join(self.data_dir, f'{common_name}*.nii.gz')
             found_org_files = glob.glob(search_pattern)
             if found_org_files:
                 pair_dict = {
                     'predicted': dl_path,
-                    'reference': found_org_files[0]
+                    'reference': found_org_files[0],
+                    'center': center
                 }
-                test_dict_list.append(pair_dict)
-        return test_dict_list
+                all_pairs.append(pair_dict)
+                if center == 'C5':
+                    c5_pairs.append(pair_dict)
+                else:
+                    rest_pairs.append(pair_dict)
+        return all_pairs, c5_pairs, rest_pairs
     
 
+
 import numpy as np
-import torch
+import nibabel as nib
+from math import sqrt, log10
 from skimage.metrics import structural_similarity as ssim
-from math import log10, sqrt
 
 def mean_error(predicted, reference):
     return np.mean(predicted - reference)
@@ -187,11 +143,35 @@ def mean_error(predicted, reference):
 def mean_absolute_error(predicted, reference):
     return np.mean(np.abs(predicted - reference))
 
-def relative_error(predicted, reference, epsilon=0.3):
+def relative_error(predicted, reference, epsilon=0.0):
     return np.mean((predicted - reference) / (reference + epsilon)) * 100
 
-def absolute_relative_error(predicted, reference, epsilon=0.3):
-    return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
+# def absolute_relative_error(predicted, reference, epsilon=0.0):
+#     return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
+def absolute_relative_error(predicted, reference, threshold=0.003):
+    """
+    Calculate the absolute relative error for pixels where the reference value
+    is greater than a specified threshold.
+    
+    Args:
+    predicted (np.array): The predicted image values.
+    reference (np.array): The reference (ground truth) image values.
+    threshold (float): The threshold value above which pixels are considered for calculation.
+    
+    Returns:
+    float: The absolute relative error (%) for the specified pixels.
+    """
+    # Create a mask for pixels in the reference image above the threshold
+    mask = reference > threshold
+    
+    # Apply the mask to both predicted and reference arrays
+    masked_predicted = predicted[mask]
+    masked_reference = reference[mask]
+   
+    # Calculate the absolute relative error using the masked pixels
+    are = np.mean(np.abs(masked_predicted - masked_reference) / masked_reference) * 100
+    
+    return are
 
 def rmse(predicted, reference):
     return sqrt(np.mean((predicted - reference) ** 2))
@@ -203,34 +183,34 @@ def psnr(predicted, reference, peak):
 def calculate_ssim(predicted, reference):
     return ssim(predicted, reference, data_range=reference.max() - reference.min())
 
-
-
-import nibabel as nib
-import numpy as np
-from skimage.metrics import structural_similarity as ssim
-from math import log10, sqrt
-
 def load_nifti_image(path):
     """Load a NIfTI image and return its data as a NumPy array."""
     return nib.load(path).get_fdata()
 
-def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=7):
+def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=5, mask_val = 0.03):
     """
     Calculate metrics for a single pair of images, applying a scaling factor to the images.
+    A mask is applied where the reference image values are bigger than 0.03.
     """
     predicted_img = load_nifti_image(predicted_path) * scaling_factor
     reference_img = load_nifti_image(reference_path) * scaling_factor
-    
 
-    peak = np.max([predicted_img.max(), reference_img.max()])
+    # Create mask from reference image where values are greater than 0.03
+    mask = reference_img > mask_val
+    
+    # Apply the mask to both images
+    masked_predicted_img = predicted_img[mask]
+    masked_reference_img = reference_img[mask]
+
+    peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
     metrics = {
-        "mean_error": mean_error(predicted_img, reference_img),
-        "mean_absolute_error": mean_absolute_error(predicted_img, reference_img),
-        "relative_error": relative_error(predicted_img, reference_img),
-        "absolute_relative_error": absolute_relative_error(predicted_img, reference_img),
-        "rmse": rmse(predicted_img, reference_img),
-        "psnr": psnr(predicted_img, reference_img, peak),
-        "ssim": calculate_ssim(predicted_img, reference_img)
+        "mean_error": mean_error(masked_predicted_img, masked_reference_img),
+        "mean_absolute_error": mean_absolute_error(masked_predicted_img, masked_reference_img),
+        "relative_error": relative_error(masked_predicted_img, masked_reference_img),
+        "absolute_relative_error": absolute_relative_error(masked_predicted_img, masked_reference_img),
+        "rmse": rmse(masked_predicted_img, masked_reference_img),
+        "psnr": psnr(masked_predicted_img, masked_reference_img, peak),
+        "ssim": calculate_ssim(masked_predicted_img, masked_reference_img)
     }
     return metrics
 
