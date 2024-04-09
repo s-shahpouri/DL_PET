@@ -113,8 +113,8 @@ model.eval()
 dummy_input = torch.randn(1, 1, 168, 168, 16)
 
 # Define input and output names for clarity
-input_names = ["input"]  # for example, ['MRI_image']
-output_names = ["output"]  # for example, ['Segmented_tumor']
+input_names = ["input"]  
+output_names = ["output"]  
 
 # Export the model to ONNX format
 torch.onnx.export(model, dummy_input, "dynunet.onnx", input_names=input_names, output_names=output_names, opset_version=11)
