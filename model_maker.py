@@ -4,20 +4,6 @@ from monai.networks.nets import UNet
 from monai.networks.layers import Norm
 from monai.networks.nets import DynUNet
 
-
-# def create_unet():
-#     return UNet(
-#         spatial_dims=3,
-#         in_channels=1,
-#         out_channels=1,
-#         channels=(32, 64, 128, 256),
-#         act=(nn.ReLU6, {"inplace": True}),
-#         strides=(2, 2, 2, 2),
-#         num_res_units=2,
-#         norm=Norm.BATCH,
-#     )
-
-
 def get_kernels_strides(patch_size, spacing):
     """
     Adjusted function to use the correct variable names.
@@ -62,8 +48,91 @@ def get_network(patch_size, spacing):
         kernel_size=kernels,
         strides=strides,
         upsample_kernel_size=strides[1:],
-        norm_name="instance",
+        norm_name="INSTANCE",
         deep_supervision=True,
         deep_supr_num=2,
     )
     return net
+
+##########################################3
+
+
+###################################################################
+# from monai.networks.nets import DynUNet
+# from monai.networks.blocks import UnetOutBlock
+# import torch.nn as nn
+
+# import torch.nn as nn
+
+# class CustomOutputBlock(nn.Module):
+#     def __init__(self, in_channels, out_channels, kernel_size=(1, 1, 1), stride=(1, 1, 1)):
+#         super(CustomOutputBlock, self).__init__()
+#         self.conv = nn.Conv3d(in_channels, out_channels, kernel_size=kernel_size, stride=stride)
+#         self.activation = nn.ReLU()
+
+#     def forward(self, x):
+#         return self.activation(self.conv(x))
+
+# # Then, modify the get_network function to use the CustomOutputBlock:
+# def get_network(patch_size, spacing):
+#     """
+#     Initializes the DynUNet with dynamically determined kernels and strides.
+#     Adds a ReLU activation function after the final convolutional layer.
+#     """
+#     kernels, strides = get_kernels_strides(patch_size, spacing)
+#     print("DyUnet is set:")
+#     print("Kernel size: ", kernels)
+#     print("Strides: ", strides)
+
+#     # Initialize the DynUNet as before
+#     net = DynUNet(
+#         spatial_dims=3,
+#         in_channels=1,
+#         out_channels=1,
+#         kernel_size=kernels,
+#         strides=strides,
+#         upsample_kernel_size=strides[1:],
+#         norm_name="INSTANCE",
+#         deep_supervision=True,
+#         deep_supr_num=2,
+#     )
+
+#     # Modify the final convolutional layer to add a ReLU activation
+#     net.output_block = CustomOutputBlock(in_channels=32, out_channels=1)
+
+#     return net
+
+##################################################################
+# class DynUNetR(nn.Module):
+#     def __init__(self, patch_size, spacing):
+#         super().__init__()
+#         kernels, strides = get_kernels_strides(patch_size, spacing)
+#         self.dynunet = DynUNet(
+#             spatial_dims=3,
+#             in_channels=1,
+#             out_channels=1,
+#             kernel_size=kernels,
+#             strides=strides,
+#             upsample_kernel_size=strides[1:],
+#             norm_name="INSTANCE",
+#             deep_supervision=True,
+#             deep_supr_num=2,
+#         )
+#         self.final_relu = nn.ReLU(inplace=True)
+
+#     def forward(self, x):
+#         x = self.dynunet(x)
+#         x = self.final_relu(x)
+#         return x
+
+
+class CustomDynUNet(DynUNet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Add a ReLU activation after the final convolution layer
+        self.output_block = nn.Sequential(
+            self.output_block,
+            nn.ReLU(inplace=True)
+        )
+

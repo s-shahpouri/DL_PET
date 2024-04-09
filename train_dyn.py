@@ -5,7 +5,7 @@ from model_training import DecayLR
 from model_training import ModelTrainer
 from data_preparation import LoaderFactory
 import torch
-from model_maker import get_network
+from model_maker import DynUNetR
 
 
 config_file = 'config.json'
@@ -47,11 +47,11 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 
 starting_epoch = 0
-decay_epoch = 4
-learning_rate = 0.0001
+decay_epoch = 10
+learning_rate = 0.001
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
-model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
+model = DynUNetR(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
+# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
 model = model.to(device)
 
 loss_function = torch.nn.MSELoss()

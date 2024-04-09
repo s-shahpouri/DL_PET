@@ -197,7 +197,7 @@ def visualize_axial_slice2(data_loader, slice_index):
     plt.show()
 
 
-def visualize_coronal_slice(data, predict, n, title, Norm = False):
+def visualize_coronal_slice(data, predict, n, title, cm , Norm = False):
 
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 6))  # Adjusted for three plots and one colorbar
@@ -212,7 +212,7 @@ def visualize_coronal_slice(data, predict, n, title, Norm = False):
     # Display the images
     images = []
     for ax, slice, title in zip(axes, slices, titles):  # Leave the last axes for the colorbar
-        img = ax.imshow(slice, cmap="jet")
+        img = ax.imshow(slice, cmap=cm)
         images.append(img)
         ax.set_title(title)
         ax.axis('off')
@@ -230,3 +230,32 @@ def visualize_coronal_slice(data, predict, n, title, Norm = False):
     # Make sure the aspect ratio is equal to make the colorbar align well
     # plt.subplots_adjust(wspace=0.4, hspace=0.4)
     plt.show()
+
+
+
+from monai.transforms import MapTransform
+class ClampNegative(MapTransform):
+    """
+    A MONAI transform that sets negative pixel values to zero within a dictionary format.
+    This is useful for ensuring that the output predictions do not have negative values.
+    Operates on all specified keys.
+    """
+    def __init__(self, keys):
+        super().__init__(keys)
+    
+    def __call__(self, data):
+        for key in self.keys:
+            d = data[key]
+            # Find negative values
+            negative_values = d[d < 0]
+            if len(negative_values) > 0:  # Check if there are any negative values
+                min_negative = np.min(negative_values)
+                print(f"Minimum negative value in {key}: {min_negative}")
+            else:
+                print(f"No negative values in {key}")
+            # Clamp negative values to 0
+            d[d < 0] = 0
+            data[key] = d
+        return data
+
+    

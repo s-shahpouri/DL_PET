@@ -1,0 +1,890 @@
+ => DynUNet(
+  (input_block): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (downsamples): ModuleList(
+    (0): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (1): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+  (bottleneck): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (upsamples): ModuleList(
+    (0): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+    (1): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+    (2): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+  )
+  (output_block): UnetOutBlock(
+    (conv): Convolution(
+      (conv): Conv3d(32, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+  )
+  (deep_supervision_heads): ModuleList(
+    (0): UnetOutBlock(
+      (conv): Convolution(
+        (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+      )
+    )
+    (1): UnetOutBlock(
+      (conv): Convolution(
+        (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+      )
+    )
+  )
+  (skip_layers): DynUNetSkipLayer(
+    (downsample): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (next_layer): DynUNetSkipLayer(
+      (downsample): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+      (next_layer): DynUNetSkipLayer(
+        (downsample): UnetBasicBlock(
+          (conv1): Convolution(
+            (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+          )
+          (conv2): Convolution(
+            (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (lrelu): ReLU(inplace=True)
+          (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        )
+        (next_layer): UnetBasicBlock(
+          (conv1): Convolution(
+            (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+          )
+          (conv2): Convolution(
+            (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (lrelu): ReLU(inplace=True)
+          (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        )
+        (upsample): UnetUpBlock(
+          (transp_conv): Convolution(
+            (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+          )
+          (conv_block): UnetBasicBlock(
+            (conv1): Convolution(
+              (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            )
+            (conv2): Convolution(
+              (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            )
+            (lrelu): ReLU(inplace=True)
+            (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+            (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          )
+        )
+        (super_head): UnetOutBlock(
+          (conv): Convolution(
+            (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          )
+        )
+      )
+      (upsample): UnetUpBlock(
+        (transp_conv): Convolution(
+          (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+        )
+        (conv_block): UnetBasicBlock(
+          (conv1): Convolution(
+            (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (conv2): Convolution(
+            (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (lrelu): ReLU(inplace=True)
+          (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        )
+      )
+      (super_head): UnetOutBlock(
+        (conv): Convolution(
+          (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+        )
+      )
+    )
+    (upsample): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+  )
+)
+input_block => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+input_block.conv1 => Convolution(
+  (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+input_block.conv1.conv => Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+input_block.conv2 => Convolution(
+  (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+input_block.conv2.conv => Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+input_block.lrelu => ReLU(inplace=True)
+input_block.norm1 => InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+input_block.norm2 => InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+downsamples => ModuleList(
+  (0): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (1): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+)
+downsamples.0 => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+downsamples.0.conv1 => Convolution(
+  (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+)
+downsamples.0.conv1.conv => Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+downsamples.0.conv2 => Convolution(
+  (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+downsamples.0.conv2.conv => Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+downsamples.0.lrelu => ReLU(inplace=True)
+downsamples.0.norm1 => InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+downsamples.0.norm2 => InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+downsamples.1 => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+downsamples.1.conv1 => Convolution(
+  (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+)
+downsamples.1.conv1.conv => Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+downsamples.1.conv2 => Convolution(
+  (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+downsamples.1.conv2.conv => Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+downsamples.1.lrelu => ReLU(inplace=True)
+downsamples.1.norm1 => InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+downsamples.1.norm2 => InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+bottleneck => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+bottleneck.conv1 => Convolution(
+  (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+)
+bottleneck.conv1.conv => Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+bottleneck.conv2 => Convolution(
+  (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+bottleneck.conv2.conv => Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+bottleneck.lrelu => ReLU(inplace=True)
+bottleneck.norm1 => InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+bottleneck.norm2 => InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples => ModuleList(
+  (0): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+  (1): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+  (2): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+)
+upsamples.0 => UnetUpBlock(
+  (transp_conv): Convolution(
+    (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+  )
+  (conv_block): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+)
+upsamples.0.transp_conv => Convolution(
+  (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+)
+upsamples.0.transp_conv.conv => ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+upsamples.0.conv_block => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+upsamples.0.conv_block.conv1 => Convolution(
+  (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.0.conv_block.conv1.conv => Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.0.conv_block.conv2 => Convolution(
+  (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.0.conv_block.conv2.conv => Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.0.conv_block.lrelu => ReLU(inplace=True)
+upsamples.0.conv_block.norm1 => InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples.0.conv_block.norm2 => InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples.1 => UnetUpBlock(
+  (transp_conv): Convolution(
+    (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+  )
+  (conv_block): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+)
+upsamples.1.transp_conv => Convolution(
+  (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+)
+upsamples.1.transp_conv.conv => ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+upsamples.1.conv_block => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+upsamples.1.conv_block.conv1 => Convolution(
+  (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.1.conv_block.conv1.conv => Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.1.conv_block.conv2 => Convolution(
+  (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.1.conv_block.conv2.conv => Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.1.conv_block.lrelu => ReLU(inplace=True)
+upsamples.1.conv_block.norm1 => InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples.1.conv_block.norm2 => InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples.2 => UnetUpBlock(
+  (transp_conv): Convolution(
+    (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+  )
+  (conv_block): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+)
+upsamples.2.transp_conv => Convolution(
+  (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+)
+upsamples.2.transp_conv.conv => ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+upsamples.2.conv_block => UnetBasicBlock(
+  (conv1): Convolution(
+    (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (conv2): Convolution(
+    (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+  )
+  (lrelu): ReLU(inplace=True)
+  (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+)
+upsamples.2.conv_block.conv1 => Convolution(
+  (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.2.conv_block.conv1.conv => Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.2.conv_block.conv2 => Convolution(
+  (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+)
+upsamples.2.conv_block.conv2.conv => Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+upsamples.2.conv_block.lrelu => ReLU(inplace=True)
+upsamples.2.conv_block.norm1 => InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+upsamples.2.conv_block.norm2 => InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+output_block => UnetOutBlock(
+  (conv): Convolution(
+    (conv): Conv3d(32, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+  )
+)
+output_block.conv => Convolution(
+  (conv): Conv3d(32, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+)
+output_block.conv.conv => Conv3d(32, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+deep_supervision_heads => ModuleList(
+  (0): UnetOutBlock(
+    (conv): Convolution(
+      (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+  )
+  (1): UnetOutBlock(
+    (conv): Convolution(
+      (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+  )
+)
+deep_supervision_heads.0 => UnetOutBlock(
+  (conv): Convolution(
+    (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+  )
+)
+deep_supervision_heads.0.conv => Convolution(
+  (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+)
+deep_supervision_heads.0.conv.conv => Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+deep_supervision_heads.1 => UnetOutBlock(
+  (conv): Convolution(
+    (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+  )
+)
+deep_supervision_heads.1.conv => Convolution(
+  (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+)
+deep_supervision_heads.1.conv.conv => Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+skip_layers => DynUNetSkipLayer(
+  (downsample): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (next_layer): DynUNetSkipLayer(
+    (downsample): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (next_layer): DynUNetSkipLayer(
+      (downsample): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+      (next_layer): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+      (upsample): UnetUpBlock(
+        (transp_conv): Convolution(
+          (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+        )
+        (conv_block): UnetBasicBlock(
+          (conv1): Convolution(
+            (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (conv2): Convolution(
+            (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (lrelu): ReLU(inplace=True)
+          (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        )
+      )
+      (super_head): UnetOutBlock(
+        (conv): Convolution(
+          (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+        )
+      )
+    )
+    (upsample): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+    (super_head): UnetOutBlock(
+      (conv): Convolution(
+        (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+      )
+    )
+  )
+  (upsample): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+)
+skip_layers.next_layer => DynUNetSkipLayer(
+  (downsample): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (next_layer): DynUNetSkipLayer(
+    (downsample): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (next_layer): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (upsample): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+    (super_head): UnetOutBlock(
+      (conv): Convolution(
+        (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+      )
+    )
+  )
+  (upsample): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+  (super_head): UnetOutBlock(
+    (conv): Convolution(
+      (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+  )
+)
+skip_layers.next_layer.next_layer => DynUNetSkipLayer(
+  (downsample): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (next_layer): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (upsample): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+  (super_head): UnetOutBlock(
+    (conv): Convolution(
+      (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+    )
+  )
+)
+Last layer: DynUNetSkipLayer(
+  (downsample): UnetBasicBlock(
+    (conv1): Convolution(
+      (conv): Conv3d(1, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (conv2): Convolution(
+      (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+    )
+    (lrelu): ReLU(inplace=True)
+    (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+  )
+  (next_layer): DynUNetSkipLayer(
+    (downsample): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+    (next_layer): DynUNetSkipLayer(
+      (downsample): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+      (next_layer): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(128, 256, kernel_size=(3, 3, 3), stride=(2, 2, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(256, 256, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(256, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+      (upsample): UnetUpBlock(
+        (transp_conv): Convolution(
+          (conv): ConvTranspose3d(256, 128, kernel_size=(2, 2, 1), stride=(2, 2, 1), bias=False)
+        )
+        (conv_block): UnetBasicBlock(
+          (conv1): Convolution(
+            (conv): Conv3d(256, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (conv2): Convolution(
+            (conv): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+          )
+          (lrelu): ReLU(inplace=True)
+          (norm1): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+          (norm2): InstanceNorm3d(128, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        )
+      )
+      (super_head): UnetOutBlock(
+        (conv): Convolution(
+          (conv): Conv3d(128, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+        )
+      )
+    )
+    (upsample): UnetUpBlock(
+      (transp_conv): Convolution(
+        (conv): ConvTranspose3d(128, 64, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+      )
+      (conv_block): UnetBasicBlock(
+        (conv1): Convolution(
+          (conv): Conv3d(128, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (conv2): Convolution(
+          (conv): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        )
+        (lrelu): ReLU(inplace=True)
+        (norm1): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+        (norm2): InstanceNorm3d(64, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      )
+    )
+    (super_head): UnetOutBlock(
+      (conv): Convolution(
+        (conv): Conv3d(64, 1, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+      )
+    )
+  )
+  (upsample): UnetUpBlock(
+    (transp_conv): Convolution(
+      (conv): ConvTranspose3d(64, 32, kernel_size=(2, 2, 2), stride=(2, 2, 2), bias=False)
+    )
+    (conv_block): UnetBasicBlock(
+      (conv1): Convolution(
+        (conv): Conv3d(64, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (conv2): Convolution(
+        (conv): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+      )
+      (lrelu): ReLU(inplace=True)
+      (norm1): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+      (norm2): InstanceNorm3d(32, eps=1e-05, momentum=0.1, affine=False, track_running_stats=False)
+    )
+  )
+)

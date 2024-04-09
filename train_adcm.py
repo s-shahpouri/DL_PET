@@ -48,16 +48,21 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 starting_epoch = 0
 decay_epoch = 10
+# learning_rate = 0.001
+
 learning_rate = 0.001
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
-model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_29_0_30.pth'))
+# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_29_0_30.pth'))
+model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_1_1_45.pth'))
+print(learning_rate)
 model = model.to(device)
 
 loss_function = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999))
 
-max_epochs = 600
+max_epochs = 200
 best_metric = float('inf')
 best_metric_epoch = -1
 epoch_loss_values = []

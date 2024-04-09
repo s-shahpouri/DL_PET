@@ -137,12 +137,6 @@ class ModelTrainer:
                     targets = torch.squeeze(targets, dim=1)  # Adjust for channel dimension if necessary
                     loss = self.loss_function(outputs, targets)
                 
-# # L1 Regularization
-#         l1_reg = torch.tensor(0., requires_grad=True).to(device)
-#         for name, param in model.named_parameters():
-#             l1_reg = l1_reg + torch.norm(param, 1)
-        
-#         loss += lambda_reg * l1_reg
 
 
                 # loss = self.loss_function(outputs, targets)

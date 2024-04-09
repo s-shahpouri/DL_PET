@@ -222,3 +222,16 @@ def aggregate_metrics(metrics_list):
             aggregated_metrics[key].append(value)
     
     return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}
+
+
+def find_dl_image_path(artifact_output, patient_folder_name, hint):
+    # Construct a glob pattern to search for DL images with the matching patient folder name
+    search_pattern = os.path.join(artifact_output, "**", f"{patient_folder_name}*{hint}.nii.gz")
+    found_paths = glob.glob(search_pattern, recursive=True)
+    if found_paths:
+        return found_paths[0]  # Return the first match
+    else:
+        return None  # No match found
+    
+def normalize_data(data):
+    return (data - np.min(data)) / (np.max(data) - np.min(data))

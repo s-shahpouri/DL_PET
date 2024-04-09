@@ -1,0 +1,597 @@
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001040_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001040_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001062_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001062_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 816]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001418_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 816]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001418_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001419_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001419_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001434_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001434_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001447_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001447_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 268]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001453_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 268]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001453_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001454_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001454_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001468_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001468_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001470_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001470_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001477_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001477_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001487_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001487_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001502_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001502_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001504_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001504_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001510_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001510_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001525_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001525_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 168]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001555_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 168]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001555_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001564_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001564_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001572_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001572_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 269]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001575_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 269]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001575_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001582_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001582_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001583_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001583_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001585_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001585_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001598_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001598_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001599_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001599_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001600_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001600_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001601_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001601_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001605_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001605_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001619_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001619_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001620_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001620_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001622_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001622_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001626_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001626_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001629_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001629_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001633_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001633_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001650_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001650_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001651_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001651_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001653_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001653_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001655_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001655_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001656_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001656_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001657_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001657_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001660_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001660_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001663_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001663_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001681_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001681_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001687_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001687_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001693_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001693_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001695_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001695_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 318]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001706_C1_RZ_.nii.gz,
+Target Size: torch.Size([168, 168, 318]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001706_C1_RZ_.nii.gz,
+
+Image Size: torch.Size([168, 168, 368]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/001803_C1_RZ_Re7_.nii.gz,
+Target Size: torch.Size([168, 168, 368]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/001803_C1_RZ_Re7_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002009_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002009_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002012_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002012_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002021_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002021_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002310_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002310_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002328_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002328_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 73]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002355_C2_IM__SE_2_.nii.gz,
+Target Size: torch.Size([192, 192, 73]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002355_C2_IM__SE_2_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002405_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002405_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002406_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002406_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002410_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002410_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 345]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002417_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 345]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002417_C2_IM_.nii.gz,
+
+Image Size: torch.Size([192, 192, 413]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/002422_C2_IM_.nii.gz,
+Target Size: torch.Size([192, 192, 413]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/002422_C2_IM_.nii.gz,
+
+Image Size: torch.Size([200, 200, 377]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003014_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 377]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003014_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003020_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003020_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003030_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003030_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003106_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003106_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003120_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003120_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003127_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003127_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003129_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003129_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003139_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003139_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003143_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003143_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003147_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003147_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003149_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003149_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003201_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003201_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003202_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003202_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003206_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003206_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003213_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003213_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 377]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003218_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 377]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003218_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 198]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003219_C3_KH__SE_2_.nii.gz,
+Target Size: torch.Size([200, 200, 198]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003219_C3_KH__SE_2_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003225_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003225_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003228_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003228_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003229_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003229_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003237_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003237_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003239_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003239_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003242_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003242_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003243_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003243_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003247_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003247_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003248_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003248_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003254_C3_KH__SE_2_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003254_C3_KH__SE_2_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003257_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003257_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003261_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003261_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003269_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003269_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003270_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003270_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003274_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003274_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003306_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003306_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003307_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003307_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003315_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003315_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 466]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003405_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 466]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003405_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003412_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003412_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003433_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003433_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003437_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003437_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003438_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003438_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003446_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003446_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003458_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003458_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003461_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003461_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003465_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003465_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003475_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003475_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 347]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003503_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 347]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003503_C3_KH_.nii.gz,
+
+Image Size: torch.Size([200, 200, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/003510_C3_KH_.nii.gz,
+Target Size: torch.Size([200, 200, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/003510_C3_KH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004025_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004025_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004032_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004032_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004033_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004033_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004037_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004037_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004039_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004039_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004048_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004048_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004063_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004063_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004069_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004069_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004070_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004070_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004073_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004073_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004074_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004074_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004077_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004077_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004078_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004078_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004081_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004081_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004101_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004101_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 285]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004110_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 285]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004110_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004111_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004111_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004128_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004128_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004132_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004132_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 691]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004142_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 691]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004142_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 284]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004144_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 284]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004144_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004150_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004150_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004152_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004152_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004154_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004154_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004164_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004164_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 88]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004164_C4_SH__SE_2_.nii.gz,
+Target Size: torch.Size([168, 168, 88]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004164_C4_SH__SE_2_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004176_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004176_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 284]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004178_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 284]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004178_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004185_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004185_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004206_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004206_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004219_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004219_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 167]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004220_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 167]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004220_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 88]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004232_C4_SH__SE_2_.nii.gz,
+Target Size: torch.Size([168, 168, 88]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004232_C4_SH__SE_2_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004235_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004235_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004248_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004248_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004254_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004254_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 88]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004273_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 88]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004273_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 362]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004286_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 362]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004286_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004287_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004287_C4_SH_.nii.gz,
+
+Image Size: torch.Size([168, 168, 323]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/004288_C4_SH_.nii.gz,
+Target Size: torch.Size([168, 168, 323]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/004288_C4_SH_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007001_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007001_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007002_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007002_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007003_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007003_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007004_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007004_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007005_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007005_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007008_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007008_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007009_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007009_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007012_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007012_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007013_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007013_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007014_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007014_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007016_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007016_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007017_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007017_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007018_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007018_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007020_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007020_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007022_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007022_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007023_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007023_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007024_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007024_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007025_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007025_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007027_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007027_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007028_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007028_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007029_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007029_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007030_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007030_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007031_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007031_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007032_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007032_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007033_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007033_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007036_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007036_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007039_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007039_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007040_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007040_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007041_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007041_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007044_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007044_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007045_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007045_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007047_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007047_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007048_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007048_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007049_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007049_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007050_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007050_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007052_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007052_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007053_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007053_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007054_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007054_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007055_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007055_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007056_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007056_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 287]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007059_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 287]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007059_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007060_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007060_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 376]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007061_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 376]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007061_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007062_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007062_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007063_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007063_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007064_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007064_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007065_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007065_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007068_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007068_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007069_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007069_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007070_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007070_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007071_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007071_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 346]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007072_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 346]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007072_C5_RJ_.nii.gz,
+
+Image Size: torch.Size([180, 180, 317]),  /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/NAC/007073_C5_RJ_.nii.gz,
+Target Size: torch.Size([180, 180, 317]), /students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL/MAC/007073_C5_RJ_.nii.gz,
+
