@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-def display_patient_coronal(patient_folder_name, image, target, dl_image, difference_image, n):
+def display_patient_coronal(patient_folder_name, image, target, dl_image, difference_image, n, cmp ="gist_yarg"):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
 
@@ -37,17 +37,17 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
     # Input Image
     axs[0].set_title(f"NAC: {patient_folder_name}")
     input_slice = np.rot90(image[:, n, :])
-    axs[0].imshow(input_slice, cmap="gist_yarg", vmin=0, vmax=0.7)
+    axs[0].imshow(input_slice, cmap=cmp, vmin=0, vmax=0.5)
     
     # Target Image
     axs[1].set_title("MAC")
     target_slice = np.rot90(target[:, n, :])
-    axs[1].imshow(target_slice, cmap="gist_yarg", vmin=0, vmax=7)
+    axs[1].imshow(target_slice, cmap=cmp, vmin=0, vmax=5)
     
     # DL Image
     axs[2].set_title("DL Image")
     dl_slice = np.rot90(dl_image[:, n, :])
-    axs[2].imshow(dl_slice, cmap="gist_yarg", vmin=0, vmax=7)
+    axs[2].imshow(dl_slice, cmap=cmp, vmin=0, vmax=5)
     
     # Difference Image
     axs[3].set_title("Difference")

@@ -132,97 +132,107 @@ class PairFinder:
     
 
 
-import numpy as np
-import nibabel as nib
-from math import sqrt, log10
-from skimage.metrics import structural_similarity as ssim
+# import numpy as np
+# import nibabel as nib
+# from math import sqrt, log10
+# from skimage.metrics import structural_similarity as ssim
 
-def mean_error(predicted, reference):
-    return np.mean(predicted - reference)
+# def mean_error(predicted, reference):
+#     return np.mean(predicted - reference)
 
-def mean_absolute_error(predicted, reference):
-    return np.mean(np.abs(predicted - reference))
+# def mean_absolute_error(predicted, reference):
+#     return np.mean(np.abs(predicted - reference))
 
-def relative_error(predicted, reference, epsilon=0.0):
-    return np.mean((predicted - reference) / (reference + epsilon)) * 100
+# def relative_error(predicted, reference, epsilon=0.0):
+#     return np.mean((predicted - reference) / (reference + epsilon)) * 100
 
-# def absolute_relative_error(predicted, reference, epsilon=0.0):
-#     return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
-def absolute_relative_error(predicted, reference, threshold=0.003):
-    """
-    Calculate the absolute relative error for pixels where the reference value
-    is greater than a specified threshold.
+# # def absolute_relative_error(predicted, reference, epsilon=0.0):
+# #     return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
+# def absolute_relative_error(predicted, reference, threshold=0.003):
+#     """
+#     Calculate the absolute relative error for pixels where the reference value
+#     is greater than a specified threshold.
     
-    Args:
-    predicted (np.array): The predicted image values.
-    reference (np.array): The reference (ground truth) image values.
-    threshold (float): The threshold value above which pixels are considered for calculation.
+#     Args:
+#     predicted (np.array): The predicted image values.
+#     reference (np.array): The reference (ground truth) image values.
+#     threshold (float): The threshold value above which pixels are considered for calculation.
     
-    Returns:
-    float: The absolute relative error (%) for the specified pixels.
-    """
-    # Create a mask for pixels in the reference image above the threshold
-    mask = reference > threshold
+#     Returns:
+#     float: The absolute relative error (%) for the specified pixels.
+#     """
+#     # Create a mask for pixels in the reference image above the threshold
+#     mask = reference > threshold
     
-    # Apply the mask to both predicted and reference arrays
-    masked_predicted = predicted[mask]
-    masked_reference = reference[mask]
+#     # Apply the mask to both predicted and reference arrays
+#     masked_predicted = predicted[mask]
+#     masked_reference = reference[mask]
    
-    # Calculate the absolute relative error using the masked pixels
-    are = np.mean(np.abs(masked_predicted - masked_reference) / masked_reference) * 100
+#     # Calculate the absolute relative error using the masked pixels
+#     are = np.mean(np.abs(masked_predicted - masked_reference) / masked_reference) * 100
     
-    return are
+#     return are
 
-def rmse(predicted, reference):
-    return sqrt(np.mean((predicted - reference) ** 2))
+# def rmse(predicted, reference):
+#     return sqrt(np.mean((predicted - reference) ** 2))
 
-def psnr(predicted, reference, peak):
-    mse = np.mean((predicted - reference) ** 2)
-    return 20 * log10(peak / sqrt(mse))
+# def psnr(predicted, reference, peak):
+#     mse = np.mean((predicted - reference) ** 2)
+#     return 20 * log10(peak / sqrt(mse))
 
-def calculate_ssim(predicted, reference):
-    return ssim(predicted, reference, data_range=reference.max() - reference.min())
+# def calculate_ssim(predicted, reference):
+#     return ssim(predicted, reference, data_range=reference.max() - reference.min())
 
-def load_nifti_image(path):
-    """Load a NIfTI image and return its data as a NumPy array."""
-    return nib.load(path).get_fdata()
+# def load_nifti_image(path):
+#     """Load a NIfTI image and return its data as a NumPy array."""
+#     return nib.load(path).get_fdata()
 
-def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=5, mask_val = 0.03):
-    """
-    Calculate metrics for a single pair of images, applying a scaling factor to the images.
-    A mask is applied where the reference image values are bigger than 0.03.
-    """
-    predicted_img = load_nifti_image(predicted_path) * scaling_factor
-    reference_img = load_nifti_image(reference_path) * scaling_factor
+# def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=5, mask_val = 0.03):
+#     """
+#     Calculate metrics for a single pair of images, applying a scaling factor to the images.
+#     A mask is applied where the reference image values are bigger than 0.03.
+#     """
+#     predicted_img = load_nifti_image(predicted_path) * scaling_factor
+#     reference_img = load_nifti_image(reference_path) * scaling_factor
 
-    # Create mask from reference image where values are greater than 0.03
-    mask = reference_img > mask_val
+#     # Create mask from reference image where values are greater than 0.03
+#     mask = reference_img > mask_val
     
-    # Apply the mask to both images
-    masked_predicted_img = predicted_img[mask]
-    masked_reference_img = reference_img[mask]
+#     # Apply the mask to both images
+#     masked_predicted_img = predicted_img[mask]
+#     masked_reference_img = reference_img[mask]
 
-    peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
-    metrics = {
-        "mean_error": mean_error(masked_predicted_img, masked_reference_img),
-        "mean_absolute_error": mean_absolute_error(masked_predicted_img, masked_reference_img),
-        "relative_error": relative_error(masked_predicted_img, masked_reference_img),
-        "absolute_relative_error": absolute_relative_error(masked_predicted_img, masked_reference_img),
-        "rmse": rmse(masked_predicted_img, masked_reference_img),
-        "psnr": psnr(masked_predicted_img, masked_reference_img, peak),
-        "ssim": calculate_ssim(masked_predicted_img, masked_reference_img)
-    }
-    return metrics
+#     peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
+#     metrics = {
+#         "mean_error": mean_error(masked_predicted_img, masked_reference_img),
+#         "mean_absolute_error": mean_absolute_error(masked_predicted_img, masked_reference_img),
+#         "relative_error": relative_error(masked_predicted_img, masked_reference_img),
+#         "absolute_relative_error": absolute_relative_error(masked_predicted_img, masked_reference_img),
+#         "rmse": rmse(masked_predicted_img, masked_reference_img),
+#         "psnr": psnr(masked_predicted_img, masked_reference_img, peak),
+#         "ssim": calculate_ssim(masked_predicted_img, masked_reference_img)
+#     }
+#     return metrics
 
-def aggregate_metrics(metrics_list):
-    """Aggregate metrics across all pairs and calculate mean and standard deviation."""
-    aggregated_metrics = {key: [] for key in metrics_list[0]}
-    for metrics in metrics_list:
-        for key, value in metrics.items():
-            aggregated_metrics[key].append(value)
+# def aggregate_metrics(metrics_list):
+#     """Aggregate metrics across all pairs and calculate mean and standard deviation."""
+#     aggregated_metrics = {key: [] for key in metrics_list[0]}
+#     for metrics in metrics_list:
+#         for key, value in metrics.items():
+#             aggregated_metrics[key].append(value)
     
-    return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}
+#     return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}
 
+import re
+
+def ids(s):
+    # This will match consecutive digits at the beginning of the string
+    match = re.match(r"(\d+)", s)
+    if match:
+        return match.group(0)  # Returns the matched group
+    else:
+        return None  # or an empty string if you prefer
+    
 
 def find_dl_image_path(artifact_output, patient_folder_name, hint):
     # Construct a glob pattern to search for DL images with the matching patient folder name
@@ -235,3 +245,50 @@ def find_dl_image_path(artifact_output, patient_folder_name, hint):
     
 def normalize_data(data):
     return (data - np.min(data)) / (np.max(data) - np.min(data))
+
+
+
+import os
+import glob
+import nibabel as nib
+
+class Pairs:
+    def __init__(self, nac_data_dir, mac_data_dir):
+        self.nac_data_dir = nac_data_dir
+        self.mac_data_dir = mac_data_dir
+
+    def extract_common_name(self, filename):
+        # Generalize this method based on how the filenames can be normalized to form pairs
+        return os.path.basename(filename).split('_')[0]
+
+    def find_file_pairs(self):
+        # Finds pairs of files from NAC and MAC directories based on common names
+        nac_files = glob.glob(os.path.join(self.nac_data_dir, '*.nii.gz'))
+        mac_files = glob.glob(os.path.join(self.mac_data_dir, '*.nii.gz'))
+        
+        nac_dict = {self.extract_common_name(path): path for path in nac_files}
+        mac_dict = {self.extract_common_name(path): path for path in mac_files}
+
+        all_pairs = []
+        for common_name, nac_path in nac_dict.items():
+            mac_path = mac_dict.get(common_name)
+            if mac_path:
+                pair_dict = {
+                    'nac': nac_path,
+                    'mac': mac_path
+                }
+                all_pairs.append(pair_dict)
+        return all_pairs
+
+# Usage example
+nac_data_dir = "/path/to/NAC/images"
+mac_data_dir = "/path/to/MAC/images"
+pair_finder = PairFinder(nac_data_dir, mac_data_dir)
+file_pairs = pair_finder.find_file_pairs()
+
+# Now you can loop through the pairs
+for pair in file_pairs:
+    nac_path, mac_path = pair['nac'], pair['mac']
+    print("NAC Path:", nac_path)
+    print("MAC Path:", mac_path)
+    # You can load and process your images here

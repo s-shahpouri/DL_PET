@@ -55,9 +55,10 @@ model = DynUNetR(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
 model = model.to(device)
 
 loss_function = torch.nn.MSELoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999))
+l2_lambda = 0.0001  # Regularization strength for L2
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999), weight_decay=l2_lambda)
 
-max_epochs = 400
+max_epochs = 600
 best_metric = float('inf')
 best_metric_epoch = -1
 epoch_loss_values = []

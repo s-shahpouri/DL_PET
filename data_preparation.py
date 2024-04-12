@@ -78,6 +78,65 @@ class ExtrenalRadioSetSetHandling:
     def get_data(self):
             return self.data_dicts
 
+import os
+import glob
+from sklearn.model_selection import train_test_split
+import os
+import glob
+import numpy as np
+
+class ExternalRadioSetHandling:
+    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", test_ratio=None, random_seed=42):
+        self.data_dir = data_dir
+        self.train_mode = train_mode
+        self.target_mode = target_mode
+        self.test_ratio = test_ratio
+        self.random_seed = random_seed
+        self.data_dicts = []
+
+        self._load_data()
+        
+    def _load_data(self):
+        train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
+        target_images = sorted(glob.glob(os.path.join(self.data_dir, self.target_mode, "*.nii.gz")))
+        self.data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
+
+    def _split_data(self, data, split_ratio):
+        np.random.seed(self.random_seed)
+        np.random.shuffle(data)
+        split_index = int(len(data) * split_ratio)
+        return data[:split_index], data[split_index:]
+
+    def get_split_data(self):
+        # Shuffle data with a fixed random seed for reproducibility
+        np.random.seed(self.random_seed)
+        np.random.shuffle(self.data_dicts)
+        
+        if self.test_ratio is None:  # Default to 70-15-15 split
+            train_ratio = 0.70
+            val_ratio = 0.15
+        else:  # Custom split based on the specified test ratio
+            test_ratio = self.test_ratio
+            remaining = 1 - test_ratio
+            train_ratio = remaining * 0.8
+            val_ratio = remaining * 0.2
+
+        # Calculate the number of samples for each set
+        num_data = len(self.data_dicts)
+        num_train = int(num_data * train_ratio)
+        num_val = int(num_data * val_ratio)
+
+        # Split the data
+        train_data = self.data_dicts[:num_train]
+        val_data = self.data_dicts[num_train:num_train + num_val]
+        test_data = self.data_dicts[num_train + num_val:]
+
+        return train_data, val_data, test_data
+
+
+
+
+
 
 class LoaderFactory:
     def __init__(self, train_files=None, val_files=None, test_files=None,
@@ -100,8 +159,10 @@ class LoaderFactory:
         ]
 
         # Optionally add normalization to the transformation pipeline
-        if self.normalize:
+        if self.normalize == "minmax":
             common_transforms.append(NormalizeIntensityd(keys=["image", "target"]))
+        elif self.normalize == "suvscale":
+            common_transforms.append(ScaleIntensity(keys=["target"]))
 
         self.train_transforms = Compose(common_transforms + [
             RandSpatialCropSamplesd(keys=["image", "target"], roi_size=self.patch_size, num_samples=20),
@@ -138,6 +199,15 @@ class LoaderFactory:
             ds = Dataset(data=data_files, transform=transform) if dataset_type != "train" else CacheDataset(data=data_files, transform=transform, cache_rate=1.0, num_workers=num_workers)
             return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
+class ScaleIntensity:
+    def __init__(self, keys):
+        self.keys = keys
+    
+    def __call__(self, data):
+        for key in self.keys:
+            data[key] = data[key] / 100  # Divide by this for SUV scaling (choosed based on experiment)
+        return data
+    
 
 def visualize_axial_slice(data_loader, slice_index):
     # Manually iterate through the DataLoader to fetch the first batch

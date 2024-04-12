@@ -1,10 +1,14 @@
 {
     "ga_data_dir": "/students/2023-2024/master/Shahpouri/DATA/Ga-PET",
-    "fdg_data_dir": "/students/2023-2024/master/Shahpouri/DATA/FDG-PET",
+    "ga_output_dir": "/students/2023-2024/master/Shahpouri/GA_OUTPUT",
+
     "log_dir": "/students/2023-2024/master/Shahpouri/LOG",
-    "output_dir": "/students/2023-2024/master/Shahpouri/OUTPUT",
+
+    "fdg_data_dir": "/students/2023-2024/master/Shahpouri/DATA/FDG-PET",
     "fdg_data_test": "/students/2023-2024/master/Shahpouri/DATA/FDG_TEST",
+    "fdg_output_dir": "/students/2023-2024/master/Shahpouri/FDG_OUTPUT",
+
     "artifacts": "/students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL",
-    "artifact_output": "/students/2023-2024/master/Shahpouri/ARTIFACT_OUTPUT",
-    "artifacts_all":"/students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL0"
+    "artifacts_all":"/students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL0",
+    "artifact_output": "/students/2023-2024/master/Shahpouri/ARTIFACT_OUTPUT"
 }
