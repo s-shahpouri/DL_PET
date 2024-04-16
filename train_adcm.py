@@ -57,6 +57,25 @@ model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_29_0_30.pth'))
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_1_1_45.pth'))
 
+import torch.nn as nn
+def add_activation_before_output(model, activation_fn):
+    """
+    Adds an activation function just before the output of the network.
+    """
+    # Replace the last conv layer with a sequential layer that has conv followed by activation
+    old_output_conv = model.output_block.conv.conv
+    new_output_block = nn.Sequential(
+        old_output_conv,
+        activation_fn
+    )
+    model.output_block.conv.conv = new_output_block
+
+# Assuming 'model' is your DynUNet model instance
+# Replace 'nn.ReLU(inplace=True)' with the activation function you want to use.
+add_activation_before_output(model, nn.ReLU(inplace=True))
+
+print(model)
+
 model = model.to(device)
 
 loss_function = torch.nn.MSELoss()

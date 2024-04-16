@@ -53,16 +53,16 @@ def get_network(patch_size, spacing):
         deep_supr_num=2,
     )
 
-    # Traverse the modules of the model and replace the last LeakyReLU with ReLU
-    for name, module in net.named_children():
-        if name == 'upsamples':
-            # Assuming 'upsamples' is a nn.ModuleList
-            for upsample_block in module:
-                for sub_name, sub_module in upsample_block.named_children():
-                    if sub_name == 'conv_block':
-                        for block_name, block_module in sub_module.named_children():
-                            if isinstance(block_module, nn.LeakyReLU):
-                                setattr(sub_module, block_name, nn.ReLU(inplace=True))
+    # # Traverse the modules of the model and replace the last LeakyReLU with ReLU
+    # for name, module in net.named_children():
+    #     if name == 'upsamples':
+    #         # Assuming 'upsamples' is a nn.ModuleList
+    #         for upsample_block in module:
+    #             for sub_name, sub_module in upsample_block.named_children():
+    #                 if sub_name == 'conv_block':
+    #                     for block_name, block_module in sub_module.named_children():
+    #                         if isinstance(block_module, nn.LeakyReLU):
+    #                             setattr(sub_module, block_name, nn.ReLU(inplace=True))
 
 
     return net

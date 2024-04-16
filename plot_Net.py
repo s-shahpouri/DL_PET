@@ -117,4 +117,4 @@ input_names = ["input"]
 output_names = ["output"]  
 
 # Export the model to ONNX format
-torch.onnx.export(model, dummy_input, "dynunet.onnx", input_names=input_names, output_names=output_names, opset_version=11)
+torch.onnx.export(model, dummy_input, "dynunet2.onnx", input_names=input_names, output_names=output_names, opset_version=11)

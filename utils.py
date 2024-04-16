@@ -280,15 +280,3 @@ class Pairs:
                 all_pairs.append(pair_dict)
         return all_pairs
 
-# Usage example
-nac_data_dir = "/path/to/NAC/images"
-mac_data_dir = "/path/to/MAC/images"
-pair_finder = PairFinder(nac_data_dir, mac_data_dir)
-file_pairs = pair_finder.find_file_pairs()
-
-# Now you can loop through the pairs
-for pair in file_pairs:
-    nac_path, mac_path = pair['nac'], pair['mac']
-    print("NAC Path:", nac_path)
-    print("MAC Path:", mac_path)
-    # You can load and process your images here

@@ -139,10 +139,10 @@ class ModelTrainer:
                     loss = self.loss_function(outputs, targets)
                 
 
-                l1_lambda = 0.0001  # Regularization strength for L1
-                L1 regularization
-                l1_norm = sum(p.abs().sum() for p in self.model.parameters())
-                loss = loss + l1_lambda * l1_norm
+                # l1_lambda = 0.0001  # Regularization strength for L1
+                # # L1 regularization
+                # l1_norm = sum(p.abs().sum() for p in self.model.parameters())
+                # loss = loss + l1_lambda * l1_norm
 
                 loss.backward()
                 self.optimizer.step()
