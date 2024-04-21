@@ -136,7 +136,7 @@ class ExternalRadioSetHandling:
 
 
 
-
+from monai.transforms import RandAffined, RandGaussianNoised
 
 class LoaderFactory:
     def __init__(self, train_files=None, val_files=None, test_files=None,
@@ -165,6 +165,8 @@ class LoaderFactory:
             common_transforms.append(ScaleIntensity(keys=["target"]))
 
         self.train_transforms = Compose(common_transforms + [
+            RandAffined(keys=["image", "target"], prob=0.5, rotate_range=(0, 0, np.pi/15)),
+
             RandSpatialCropSamplesd(keys=["image", "target"], roi_size=self.patch_size, num_samples=20),
         ])
         

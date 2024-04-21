@@ -5,7 +5,8 @@ from model_training import DecayLR
 from model_training import ModelTrainer
 from data_preparation import LoaderFactory
 import torch
-from model_maker import DynUNetR
+from model_maker import get_network, add_activation_before_output
+import torch.nn as nn
 
 
 config_file = 'config.json'
@@ -15,7 +16,7 @@ with open(config_file, 'r') as f:
 ga_data_dir = config["ga_data_dir"]
 fdg_data_dir = config["fdg_data_dir"]
 log_dir = config["log_dir"]
-output_dir = config["output_dir"]
+output_dir = config["ga_output_dir"]
 
 
 data_handler = DataHandling(
@@ -47,15 +48,19 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 
 starting_epoch = 0
-decay_epoch = 10
+decay_epoch = 5
 learning_rate = 0.001
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = DynUNetR(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
+model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
+
+add_activation_before_output(model, nn.ReLU(inplace=True))
+print(model)
 model = model.to(device)
 
+
 loss_function = torch.nn.MSELoss()
-l2_lambda = 0.0001  # Regularization strength for L2
+l2_lambda = 0.00001  # Regularization strength for L2
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999), weight_decay=l2_lambda)
 
 max_epochs = 600

@@ -68,7 +68,18 @@ def get_network(patch_size, spacing):
     return net
 
 ##########################################3
-
+import torch.nn as nn
+def add_activation_before_output(model, activation_fn):
+    """
+    Adds an activation function just before the output of the network.
+    """
+    # Replace the last conv layer with a sequential layer that has conv followed by activation
+    old_output_conv = model.output_block.conv.conv
+    new_output_block = nn.Sequential(
+        old_output_conv,
+        activation_fn
+    )
+    model.output_block.conv.conv = new_output_block
 
 ###################################################################
 # from monai.networks.nets import DynUNet
