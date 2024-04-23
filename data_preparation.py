@@ -201,13 +201,14 @@ class LoaderFactory:
             ds = Dataset(data=data_files, transform=transform) if dataset_type != "train" else CacheDataset(data=data_files, transform=transform, cache_rate=1.0, num_workers=num_workers)
             return DataLoader(ds, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers)
 
+
 class ScaleIntensity:
     def __init__(self, keys):
         self.keys = keys
     
     def __call__(self, data):
         for key in self.keys:
-            data[key] = data[key] / 100  # Divide by this for SUV scaling (choosed based on experiment)
+            data[key] = data[key] / 50  # Divide by this for SUV scaling (choosed based on experiment)
         return data
     
 

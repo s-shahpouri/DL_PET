@@ -48,13 +48,16 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 
 starting_epoch = 0
-decay_epoch = 5
+decay_epoch = 2
 learning_rate = 0.001
+learning_rate = 0.0003344537815126051
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
-# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
-
 add_activation_before_output(model, nn.ReLU(inplace=True))
+
+# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
+model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_23_18_2.pth.pth'))
+
 print(model)
 model = model.to(device)
 
@@ -63,7 +66,7 @@ loss_function = torch.nn.MSELoss()
 l2_lambda = 0.00001  # Regularization strength for L2
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999), weight_decay=l2_lambda)
 
-max_epochs = 600
+max_epochs = 200
 best_metric = float('inf')
 best_metric_epoch = -1
 epoch_loss_values = []

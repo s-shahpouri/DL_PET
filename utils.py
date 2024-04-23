@@ -273,10 +273,60 @@ class Pairs:
         for common_name, nac_path in nac_dict.items():
             mac_path = mac_dict.get(common_name)
             if mac_path:
-                pair_dict = {
-                    'nac': nac_path,
-                    'mac': mac_path
-                }
-                all_pairs.append(pair_dict)
+                # pair_dict = {
+                #     'nac': nac_path,
+                #     'mac': mac_path
+                # }
+                # all_pairs.append(pair_dict)
+                all_pairs.append((nac_path, mac_path))
         return all_pairs
 
+
+
+def calculate_adcm(nac_img, mac_img, epsilon):
+
+    nac_img = nac_img.astype(np.float32) * 2
+    mac_img = mac_img.astype(np.float32) * 5
+
+    # Initialize ADCM with zeros
+    adcm = np.zeros_like(mac_img)
+
+    # Calculate ADCM where NASC-PET is greater than epsilon
+    mask = nac_img > epsilon
+    adcm[mask] = mac_img[mask] / nac_img[mask]
+
+    # Assign MAC values directly where NASC-PET is less than or equal to epsilon
+    adcm[~mask] = mac_img[~mask]
+    
+    return adcm
+
+
+
+def calculate_adcm_stat(nac_img, mac_img, epsilon):
+
+    adcm = calculate_adcm(nac_img, mac_img, epsilon)
+    
+    # nonzero_values = adcm_contour[adcm_contour>0]
+    adcm_med = np.median(adcm)
+    adcm_mean = np.mean(adcm)
+    adcm_max = np.max(adcm)
+    
+    return adcm, adcm_med, adcm_mean, adcm_max
+
+
+def calculate_nac_mac_stat(nac_img, mac_img):
+
+    nac_img = nac_img.astype(np.float32) * 2
+    mac_img = mac_img.astype(np.float32) * 5
+
+    nac_med = np.median(nac_img)
+    nac_mean = np.mean(nac_img)
+    nac_max = np.max(nac_img)
+
+
+    mac_med = np.median(mac_img)
+    mac_mean = np.mean(mac_img)
+    mac_max = np.max(mac_img)
+
+    
+    return nac_med, nac_mean, nac_max, mac_med, mac_mean, mac_max
