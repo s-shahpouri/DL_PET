@@ -56,7 +56,7 @@ model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
 add_activation_before_output(model, nn.ReLU(inplace=True))
 
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
-model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_23_18_2.pth.pth'))
+model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_23_18_2.pth'))
 
 print(model)
 model = model.to(device)

@@ -47,7 +47,7 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 
 starting_epoch = 0
-decay_epoch = 20
+decay_epoch = 5
 # learning_rate = 0.001
 
 learning_rate = 0.001

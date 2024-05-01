@@ -89,6 +89,48 @@ def parse_loss_values(log_filepath):
     return train_losses, val_losses
 
 
+# class PairFinder:
+#     def __init__(self, data_dir, output_dir, hint):
+#         self.data_dir = data_dir
+#         self.output_dir = output_dir
+#         self.hint = hint
+
+#     def extract_common_name(self, filename):
+#         # Extracts the common name from a filename by removing the hint and extension
+#         return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
+
+#     def identify_center(self, filename):
+#         # Identifies the center from the filename
+#         parts = filename.split('_')
+#         if len(parts) > 1:
+#             return parts[1]  # Assuming the second part of the filename denotes the center
+#         return None
+
+#     def find_file_pairs(self):
+#         # Finds pairs of files based on the hint and directories specified
+#         dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
+#         all_pairs = []
+#         c5_pairs = []
+#         rest_pairs = []
+#         for dl_path in dl_files:
+#             common_name = self.extract_common_name(dl_path)
+#             center = self.identify_center(common_name)
+#             search_pattern = os.path.join(self.data_dir, f'{common_name}*.nii.gz')
+#             found_org_files = glob.glob(search_pattern)
+#             if found_org_files:
+#                 pair_dict = {
+#                     'predicted': dl_path,
+#                     'reference': found_org_files[0],
+#                     'center': center
+#                 }
+#                 all_pairs.append(pair_dict)
+#                 if center == 'C5':
+#                     c5_pairs.append(pair_dict)
+#                 else:
+#                     rest_pairs.append(pair_dict)
+#         return all_pairs, c5_pairs, rest_pairs
+    
+
 class PairFinder:
     def __init__(self, data_dir, output_dir, hint):
         self.data_dir = data_dir
@@ -103,15 +145,17 @@ class PairFinder:
         # Identifies the center from the filename
         parts = filename.split('_')
         if len(parts) > 1:
-            return parts[1]  # Assuming the second part of the filename denotes the center
-        return None
+            center_part = parts[1]  # Assuming the second part of the filename denotes the center
+            if center_part in ['C1', 'C2', 'C3', 'C4', 'C5']:
+                return center_part
+        return 'rest'
 
     def find_file_pairs(self):
         # Finds pairs of files based on the hint and directories specified
         dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
         all_pairs = []
-        c5_pairs = []
-        rest_pairs = []
+        center_pairs = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
+
         for dl_path in dl_files:
             common_name = self.extract_common_name(dl_path)
             center = self.identify_center(common_name)
@@ -124,12 +168,10 @@ class PairFinder:
                     'center': center
                 }
                 all_pairs.append(pair_dict)
-                if center == 'C5':
-                    c5_pairs.append(pair_dict)
-                else:
-                    rest_pairs.append(pair_dict)
-        return all_pairs, c5_pairs, rest_pairs
-    
+                center_pairs[center].append(pair_dict)
+
+        return all_pairs, center_pairs
+
 
 
 # import numpy as np
@@ -300,6 +342,19 @@ def calculate_adcm(nac_img, mac_img, epsilon):
     
     return adcm
 
+def calculate_dl_mac(nac_img, dl_adcm_img, epsilon=0, val):
+
+    dl_adcm_img = dl_adcm_img * val
+    nac_img = nac_img * 2
+    
+    dl_final = np.copy(nac_img)
+    
+    # Only perform division where NASC-PET is greater than epsilon
+    mask = nac_img > epsilon
+    dl_final[mask] = (dl_adcm_img[mask] * nac_img[mask]) / 5
+    
+    return dl_final
+
 
 
 def calculate_adcm_stat(nac_img, mac_img, epsilon):
@@ -330,3 +385,24 @@ def calculate_nac_mac_stat(nac_img, mac_img):
 
     
     return nac_med, nac_mean, nac_max, mac_med, mac_mean, mac_max
+
+
+def export_final_adcm_image(nac_path, dl_final_img, output_path):
+    """
+    Saves an image with the original header from the NAC image.
+    
+    Parameters:
+        nac_path (str): Path to the original NAC image.
+        dl_final_img (np.array): The DL final image data to save.
+        output_path (str): Path where the output image will be saved.
+    """
+    # Load the NAC image to use its header and affine
+    nac_nii = nib.load(nac_path)
+    nac_header = nac_nii.header
+    nac_affine = nac_nii.affine
+    
+    # Create a new Nifti image with the dl_final_img data and the original NAC header/affine
+    dl_final_nii = nib.Nifti1Image(dl_final_img, affine=nac_affine, header=nac_header)
+    
+    # Save the new image to the specified output path
+    nib.save(dl_final_nii, output_path)

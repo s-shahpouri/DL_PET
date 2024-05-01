@@ -131,3 +131,40 @@ def display_patient_transverse(patient_folder_name, image, target, dl_image, dif
     # plt.colorbar(difference_display, ax=axs[3], fraction=0.05, pad=0.04)
 
     plt.show()
+
+
+def plot_adcm_final_trans(nac_img, dl_adcm_im, dl_final, mac_images, title_prefix=''):
+    
+    slice_idx = nac_img.shape[2] // 3  # Middle slice for the Z-axis
+    
+    fig, axes = plt.subplots(1, 4, figsize=(15, 5))
+    axes[0].imshow(nac_img[:, :, slice_idx], cmap='jet')
+    axes[0].set_title(f'{title_prefix} NAC')
+    
+    axes[1].imshow(dl_adcm_im[:, :, slice_idx], cmap='jet')
+    axes[1].set_title(f'{title_prefix} ADCM')
+    
+    axes[2].imshow(dl_final[:, :, slice_idx], cmap='jet')
+    axes[2].set_title(f'{title_prefix} DL_Final')
+    
+    axes[3].imshow(mac_images[:, :, slice_idx], cmap='jet')
+    axes[3].set_title(f'{title_prefix} MAC')
+    plt.show()
+
+def plot_adcm_final_coronal(nac_img, dl_adcm_im, dl_final, mac_images, n, title_prefix=''):
+    
+    
+    
+    fig, axes = plt.subplots(1, 4, figsize=(15, 5))
+    axes[0].imshow(np.rot90(nac_img[:, n, :]), cmap='jet')
+    axes[0].set_title(f'{title_prefix} NAC')
+    
+    axes[1].imshow(np.rot90(dl_adcm_im[:, n, :]), cmap='jet')
+    axes[1].set_title(f'{title_prefix} ADCM')
+    
+    axes[2].imshow(np.rot90(dl_final[:, n, :]), cmap='jet')
+    axes[2].set_title(f'{title_prefix} DL_Final')
+    
+    axes[3].imshow(np.rot90(mac_images[:, n, :]), cmap='jet')
+    axes[3].set_title(f'{title_prefix} MAC')
+    plt.show()
