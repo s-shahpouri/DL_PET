@@ -89,6 +89,7 @@ def parse_loss_values(log_filepath):
     return train_losses, val_losses
 
 
+
 # class PairFinder:
 #     def __init__(self, data_dir, output_dir, hint):
 #         self.data_dir = data_dir
@@ -103,15 +104,17 @@ def parse_loss_values(log_filepath):
 #         # Identifies the center from the filename
 #         parts = filename.split('_')
 #         if len(parts) > 1:
-#             return parts[1]  # Assuming the second part of the filename denotes the center
-#         return None
+#             center_part = parts[1]  # Assuming the second part of the filename denotes the center
+#             if center_part in ['C1', 'C2', 'C3', 'C4', 'C5']:
+#                 return center_part
+#         return 'rest'
 
 #     def find_file_pairs(self):
 #         # Finds pairs of files based on the hint and directories specified
 #         dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
 #         all_pairs = []
-#         c5_pairs = []
-#         rest_pairs = []
+#         center_pairs = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
+
 #         for dl_path in dl_files:
 #             common_name = self.extract_common_name(dl_path)
 #             center = self.identify_center(common_name)
@@ -124,17 +127,18 @@ def parse_loss_values(log_filepath):
 #                     'center': center
 #                 }
 #                 all_pairs.append(pair_dict)
-#                 if center == 'C5':
-#                     c5_pairs.append(pair_dict)
-#                 else:
-#                     rest_pairs.append(pair_dict)
-#         return all_pairs, c5_pairs, rest_pairs
-    
+#                 center_pairs[center].append(pair_dict)
+
+#         return all_pairs, center_pairs
+
+import os
+import glob
 
 class PairFinder:
-    def __init__(self, data_dir, output_dir, hint):
-        self.data_dir = data_dir
-        self.output_dir = output_dir
+    def __init__(self, nac_data_dir, mac_data_dir, dl_data_dir, hint):
+        self.nac_data_dir = nac_data_dir
+        self.mac_data_dir = mac_data_dir
+        self.dl_data_dir = dl_data_dir
         self.hint = hint
 
     def extract_common_name(self, filename):
@@ -150,28 +154,32 @@ class PairFinder:
                 return center_part
         return 'rest'
 
-    def find_file_pairs(self):
-        # Finds pairs of files based on the hint and directories specified
-        dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
-        all_pairs = []
-        center_pairs = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
+    def find_file_triples(self):
+        # Finds triples of files: NAC, MAC, and DL based on the hint and directories specified
+        dl_files = glob.glob(os.path.join(self.dl_data_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
+        all_triples = []
+        center_triples = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
 
         for dl_path in dl_files:
             common_name = self.extract_common_name(dl_path)
             center = self.identify_center(common_name)
-            search_pattern = os.path.join(self.data_dir, f'{common_name}*.nii.gz')
-            found_org_files = glob.glob(search_pattern)
-            if found_org_files:
-                pair_dict = {
+            mac_search_pattern = os.path.join(self.mac_data_dir, f'{common_name}*.nii.gz')
+            nac_search_pattern = os.path.join(self.nac_data_dir, f'{common_name}*.nii.gz')
+            found_mac_files = glob.glob(mac_search_pattern)
+            found_nac_files = glob.glob(nac_search_pattern)
+            
+            if found_mac_files and found_nac_files:
+                triple_dict = {
                     'predicted': dl_path,
-                    'reference': found_org_files[0],
-                    'center': center
+                    'reference': found_mac_files[0],
+                    'nac': found_nac_files[0],
+                    'center': center,
+                    'common_name': common_name
                 }
-                all_pairs.append(pair_dict)
-                center_pairs[center].append(pair_dict)
+                all_triples.append(triple_dict)
+                center_triples[center].append(triple_dict)
 
-        return all_pairs, center_pairs
-
+        return all_triples, center_triples
 
 
 # import numpy as np
@@ -342,7 +350,7 @@ def calculate_adcm(nac_img, mac_img, epsilon):
     
     return adcm
 
-def calculate_dl_mac(nac_img, dl_adcm_img, epsilon=0, val):
+def calculate_dl_mac(nac_img, dl_adcm_img, val, epsilon=0):
 
     dl_adcm_img = dl_adcm_img * val
     nac_img = nac_img * 2

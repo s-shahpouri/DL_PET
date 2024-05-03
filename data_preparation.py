@@ -270,42 +270,6 @@ def visualize_axial_slice2(data_loader, slice_index):
     plt.show()
 
 
-def visualize_coronal_slice(data, predict, n, title, cm , Norm = False):
-
-
-    fig, axes = plt.subplots(1, 3, figsize=(12, 6))  # Adjusted for three plots and one colorbar
-
-    titles = ["Input", "Ground_truth", title]
-    slices = [
-        np.rot90(data["image"][0, 0, :, n, :]),
-        np.rot90(data["target"][0, 0, :, n, :]),
-        np.rot90(predict.detach().cpu()[0, 0, :, n, :])
-    ]
-
-    # Display the images
-    images = []
-    for ax, slice, title in zip(axes, slices, titles):  # Leave the last axes for the colorbar
-        img = ax.imshow(slice, cmap=cm)
-        images.append(img)
-        ax.set_title(title)
-        ax.axis('off')
-
-    if Norm == True:
-        # Find the min and max of all colors for use in setting the color scale.
-        vmin = min(image.get_array().min() for image in images)
-        vmax = max(image.get_array().max() for image in images)
-        norm = plt.Normalize(vmin=vmin, vmax=vmax)
-        for im in images:
-            im.set_norm(norm)
-
-    fig.colorbar(images[0], ax=axes, orientation='vertical', fraction=0.025, pad=0.04)
-
-    # Make sure the aspect ratio is equal to make the colorbar align well
-    # plt.subplots_adjust(wspace=0.4, hspace=0.4)
-    plt.show()
-
-
-
 from monai.transforms import MapTransform
 class ClampNegative(MapTransform):
     """

@@ -36,23 +36,37 @@ def load_nifti_image(path):
     """Load a NIfTI image and return its data as a NumPy array."""
     return nib.load(path).get_fdata()
 
+import numpy as np
+
+def masked_SUV_img(nac_path, predicted_path, reference_path, nac_factor, mac_factor, mask_val):
+    predicted_img = load_nifti_image(predicted_path) * mac_factor
+    reference_img = load_nifti_image(reference_path) * mac_factor
+    nac_img = load_nifti_image(nac_path) * nac_factor
+
+    # Ensure the images are properly loaded and not empty
+    if predicted_img.size == 0 or reference_img.size == 0 or nac_img.size == 0:
+        raise ValueError("One or more images did not load correctly or are empty.")
+
+    # Create mask from reference image where values are greater than mask_val
+    mask = reference_img > mask_val
+    
+    # Apply the mask to all images by setting unmasked values to zero
+    masked_predicted_img = np.where(mask, predicted_img, 0)
+    masked_reference_img = np.where(mask, reference_img, 0)
+    masked_nac_img = np.where(mask, nac_img, 0)
+
+    # Check if the masked images have any data left
+    if np.all(masked_predicted_img == 0) or np.all(masked_reference_img == 0) or np.all(masked_nac_img == 0):
+        raise ValueError("Masking resulted in empty image arrays. Adjust mask_val or check image data.")
+
+    return masked_nac_img, masked_predicted_img, masked_reference_img
+
 def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor, mask_val):
     """
     Calculate metrics for a single pair of images, applying a scaling factor to the images.
     A mask is applied where the reference image values are bigger than 0.03.
     """
-    predicted_img = load_nifti_image(predicted_path) * scaling_factor
-    reference_img = load_nifti_image(reference_path) * scaling_factor
-    # print(np.min(predicted_img), np.max(predicted_img))
-    # print(np.min(reference_img), np.max(reference_img))
-    # print("---------------------------------------------")
-    # Create mask from reference image where values are greater than 0.03
-    mask = reference_img > mask_val
-    
-    # Apply the mask to both images
-    masked_predicted_img = predicted_img[mask]
-    masked_reference_img = reference_img[mask]
-
+    masked_predicted_img, masked_reference_img = masked_img(predicted_path, reference_path, scaling_factor, mask_val)
     peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
     metrics = {
         "Mean Error (SUV)": mean_error(masked_predicted_img, masked_reference_img),
@@ -64,6 +78,7 @@ def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor, m
         "Structual Similarity Index": calculate_ssim(masked_predicted_img, masked_reference_img)
     }
     return metrics
+
 
 def aggregate_metrics(metrics_list):
     """Aggregate metrics across all pairs and calculate mean and standard deviation."""
