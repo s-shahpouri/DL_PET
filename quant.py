@@ -43,39 +43,50 @@ def masked_SUV_img(nac_path, predicted_path, reference_path, nac_factor, mac_fac
     reference_img = load_nifti_image(reference_path) * mac_factor
     nac_img = load_nifti_image(nac_path) * nac_factor
 
-    # Ensure the images are properly loaded and not empty
     if predicted_img.size == 0 or reference_img.size == 0 or nac_img.size == 0:
         raise ValueError("One or more images did not load correctly or are empty.")
 
-    # Create mask from reference image where values are greater than mask_val
     mask = reference_img > mask_val
     
-    # Apply the mask to all images by setting unmasked values to zero
-    masked_predicted_img = np.where(mask, predicted_img, 0)
-    masked_reference_img = np.where(mask, reference_img, 0)
-    masked_nac_img = np.where(mask, nac_img, 0)
+    # Apply the mask and replace unmasked values with NaN
+    masked_predicted_img = np.where(mask, predicted_img, np.nan)
+    masked_reference_img = np.where(mask, reference_img, np.nan)
+    masked_nac_img = np.where(mask, nac_img, np.nan)
 
-    # Check if the masked images have any data left
-    if np.all(masked_predicted_img == 0) or np.all(masked_reference_img == 0) or np.all(masked_nac_img == 0):
-        raise ValueError("Masking resulted in empty image arrays. Adjust mask_val or check image data.")
+    # Debug: Print how many values are being masked
+    # print(f"Valid data points after masking: {np.count_nonzero(~np.isnan(masked_predicted_img))}")
 
     return masked_nac_img, masked_predicted_img, masked_reference_img
 
-def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor, mask_val):
+def calculate_metrics_for_pair(nac_path, predicted_path, reference_path, nac_factor, mac_factor, mask_val):
     """
     Calculate metrics for a single pair of images, applying a scaling factor to the images.
     A mask is applied where the reference image values are bigger than 0.03.
     """
-    masked_predicted_img, masked_reference_img = masked_img(predicted_path, reference_path, scaling_factor, mask_val)
-    peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
+    try:
+        masked_nac_img, masked_predicted_img, masked_reference_img = masked_SUV_img(nac_path, predicted_path, reference_path, nac_factor, mac_factor, mask_val)
+        print("Masking successful.")
+    except Exception as e:
+        print(f"Error during masking: {e}")
+    
+    # Ensure no NaN values enter metric calculations
+    valid_mask = (np.isfinite(masked_predicted_img) & np.isfinite(masked_reference_img) & (masked_reference_img > 0))
+    if np.sum(valid_mask) == 0:
+        return {key: np.nan for key in ["Mean Error (SUV)", "Mean Absolute Error (SUV)", "Relative Error (SUV%)", "Absolute Relative Error (SUV%)", "Root Mean Squared Error", "Peak Signal-to-Noise Ratio", "Structural Similarity Index"]}  # Default metric dictionary with NaN values
+
+    # Apply the valid_mask to ensure no invalid data points are used in calculations
+    filtered_predicted_img = masked_predicted_img[valid_mask]
+    filtered_reference_img = masked_reference_img[valid_mask]
+
+    peak = np.max([filtered_predicted_img.max(), filtered_reference_img.max()])
     metrics = {
-        "Mean Error (SUV)": mean_error(masked_predicted_img, masked_reference_img),
-        "Mean Absolure Error (SUV)": mean_absolute_error(masked_predicted_img, masked_reference_img),
-        "Relative Error (SUV%)": relative_error(masked_predicted_img, masked_reference_img),
-        "Absolure Relative Error (SUV%)": absolute_relative_error(masked_predicted_img, masked_reference_img),
-        "Root Mean Squared Error": rmse(masked_predicted_img, masked_reference_img),
-        "Peak Signal-to-Noise Ratio": psnr(masked_predicted_img, masked_reference_img, peak),
-        "Structual Similarity Index": calculate_ssim(masked_predicted_img, masked_reference_img)
+        "Mean Error (SUV)": mean_error(filtered_predicted_img, filtered_reference_img),
+        "Mean Absolure Error (SUV)": mean_absolute_error(filtered_predicted_img, filtered_reference_img),
+        "Relative Error (SUV%)": relative_error(filtered_predicted_img, filtered_reference_img),
+        "Absolure Relative Error (SUV%)": absolute_relative_error(filtered_predicted_img, filtered_reference_img),
+        "Root Mean Squared Error": rmse(filtered_predicted_img, filtered_reference_img),
+        "Peak Signal-to-Noise Ratio": psnr(filtered_predicted_img, filtered_reference_img, peak),
+        "Structual Similarity Index": calculate_ssim(filtered_predicted_img, filtered_reference_img)
     }
     return metrics
 
