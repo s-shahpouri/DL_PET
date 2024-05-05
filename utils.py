@@ -1,13 +1,10 @@
 import os
 import random
 from collections import defaultdict
-import nibabel as nib
-import torch
 import glob
 import nibabel as nib
 import numpy as np
-from skimage.metrics import structural_similarity as ssim
-from math import log10, sqrt
+import re
 
 def group_patients_by_center(data_dicts):
     '''Gathering patients from different centers'''
@@ -74,7 +71,6 @@ def find_last_saved_model(log_filepath):
     return last_saved_model, best_metric, epoch
 
 
-# Function to parse the loss values from the log file
 def parse_loss_values(log_filepath):
     train_losses = []
     val_losses = []
@@ -89,50 +85,32 @@ def parse_loss_values(log_filepath):
     return train_losses, val_losses
 
 
+def extract_id(filepath):
+    # Extracts an identifier from the file path, this would depend on your file naming convention
+    return os.path.basename(filepath).split('_')[0]
 
-# class PairFinder:
-#     def __init__(self, data_dir, output_dir, hint):
-#         self.data_dir = data_dir
-#         self.output_dir = output_dir
-#         self.hint = hint
+def ids(s):
+    # This will match consecutive digits at the beginning of the string
+    match = re.match(r"(\d+)", s)
+    if match:
+        return match.group(0)  # Returns the matched group
+    else:
+        return None  # or an empty string if you prefer
+    
 
-#     def extract_common_name(self, filename):
-#         # Extracts the common name from a filename by removing the hint and extension
-#         return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
+def find_dl_image_path(artifact_output, patient_folder_name, hint):
+    # Construct a glob pattern to search for DL images with the matching patient folder name
+    search_pattern = os.path.join(artifact_output, "**", f"{patient_folder_name}*{hint}.nii.gz")
+    found_paths = glob.glob(search_pattern, recursive=True)
+    if found_paths:
+        return found_paths[0]  # Return the first match
+    else:
+        return None  # No match found
+    
+def normalize_data(data):
+    return (data - np.min(data)) / (np.max(data) - np.min(data))
 
-#     def identify_center(self, filename):
-#         # Identifies the center from the filename
-#         parts = filename.split('_')
-#         if len(parts) > 1:
-#             center_part = parts[1]  # Assuming the second part of the filename denotes the center
-#             if center_part in ['C1', 'C2', 'C3', 'C4', 'C5']:
-#                 return center_part
-#         return 'rest'
 
-#     def find_file_pairs(self):
-#         # Finds pairs of files based on the hint and directories specified
-#         dl_files = glob.glob(os.path.join(self.output_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
-#         all_pairs = []
-#         center_pairs = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
-
-#         for dl_path in dl_files:
-#             common_name = self.extract_common_name(dl_path)
-#             center = self.identify_center(common_name)
-#             search_pattern = os.path.join(self.data_dir, f'{common_name}*.nii.gz')
-#             found_org_files = glob.glob(search_pattern)
-#             if found_org_files:
-#                 pair_dict = {
-#                     'predicted': dl_path,
-#                     'reference': found_org_files[0],
-#                     'center': center
-#                 }
-#                 all_pairs.append(pair_dict)
-#                 center_pairs[center].append(pair_dict)
-
-#         return all_pairs, center_pairs
-
-import os
-import glob
 
 class PairFinder:
     def __init__(self, nac_data_dir, mac_data_dir, dl_data_dir, hint):
@@ -182,125 +160,6 @@ class PairFinder:
         return all_triples, center_triples
 
 
-# import numpy as np
-# import nibabel as nib
-# from math import sqrt, log10
-# from skimage.metrics import structural_similarity as ssim
-
-# def mean_error(predicted, reference):
-#     return np.mean(predicted - reference)
-
-# def mean_absolute_error(predicted, reference):
-#     return np.mean(np.abs(predicted - reference))
-
-# def relative_error(predicted, reference, epsilon=0.0):
-#     return np.mean((predicted - reference) / (reference + epsilon)) * 100
-
-# # def absolute_relative_error(predicted, reference, epsilon=0.0):
-# #     return np.mean(np.abs(predicted - reference) / (reference + epsilon)) * 100
-# def absolute_relative_error(predicted, reference, threshold=0.003):
-#     """
-#     Calculate the absolute relative error for pixels where the reference value
-#     is greater than a specified threshold.
-    
-#     Args:
-#     predicted (np.array): The predicted image values.
-#     reference (np.array): The reference (ground truth) image values.
-#     threshold (float): The threshold value above which pixels are considered for calculation.
-    
-#     Returns:
-#     float: The absolute relative error (%) for the specified pixels.
-#     """
-#     # Create a mask for pixels in the reference image above the threshold
-#     mask = reference > threshold
-    
-#     # Apply the mask to both predicted and reference arrays
-#     masked_predicted = predicted[mask]
-#     masked_reference = reference[mask]
-   
-#     # Calculate the absolute relative error using the masked pixels
-#     are = np.mean(np.abs(masked_predicted - masked_reference) / masked_reference) * 100
-    
-#     return are
-
-# def rmse(predicted, reference):
-#     return sqrt(np.mean((predicted - reference) ** 2))
-
-# def psnr(predicted, reference, peak):
-#     mse = np.mean((predicted - reference) ** 2)
-#     return 20 * log10(peak / sqrt(mse))
-
-# def calculate_ssim(predicted, reference):
-#     return ssim(predicted, reference, data_range=reference.max() - reference.min())
-
-# def load_nifti_image(path):
-#     """Load a NIfTI image and return its data as a NumPy array."""
-#     return nib.load(path).get_fdata()
-
-# def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor=5, mask_val = 0.03):
-#     """
-#     Calculate metrics for a single pair of images, applying a scaling factor to the images.
-#     A mask is applied where the reference image values are bigger than 0.03.
-#     """
-#     predicted_img = load_nifti_image(predicted_path) * scaling_factor
-#     reference_img = load_nifti_image(reference_path) * scaling_factor
-
-#     # Create mask from reference image where values are greater than 0.03
-#     mask = reference_img > mask_val
-    
-#     # Apply the mask to both images
-#     masked_predicted_img = predicted_img[mask]
-#     masked_reference_img = reference_img[mask]
-
-#     peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
-#     metrics = {
-#         "mean_error": mean_error(masked_predicted_img, masked_reference_img),
-#         "mean_absolute_error": mean_absolute_error(masked_predicted_img, masked_reference_img),
-#         "relative_error": relative_error(masked_predicted_img, masked_reference_img),
-#         "absolute_relative_error": absolute_relative_error(masked_predicted_img, masked_reference_img),
-#         "rmse": rmse(masked_predicted_img, masked_reference_img),
-#         "psnr": psnr(masked_predicted_img, masked_reference_img, peak),
-#         "ssim": calculate_ssim(masked_predicted_img, masked_reference_img)
-#     }
-#     return metrics
-
-# def aggregate_metrics(metrics_list):
-#     """Aggregate metrics across all pairs and calculate mean and standard deviation."""
-#     aggregated_metrics = {key: [] for key in metrics_list[0]}
-#     for metrics in metrics_list:
-#         for key, value in metrics.items():
-#             aggregated_metrics[key].append(value)
-    
-#     return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}
-
-import re
-
-def ids(s):
-    # This will match consecutive digits at the beginning of the string
-    match = re.match(r"(\d+)", s)
-    if match:
-        return match.group(0)  # Returns the matched group
-    else:
-        return None  # or an empty string if you prefer
-    
-
-def find_dl_image_path(artifact_output, patient_folder_name, hint):
-    # Construct a glob pattern to search for DL images with the matching patient folder name
-    search_pattern = os.path.join(artifact_output, "**", f"{patient_folder_name}*{hint}.nii.gz")
-    found_paths = glob.glob(search_pattern, recursive=True)
-    if found_paths:
-        return found_paths[0]  # Return the first match
-    else:
-        return None  # No match found
-    
-def normalize_data(data):
-    return (data - np.min(data)) / (np.max(data) - np.min(data))
-
-
-
-import os
-import glob
-import nibabel as nib
 
 class Pairs:
     def __init__(self, nac_data_dir, mac_data_dir):
@@ -350,16 +209,16 @@ def calculate_adcm(nac_img, mac_img, epsilon):
     
     return adcm
 
-def calculate_dl_mac(nac_img, dl_adcm_img, val, epsilon=0):
+def calculate_dl_mac(nac_img, dl_adcm_img, nac_factor, mac_factor, val):
 
     dl_adcm_img = dl_adcm_img * val
-    nac_img = nac_img * 2
+    nac_img = nac_img * nac_factor
     
     dl_final = np.copy(nac_img)
     
     # Only perform division where NASC-PET is greater than epsilon
-    mask = nac_img > epsilon
-    dl_final[mask] = (dl_adcm_img[mask] * nac_img[mask]) / 5
+    mask = nac_img > 0
+    dl_final[mask] = (dl_adcm_img[mask] * nac_img[mask]) / mac_factor
     
     return dl_final
 

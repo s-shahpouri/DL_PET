@@ -51,9 +51,9 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 starting_epoch = 0
 decay_epoch = 2
-# learning_rate = 0.001
+learning_rate = 0.001
 # learning_rate = 0.00001
-learning_rate = 0.0001
+# learning_rate = 0.0001
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 model = get_network(patch_size = [168, 168, 16], spacing = [4.07, 4.07, 3.00])
 add_activation_before_output(model, nn.ReLU(inplace=True))
@@ -71,7 +71,7 @@ loss_function = torch.nn.MSELoss()
 l2_lambda = 0.00001  # Regularization strength for L2
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999), weight_decay=l2_lambda)
 
-max_epochs = 100
+max_epochs = 50
 best_metric = float('inf')
 best_metric_epoch = -1
 epoch_loss_values = []

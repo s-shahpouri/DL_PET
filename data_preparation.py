@@ -212,62 +212,7 @@ class ScaleIntensity:
         return data
     
 
-def visualize_axial_slice(data_loader, slice_index):
-    # Manually iterate through the DataLoader to fetch the first batch
-    for data_batch in data_loader:
-        break  # Only need the first batch
-    
-    # Extract the image and target tensors from the batch
-    image, target = data_batch["image"][0][0], data_batch["target"][0][0]  # Assuming batch size of 1
-    
-    # Determine global min and max for a unified color scale
-    vmin = min(image[:, :, slice_index].min(), target[:, :, slice_index].min())
-    vmax = max(image[:, :, slice_index].max(), target[:, :, slice_index].max())
-    
-    # Visualization
-    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-    plt.suptitle(f"Data Check/Axial slice {slice_index}")
-    
-    img_plot = axes[0].imshow(np.rot90(np.flip(image[:, :, slice_index], axis=1)), cmap="jet")
-    axes[0].set_title("Image Slice")
-    
-    tgt_plot = axes[1].imshow(np.rot90(np.flip(target[:, :, slice_index], axis=1)), cmap="jet")
-    axes[1].set_title("Target Slice")
-   
-    
-    # Add a single colorbar 
-    fig.colorbar(img_plot, ax=axes, fraction=0.021, pad=0.04)
-    
-    plt.show()
 
-
-def visualize_axial_slice2(data_loader, slice_index):
-    # Manually iterate through the DataLoader to fetch the first batch
-    for data_batch in data_loader:
-        break  # Only need the first batch
-    
-    # Extract the image and target tensors from the batch
-    image, target = data_batch["image"][0][0], data_batch["target"][0][0]  # Assuming batch size of 1
-    
-    # # Determine global min and max for a unified color scale
-    # vmin = min(image[:, :, slice_index].min(), target[:, :, slice_index].min())
-    # vmax = max(image[:, :, slice_index].max(), target[:, :, slice_index].max())
-    
-    # Visualization
-    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-    plt.suptitle(f"Data Check/Axial slice {slice_index}")
-    
-    img_plot = axes[0].imshow(np.rot90(np.flip(image[:, slice_index, :], axis=1), k=3), cmap="jet")
-    axes[0].set_title("Image Slice")
-    
-    tgt_plot = axes[1].imshow(np.rot90(np.flip(target[:, slice_index, :], axis=1), k=3), cmap="jet")
-    axes[1].set_title("Target Slice")
-   
-    
-    # Add a single colorbar 
-    fig.colorbar(img_plot, ax=axes, fraction=0.021, pad=0.04)
-    
-    plt.show()
 
 
 from monai.transforms import MapTransform
