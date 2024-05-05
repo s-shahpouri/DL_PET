@@ -67,7 +67,6 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
     plt.show()
 
 
-
 def display_patient_transverse(patient_folder_name, image, target, dl_image, difference_image, n):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
@@ -261,3 +260,19 @@ def visualize_coronal_slice(data_loader, slice_index):
     fig.colorbar(img_plot, ax=axes, fraction=0.021, pad=0.04)
     
     plt.show()
+
+
+def visualize_coronal_masked(masked_nac_img, masked_predicted_img, masked_reference_img, slice_number):
+    # Assuming these images are already 3D arrays after masking and you want a specific slice
+    fig, axes = plt.subplots(1, 3, figsize=(10, 4))
+    titles = ['Masked NAC', 'Masked Predicted', 'Masked Reference']
+    images = [masked_nac_img, masked_predicted_img, masked_reference_img]
+
+    for ax, img, title in zip(axes, images, titles):
+        cax = ax.imshow(np.rot90(img[:, slice_number, :]), cmap='jet')
+        ax.set_title(title)
+        ax.axis('off')
+        fig.colorbar(cax, ax=ax)
+
+    plt.tight_layout()
+    plt.show() 

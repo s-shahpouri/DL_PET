@@ -127,20 +127,30 @@ class PairFinder:
         # Identifies the center from the filename
         parts = filename.split('_')
         if len(parts) > 1:
-            center_part = parts[1]  # Assuming the second part of the filename denotes the center
-            if center_part in ['C1', 'C2', 'C3', 'C4', 'C5']:
-                return center_part
+            if parts[1].startswith("C") and parts[1][1:].isdigit():
+                return parts[1]  # Directly return 'C1', 'C2', etc.
+            elif parts[1] == "dataset" and len(parts) > 2:
+                center_part = 'C' + parts[2][1]  # Convert '06', '07' to 'C6', 'C7'
+                if center_part in ['C6', 'C7']:
+                    return center_part
         return 'rest'
+
 
     def find_file_triples(self):
         # Finds triples of files: NAC, MAC, and DL based on the hint and directories specified
         dl_files = glob.glob(os.path.join(self.dl_data_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
-        all_triples = []
-        center_triples = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'rest': [] }
+        center_triples = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'C6': [], 'C7': [], 'rest': [] }
 
+      
         for dl_path in dl_files:
             common_name = self.extract_common_name(dl_path)
             center = self.identify_center(common_name)
+
+            # Ensure the dictionary initialization covers this center
+            if center not in center_triples:
+                print(f"Unexpected center {center} found, adding to dictionary.")
+                center_triples[center] = []
+
             mac_search_pattern = os.path.join(self.mac_data_dir, f'{common_name}*.nii.gz')
             nac_search_pattern = os.path.join(self.nac_data_dir, f'{common_name}*.nii.gz')
             found_mac_files = glob.glob(mac_search_pattern)
@@ -154,10 +164,10 @@ class PairFinder:
                     'center': center,
                     'common_name': common_name
                 }
-                all_triples.append(triple_dict)
+                
                 center_triples[center].append(triple_dict)
 
-        return all_triples, center_triples
+        return center_triples
 
 
 
