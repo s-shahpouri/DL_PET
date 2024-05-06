@@ -8,6 +8,12 @@ from monai.data import CacheDataset, DataLoader, Dataset
 from monai.transforms import NormalizeIntensityd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import glob
+from sklearn.model_selection import train_test_split
+import os
+import glob
+import numpy as np
 
 class DataHandling:
     def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", external_center='C5'):
@@ -78,12 +84,7 @@ class ExtrenalRadioSetSetHandling:
     def get_data(self):
             return self.data_dicts
 
-import os
-import glob
-from sklearn.model_selection import train_test_split
-import os
-import glob
-import numpy as np
+
 
 class ExternalRadioSetHandling:
     def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", test_ratio=None, random_seed=42):
