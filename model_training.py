@@ -137,6 +137,7 @@ class ModelTrainer:
                     outputs = torch.squeeze(outputs)
                     targets = torch.squeeze(targets, dim=1)  # Adjust for channel dimension if necessary
                     loss = self.loss_function(outputs, targets)
+                    print('deep loss does not work!')
                 
 
                 # l1_lambda = 0.0001  # Regularization strength for L1
