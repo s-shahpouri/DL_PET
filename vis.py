@@ -10,7 +10,7 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
     cmap_name = 'custom_seismic_more_white'
     cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=12)
 
-    fig, axs = plt.subplots(1, 4, figsize=(4, 2), gridspec_kw={'wspace':0, 'hspace':0})
+    fig, axs = plt.subplots(1, 4, figsize=(8, 4), gridspec_kw={'wspace':0, 'hspace':0})
 
     # Turn off axes
     for ax in axs:
