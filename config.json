@@ -9,7 +9,8 @@
     "fdg_output_dir": "/students/2023-2024/master/Shahpouri/FDG_OUTPUT",
 
     "artifacts": "/students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL",
-    "artifact_repeated_dir":"/students/2023-2024/master/Shahpouri/DATA/Repeated",
     "artifact_output_dir": "/students/2023-2024/master/Shahpouri/ARTIFACT_OUTPUT",
+    
+    "artifact_repeated_dir":"/students/2023-2024/master/Shahpouri/DATA/Repeated",
     "artifacts_repeated_output_dir":"/students/2023-2024/master/Shahpouri/REÄPETED_ARTIFACT"
 }

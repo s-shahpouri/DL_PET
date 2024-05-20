@@ -6,7 +6,7 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
     """
-    colors = [(0.00, "red"), (0.40, "white"), (0.8, "white"), (1.00, "blue")]
+    colors = [(0.00, "orangered"), (0.40, "white"), (0.8, "white"), (1.00, "blue")]
     cmap_name = 'custom_seismic_more_white'
     cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=12)
 
@@ -19,7 +19,7 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
     # Configure vmin and vmax for each image type
     nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.7))
     mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.7))
-    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.7))
+    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.9))
 
     # Input Image
 

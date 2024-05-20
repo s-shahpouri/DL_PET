@@ -13,13 +13,19 @@ config_file = 'config.json'
 
 with open(config_file, 'r') as f:
     config = json.load(f)
-ga_data_dir = config["ga_data_dir"]
-fdg_data_dir = config["fdg_data_dir"]
 log_dir = config["log_dir"]
-ga_output_dir = config["ga_output_dir"]
-artifact_dir = config["artifacts"]
-artifact_output = config ["artifact_output"]
+
+fdg_data_dir = config["fdg_data_dir"]
 fdg_output_dir = config['fdg_output_dir']
+
+ga_output_dir = config["ga_output_dir"]
+ga_data_dir = config["ga_data_dir"]
+
+artifact_dir = config["artifacts"]
+artifact_output_dir = config ["artifact_output_dir"]
+
+artifact_repeated_dir = config["artifact_repeated_dir"]
+artifacts_repeated_output_dir = config["artifacts_repeated_output_dir"]
 
 
 
@@ -51,7 +57,7 @@ test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=2, shu
 
 starting_epoch = 0
 decay_epoch = 2
-learning_rate = 0.001
+learning_rate = 0.0001
 # learning_rate = 0.00001
 # learning_rate = 0.0001
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -60,7 +66,9 @@ add_activation_before_output(model, nn.ReLU(inplace=True))
 
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_3_28_23_47.pth'))
 # model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_23_18_2.pth'))
-model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_24_23_17.pth')) # Tunning for fdg from Ga model dynamic
+# model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_4_24_23_17.pth')) # Tunning for fdg from Ga model dynamic
+model.load_state_dict(torch.load('/students/2023-2024/master/Shahpouri/LOG/model_5_5_5_13.pth'))
+
 
 
 print(model)
@@ -71,7 +79,7 @@ loss_function = torch.nn.MSELoss()
 l2_lambda = 0.00001  # Regularization strength for L2
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, betas=(0.5, 0.999), weight_decay=l2_lambda)
 
-max_epochs = 50
+max_epochs = 200
 best_metric = float('inf')
 best_metric_epoch = -1
 epoch_loss_values = []
