@@ -2,7 +2,7 @@ import os
 import datetime
 from datetime import datetime
 import torch
-from monai.networks.nets import DynUNet
+from monai.networks.nets import DynUNet, SegResNetDS
 from torch import nn
 from monai.inferers import sliding_window_inference
 
@@ -68,10 +68,12 @@ def deep_loss(outputs, target, loss_function, device, weights=None):
     if weights is None:
         # If no weights specified, use equal weights
         weights = [1.0 / len(output_maps)] * len(output_maps)
+        print('no weights specified')
     elif sum(weights) != 1:
         # Normalize weights to sum to 1
         total = sum(weights)
         weights = [w / total for w in weights]
+        print('Normalize weights')
 
     total_loss = 0.0
     for output, weight in zip(output_maps, weights):
@@ -83,6 +85,36 @@ def deep_loss(outputs, target, loss_function, device, weights=None):
         total_loss += weight * loss
 
     return total_loss
+
+
+def deep_loss2(outputs, target, loss_function, device, weights=None):
+    """
+    Compute the deep supervision loss for each output feature map.
+
+    Parameters:
+    - outputs: List of tensors containing all output feature maps, including the final prediction.
+    - target: The ground truth tensor.
+    - loss_function: The loss function to apply.
+    - device: The device on which to perform the calculations.
+    - weights: A list of weights for each output's loss. Defaults to equal weighting if None.
+
+    Returns:
+    - Weighted average of the computed losses.
+    """
+    if weights is None:
+        weights = [1.0 / len(outputs)] * len(outputs)
+    elif sum(weights) != 1:
+        total = sum(weights)
+        weights = [w / total for w in weights]
+
+    total_loss = 0.0
+    for output, weight in zip(outputs, weights):
+        resized_target = torch.nn.functional.interpolate(target, size=output.shape[2:], mode='nearest').to(device)
+        loss = loss_function(output, resized_target)
+        total_loss += weight * loss
+
+    return total_loss
+
 
 
 class ModelTrainer:
@@ -129,9 +161,11 @@ class ModelTrainer:
                 outputs = self.model(inputs)
 
                 # Check if deep supervision is used
-                if isinstance(outputs, tuple) or (outputs.dim() > targets.dim()):
+                if isinstance(outputs, tuple): # or (outputs.dim() > targets.dim()):
                     # Outputs from deep supervision
                     loss = deep_loss(outputs, targets, self.loss_function, self.device)
+                elif isinstance(outputs, list): 
+                    loss = deep_loss2(outputs, targets, self.loss_function, self.device)
                 else:
                     # Standard output handling
                     outputs = torch.squeeze(outputs)
@@ -140,10 +174,10 @@ class ModelTrainer:
                     print('deep loss does not work!')
                 
 
-                # l1_lambda = 0.0001  # Regularization strength for L1
-                # # L1 regularization
-                # l1_norm = sum(p.abs().sum() for p in self.model.parameters())
-                # loss = loss + l1_lambda * l1_norm
+                l1_lambda = 0.0001  # Regularization strength for L1
+                # L1 regularization
+                l1_norm = sum(p.abs().sum() for p in self.model.parameters())
+                loss = loss + l1_lambda * l1_norm
 
                 loss.backward()
                 self.optimizer.step()
@@ -170,7 +204,13 @@ class ModelTrainer:
                         val_inputs, val_targets = val_data["image"].to(self.device), val_data["target"].to(self.device)
 
                         val_outputs = sliding_window_inference(val_inputs, roi_size, sw_batch_size, self.model)
-                        val_loss += self.loss_function(val_outputs, val_targets).item()
+                        if isinstance(val_outputs, list):
+                            val_loss += deep_loss2(val_outputs, val_targets, self.loss_function, self.device).item()
+                        else:
+                            val_loss += self.loss_function(val_outputs, val_targets).item()
+
+                        
+                        # val_loss += self.loss_function(val_outputs, val_targets).item()
 
                 val_loss /= len(self.val_loader)
                 self.logger.log(f"Validation loss: {val_loss:.4f}")

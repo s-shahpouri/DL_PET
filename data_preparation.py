@@ -168,7 +168,7 @@ class LoaderFactory:
         self.train_transforms = Compose(common_transforms + [
             RandAffined(keys=["image", "target"], prob=0.5, rotate_range=(0, 0, np.pi/15)),
 
-            RandSpatialCropSamplesd(keys=["image", "target"], roi_size=self.patch_size, num_samples=20),
+            RandSpatialCropSamplesd(keys=["image", "target"], roi_size=self.patch_size, num_samples=40),
         ])
         
         self.val_transforms = Compose(common_transforms + [
