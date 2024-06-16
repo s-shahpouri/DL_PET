@@ -87,7 +87,11 @@ class CustomSegResNetDS(SegResNetDS):
             # Create a sequential container with Conv3d followed by ReLU
             self.up_layers[i]['head'] = nn.Sequential(head_conv, relu)
 
+    // "Model": {
+    //     "type": "dyn_unet",
+        
 
+    // }
 
 # Instantiate SegResNetDS model
 model = CustomSegResNetDS(

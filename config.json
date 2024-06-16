@@ -12,5 +12,55 @@
     "artifact_output_dir": "/students/2023-2024/master/Shahpouri/ARTIFACT_OUTPUT",
     
     "artifact_repeated_dir":"/students/2023-2024/master/Shahpouri/DATA/Repeated",
-    "artifacts_repeated_output_dir":"/students/2023-2024/master/Shahpouri/REÄPETED_ARTIFACT"
+    "artifacts_repeated_output_dir":"/students/2023-2024/master/Shahpouri/REAPETED_ARTIFACT",
+    
+    "device": "cuda:0",
+    "train_mode": "NAC",
+    "target_mode": "MAC",
+
+
+    "learning_rate": 0.001,
+    "l2_lambda": 0.00001,
+    "max_epochs": 200,
+    "decay_epoch": 5,
+
+    "patch_size": [168, 168, 16],
+    "spacing": [4.07, 4.07, 3.00],
+    "spatial_size": [168, 168, 320],
+    "normalize": false,
+    
+    "batch_size": {
+        "train": 4,
+        "val": 1,
+        "test": 1
+    },
+    "num_workers": {
+        "train": 2,
+        "val": 2,
+        "test": 2
+    },
+    "Tuning": {
+        "enabled": false,
+        "model_path": "/students/2023-2024/master/Shahpouri/LOG/model_5_5_5_13.pth"
+    },
+    "spatial_dims": 3,
+    "in_channels": 1,
+    "out_channels": 1,
+    "selected_model": "segresnet",
+
+    "segresnet": {
+            "init_filters": 32,
+            "norm": "instance",
+            "blocks_down": [1, 2, 2, 4],
+            "blocks_up": [1, 1, 1],
+            "dsdepth": 3,
+            "resolution": [4.07, 4.07, 3.00]
+        },
+    "dynunet": {
+        "norm_name": "INSTANCE",
+        "deep_supervision": true,
+        "deep_supr_num": 2
+
+        }
+}
 

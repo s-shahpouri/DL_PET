@@ -283,3 +283,109 @@ def export_final_adcm_image(nac_path, dl_final_img, output_path):
     
     # Save the new image to the specified output path
     nib.save(dl_final_nii, output_path)
+
+
+
+import json
+import torch
+
+class Config:
+    def __init__(self, config_file):
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+        self.__dict__.update(config)
+        self.device = self.get_device()
+
+    def get_device(self):
+        configured_device = self.__dict__.get("device")
+        print(f"Requested device: {configured_device}")
+
+        if configured_device.startswith("cuda"):
+            if torch.cuda.is_available():
+                device_index = configured_device.split(":")
+                if len(device_index) == 2 and device_index[1].isdigit():
+                    device_index = int(device_index[1])
+                    if device_index < torch.cuda.device_count():
+                        print(f"CUDA device {device_index} is available. Using CUDA.")
+                        return torch.device(configured_device)
+                    else:
+                        print(f"CUDA device {device_index} is not available. Switching to CPU.")
+                else:
+                    print("Invalid CUDA device format or device index. Switching to CPU.")
+            else:
+                print("CUDA is not available. Switching to CPU.")
+            return torch.device("cpu")
+        else:
+            print("Using CPU as default device.")
+            return torch.device("cpu")
+
+# models.py
+from torch import nn
+from monai.networks.nets import UNet
+from monai.networks.layers import Norm
+from monai.networks.nets import DynUNet
+
+def get_kernels_strides(patch_size, spacing):
+    """
+    Adjusted function to use the correct variable names.
+    """
+    sizes = patch_size  
+    spacings = spacing  
+    strides, kernels = [], []
+    while True:
+        spacing_ratio = [sp / min(spacings) for sp in spacings]
+        stride = [2 if ratio <= 2 and size >= 8 else 1 for (ratio, size) in zip(spacing_ratio, sizes)]
+        kernel = [3 if ratio <= 2 else 1 for ratio in spacing_ratio]
+        if all(s == 1 for s in stride):
+            break
+        for idx, (i, j) in enumerate(zip(sizes, stride)):
+            if i % j != 0:
+                raise ValueError(
+                    f"Patch size is not supported, please try to modify the size {patch_size[idx]} in the spatial dimension {idx}."
+                )
+        sizes = [i / j for i, j in zip(sizes, stride)]
+        spacings = [i * j for i, j in zip(spacings, stride)]
+        kernels.append(kernel)
+        strides.append(stride)
+
+    strides.insert(0, len(spacings) * [1])
+    kernels.append(len(spacings) * [3])
+    return kernels, strides
+
+
+
+def add_activation_before_output(model, activation_fn):
+    """
+    Adds an activation function just before the output of the network.
+    """
+    # Replace the last conv layer with a sequential layer that has conv followed by activation
+    old_output_conv = model.output_block.conv.conv
+    new_output_block = nn.Sequential(
+        old_output_conv,
+        activation_fn
+    )
+    model.output_block.conv.conv = new_output_block
+
+
+class CustomDynUNet(DynUNet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Add a ReLU activation after the final convolution layer
+        self.output_block = nn.Sequential(
+            self.output_block,
+            nn.ReLU(inplace=True)
+        )
+
+
+from monai.networks.nets import SegResNetDS
+class CustomSegResNetDS(SegResNetDS):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        
+        # Modify the final head to include a ReLU activation
+        for i, layer in enumerate(self.up_layers):
+            head_conv = layer['head']
+            relu = nn.ReLU(inplace=True)
+            # Create a sequential container with Conv3d followed by ReLU
+            self.up_layers[i]['head'] = nn.Sequential(head_conv, relu)

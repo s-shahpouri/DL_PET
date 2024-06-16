@@ -240,5 +240,3 @@ class ClampNegative(MapTransform):
             d[d < 0] = 0
             data[key] = d
         return data
-
-    
