@@ -15,13 +15,39 @@ import os
 import glob
 import numpy as np
 
+import os
+import glob
+import random
+import math
+from collections import defaultdict
+
+#If the external_center is specified and has data, it should be removed from the dataset and added to the test set.
+# If the external_center is specified but has no data, print a message and do nothing.
+# If the external_center is not found in the data, print a message and do nothing.
+
+import os
+import glob
+import random
+import math
+from collections import defaultdict
+
 class DataHandling:
-    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", external_center='C5'):
+    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", external_centers=None, train_percent=0.8, val_percent=0.1, test_percent=0.1):
         self.data_dir = data_dir
         self.train_mode = train_mode
         self.target_mode = target_mode
-        self.external_center = external_center
+        self.external_centers = external_centers if external_centers else []
+        self.train_percent = train_percent
+        self.val_percent = val_percent
+        self.test_percent = test_percent
+        self._validate_percentages()
         self._load_data()
+    
+    def _validate_percentages(self):
+        total_percent = self.train_percent + self.val_percent + self.test_percent
+        if not math.isclose(total_percent, 1.0):
+            raise ValueError("The sum of train, validation, and test percentages must be 1.0")
+
         
     def _load_data(self):
         train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
@@ -34,27 +60,46 @@ class DataHandling:
             center = data["image"].split('/')[-1].split('_')[1]
             data_by_center[center].append(data)
 
-        test_files = data_by_center.pop(self.external_center, [])
-        
-        for center, files in data_by_center.items():
-            if len(files) > 2:
-                selected_for_test = random.sample(files, 2)
-                test_files.extend(selected_for_test)
-                for selected in selected_for_test:
-                    files.remove(selected)
+        test_files = []
+
+        for center in self.external_centers:
+            if center in data_by_center:
+                if not data_by_center[center]:
+                    print(f"No data found for external center {center}. No data popped.")
+                else:
+                    test_files.extend(data_by_center.pop(center))
+                    print(f"Data from external center {center} has been moved to the test set.")
             else:
-                test_files.extend(files)
-                data_by_center[center] = []
+                print(f"External center {center} not found in data. No data popped.")
 
-        remaining_files = [file for files in data_by_center.values() for file in files]
-        random.shuffle(remaining_files)
+        if not test_files:
+            print("No data was picked from the external centers.")
 
-        total_size = len(remaining_files)
-        train_size = math.floor(total_size * 0.8)
+        train_files = []
+        val_files = []
+        for center, files in data_by_center.items():
+            if len(files) < 10:
+                print(f"Not enough data to split for center {center}. Minimum required is 10, but found {len(files)}.")
+                continue
 
-        self.train_files = remaining_files[:train_size]
-        self.val_files = remaining_files[train_size:]
+            total_size = len(files)
+            train_size = math.floor(total_size * self.train_percent)
+            val_size = math.floor(total_size * self.val_percent)
+            # test_size = total_size - train_size - val_size
+            
+            random.shuffle(files)
+            train_files.extend(files[:train_size])
+            val_files.extend(files[train_size:train_size + val_size])
+            test_files.extend(files[train_size + val_size:])
+
+        self.train_files = train_files
+        self.val_files = val_files
         self.test_files = test_files
+
+        print(f"Number of training files: {len(self.train_files)}")
+        print(f"Number of validation files: {len(self.val_files)}")
+        print(f"Number of test files: {len(self.test_files)}")
+        
 
     def get_data_split(self, split_name):
         if split_name == 'train':
@@ -65,25 +110,6 @@ class DataHandling:
             return self.test_files
         else:
             raise ValueError("Invalid split name. Choose among 'train', 'val', or 'test'.")
-
-
-class ExtrenalRadioSetSetHandling:
-    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC"):
-        self.data_dir = data_dir
-        self.train_mode = train_mode
-        self.target_mode = target_mode
-        self.data_dicts = []
-
-        self._load_data()
-        
-    def _load_data(self):
-        train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
-        target_images = sorted(glob.glob(os.path.join(self.data_dir, self.target_mode, "*.nii.gz")))
-        self.data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
-
-    def get_data(self):
-            return self.data_dicts
-
 
 
 class ExternalRadioSetHandling:

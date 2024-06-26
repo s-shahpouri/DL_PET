@@ -19,7 +19,11 @@ print(f"Configured device: {config.device}")
 data_handler = DataHandling(
     config.ga_data_dir,
     train_mode=config.train_mode,
-    target_mode=config.target_mode
+    target_mode=config.target_mode,
+    external_centers=config.external_centers,
+    train_percent=config.train_percent,
+    val_percent=config.val_percent,
+    test_percent=config.test_percent
     )
 
 
@@ -66,5 +70,5 @@ lr_lambda = DecayLR(epochs=config.max_epochs, offset=0, decay_epochs=config.deca
 scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lr_lambda)
 
 # Train loop
-trainer = ModelTrainer(model, train_loader, val_loader, optimizer, loss_function, scheduler, config.max_epochs, config.log_dir, config.device)
+trainer = ModelTrainer(model, train_loader, val_loader, optimizer, loss_function, scheduler, config.max_epochs, config.log_dir, config.device, config)
 trainer.train()

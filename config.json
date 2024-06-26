@@ -17,7 +17,11 @@
     "device": "cuda:0",
     "train_mode": "NAC",
     "target_mode": "MAC",
-
+    "external_centers": ["C5", "C1"],
+    "train_percent": 0.8,
+    "val_percent": 0.1,
+    "test_percent": 0.1,
+    
 
     "learning_rate": 0.001,
     "l2_lambda": 0.00001,

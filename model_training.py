@@ -116,11 +116,10 @@ def deep_loss2(outputs, target, loss_function, device, weights=None):
     return total_loss
 
 
-
 class ModelTrainer:
     def __init__(self, model, train_loader, val_loader,
                  optimizer, loss_function, scheduler, max_epochs,
-                 log_dir, device):
+                 log_dir, device, config):
         self.model = model
         self.train_loader = train_loader
         self.val_loader = val_loader
@@ -134,15 +133,27 @@ class ModelTrainer:
         self.logger = TrainingLogger(log_dir)
         self.best_metric = float('inf')
         self.best_metric_epoch = -1
+        self.config = config  # Save the configuration
 
+        self.log_config()  # Log the configuration parameters
 
-    # def log(self):
-    #     self.logger.log(f"train set: {len(train_files)}" )
-    #     self.logger.log(f"validation set: {len(val_files)}")
-    #     self.logger.log(f"max_epochs: {max_epochs}")
-    #     self.logger.log(f"model.filters: {model.filters}")
-
-
+    def log_config(self):
+        # Log important parameters from the config
+        self.logger.log("Training Configuration Parameters:")
+        self.logger.log(f"Device: {self.config.device}")
+        self.logger.log(f"Train mode: {self.config.train_mode}")
+        self.logger.log(f"Target mode: {self.config.target_mode}")
+        self.logger.log(f"Learning rate: {self.config.learning_rate}")
+        self.logger.log(f"Max epochs: {self.config.max_epochs}")
+        self.logger.log(f"Decay epoch: {self.config.decay_epoch}")
+        self.logger.log(f"Patch size: {self.config.patch_size}")
+        self.logger.log(f"Spacing: {self.config.spacing}")
+        self.logger.log(f"Batch size (train): {self.config.batch_size['train']}")
+        self.logger.log(f"Batch size (val): {self.config.batch_size['val']}")
+        self.logger.log(f"Batch size (test): {self.config.batch_size['test']}")
+        self.logger.log(f"Tuning enabled: {self.config.Tuning['enabled']}")
+        self.logger.log(f"Tuning model path: {self.config.Tuning['model_path']}")
+        self.logger.log(f"Selected model: {self.config.selected_model}")
 
     def train(self):
         
@@ -226,4 +237,3 @@ class ModelTrainer:
         model_filename = f"model_{self.logger.get_date()}.pth"
         torch.save(self.model.state_dict(), os.path.join(self.directory, model_filename))
         self.logger.log(f"Saved {model_filename} model, best_metric: {self.best_metric:.4f}, epoch: {self.best_metric_epoch}")
-
