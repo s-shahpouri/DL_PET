@@ -44,11 +44,8 @@ class ModelLoader:
         add_activation_before_output(model, nn.ReLU(inplace=True))
         return model
 
-
-
-    def default_model(self):
-        model = self.dyn_unet
-        return model
+    def default_model(self, config):
+        return self.dyn_unet(config)
 
     def segresnet(self, config):
         model = CustomSegResNetDS(
@@ -63,5 +60,3 @@ class ModelLoader:
             resolution=config.segresnet["resolution"]
         )
         return model
-
-

@@ -49,11 +49,13 @@ val_loader = loader_factory.get_loader('val', batch_size=config.batch_size['val'
 test_loader = loader_factory.get_loader('test', batch_size=config.batch_size['test'], num_workers=config.num_workers['test'], shuffle=False)
 
 
+from torchsummary import summary
 
 model_loader = ModelLoader(config)
 model = model_loader.call_model()
+print(model)
 print(f"Model loaded and moved to device: {config.device}")
-
+summary(model, input_size=(config.in_channels, *config.patch_size))
 
 
 loss_function = torch.nn.MSELoss()

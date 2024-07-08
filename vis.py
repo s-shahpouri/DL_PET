@@ -12,9 +12,9 @@ def display_patient_coronal(patient_folder_name, image, target, dl_image, differ
 
     fig, axs = plt.subplots(1, 4, figsize=(8, 4), gridspec_kw={'wspace':0, 'hspace':0})
 
-    # Turn off axes
-    for ax in axs:
-        ax.axis('off')
+    # # Turn off axes
+    # for ax in axs:
+    #     ax.axis('off')
 
     # Configure vmin and vmax for each image type
     nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.7))
