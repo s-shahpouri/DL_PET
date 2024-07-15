@@ -45,7 +45,7 @@ This project achieved notable improvements in artefact detection and attenuation
 
 This section showcases the results of the artifact correction applied using the IMCM model:
 
-![Artifact Correction](images/artifact_correction_before_after.png)
+![Artifact Correction](Results/artifact_correction_before_after.png)
 
 The image above illustrates the correction of scatter and halo artifacts in PET imaging, enhancing the clarity and diagnostic accuracy of the scans.
 
