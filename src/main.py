@@ -1,13 +1,11 @@
 
 import json
-from data_preparation import DataHandling 
-from model_training import DecayLR
-from model_training import ModelTrainer
-from data_preparation import LoaderFactory
+from data_preparation import DataHandling, LoaderFactory
+from model_training import ModelTrainer, DecayLR
 import torch
 from utils import Config
 from model_manager import ModelLoader
-
+from torchsummary import summary
 
 config_file = 'config.json'
 config = Config(config_file)
@@ -48,8 +46,6 @@ train_loader = loader_factory.get_loader('train', batch_size=config.batch_size['
 val_loader = loader_factory.get_loader('val', batch_size=config.batch_size['val'], num_workers=config.num_workers['val'], shuffle=False)
 test_loader = loader_factory.get_loader('test', batch_size=config.batch_size['test'], num_workers=config.num_workers['test'], shuffle=False)
 
-
-from torchsummary import summary
 
 model_loader = ModelLoader(config)
 model = model_loader.call_model()

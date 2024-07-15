@@ -34,9 +34,9 @@ import math
 from collections import defaultdict
 import os
 import torch
-from model_maker import get_network
-from data_preparation import DataHandling 
-from data_preparation import LoaderFactory
+from src.model_maker import get_network
+from DL_PET.src.data_preparation import DataHandling 
+from DL_PET.src.data_preparation import LoaderFactory
 
 
 config_file = '/students/2023-2024/master/Shahpouri/DL_PET/config.json'
@@ -127,7 +127,7 @@ import torch
 import json
 import optuna
 from model_maker import get_network
-from data_preparation import DataHandling, LoaderFactory
+from DL_PET.src.data_preparation import DataHandling, LoaderFactory
 def add_activation_before_output(model, activation_fn):
     """
     Adds an activation function just before the output of the network.
