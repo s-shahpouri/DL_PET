@@ -1,7 +1,7 @@
 # Deep Learning-Based PET Image Correction Toward Quantitative Imaging
 
 ## Introduction
-This repository contains the code and documentation for my thesis project, which focuses on developing a deep learning model to detect and correct artefacts in 68Ga-PET imaging. The model leverages federated transfer learning to enhance privacy preservation and improve the quality of PET images by addressing specific imaging artefacts such as halo and scatter effects.
+This repository contains the code and documentation for the  master thesis project, which focuses on developing a deep learning model to correct attenuation and scatter corrections without anatomical inforamtion from CT, also detect and correct artefacts in <sup>68<sup>Ga-PET imaging. The model leverages federated transfer learning to enhance privacy preservation and improve the quality of PET images by addressing specific imaging artefacts such as halo and scatter effects.
 
 ## Objectives
 In this study we tried to take a step into the problematic field of correction in PET imaging artefacts, with especially high-prevalence ones: mismatch and halo artefacts in 68Ga PET imaging. The aim of this paper is to look at several deep learning models and methodologies to design a multi-centre model that allows semi- and un-direct data sharing at each centre due to some demerits of conventional deep learning techniques. This is made possible using a novel deep learning architecture called Dyn-Unet with a sophisticated 3D convolutional capability, allowing for precise disentangling and correction of artefacts.
