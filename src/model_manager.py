@@ -1,5 +1,5 @@
 import torch
-from utils import get_kernels_strides, add_activation_before_output, CustomSegResNetDS
+from src.utils import get_kernels_strides, add_activation_before_output, CustomSegResNetDS
 import torch.nn as nn
 from monai.networks.nets import DynUNet
 
