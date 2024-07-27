@@ -98,18 +98,11 @@ def ids(s):
         return None  # or an empty string if you prefer
     
 
-def find_dl_image_path(artifact_output, patient_folder_name, hint):
-    # Construct a glob pattern to search for DL images with the matching patient folder name
-    search_pattern = os.path.join(artifact_output, "**", f"{patient_folder_name}*{hint}.nii.gz")
-    found_paths = glob.glob(search_pattern, recursive=True)
-    if found_paths:
-        return found_paths[0]  # Return the first match
-    else:
-        return None  # No match found
+
+
     
 def normalize_data(data):
     return (data - np.min(data)) / (np.max(data) - np.min(data))
-
 
 
 class PairFinder:
@@ -389,3 +382,92 @@ class CustomSegResNetDS(SegResNetDS):
             relu = nn.ReLU(inplace=True)
             # Create a sequential container with Conv3d followed by ReLU
             self.up_layers[i]['head'] = nn.Sequential(head_conv, relu)
+
+
+import os
+import glob
+import numpy as np
+import pandas as pd
+import nibabel as nib
+
+class ImageProcessor:
+    def __init__(self, artifact_output_dir, nac_factor, mac_factor, hint):
+        self.artifact_output_dir = artifact_output_dir
+        self.nac_factor = nac_factor
+        self.mac_factor = mac_factor
+        self.hint = hint
+
+    def find_dl_image_path(self, patient_folder_name_image):
+        """Find the deep learning image path based on the patient folder name and hint."""
+        search_pattern = os.path.join(self.artifact_output_dir, "**", f"{patient_folder_name_image}*{self.hint}.nii.gz")
+        found_paths = glob.glob(search_pattern, recursive=True)
+        if found_paths:
+            return found_paths[0]  # Return the first match
+        else:
+            print(f"No DL image found for {patient_folder_name_image} with hint {self.hint}")
+            return None  # No match found
+
+    def load_and_store_images_to_df(self, df, test_files):
+        """Load images and add them to the existing DataFrame."""
+        dl_image_paths = []
+        image_matrices = []
+        target_matrices = []
+        dl_image_matrices = []
+        difference_matrices = []
+
+        for file_info, name in zip(test_files, df['name']):
+            image_path = file_info['image']
+            target_path = file_info['target']
+            
+            # Find the corresponding DL image path
+            dl_image_path = self.find_dl_image_path(name)
+            dl_image_paths.append(dl_image_path)
+            
+            if dl_image_path is None:
+                image_matrices.append(None)
+                target_matrices.append(None)
+                dl_image_matrices.append(None)
+                difference_matrices.append(None)
+                continue
+            
+            try:
+                # Load images and apply factors
+                image = (nib.load(image_path).get_fdata()) * self.nac_factor
+                target = (nib.load(target_path).get_fdata()) * self.mac_factor
+                dl_image = (nib.load(dl_image_path).get_fdata()) * self.mac_factor
+                difference = (target - dl_image) / self.mac_factor
+                difference = np.clip(difference, -1, 1)
+                
+                # Append the matrices to the lists
+                image_matrices.append(image)
+                target_matrices.append(target)
+                dl_image_matrices.append(dl_image)
+                difference_matrices.append(difference)
+
+            except Exception as e:
+                print(f"Error loading or processing images for {name}: {e}")
+                image_matrices.append(None)
+                target_matrices.append(None)
+                dl_image_matrices.append(None)
+                difference_matrices.append(None)
+                continue
+        
+        # Add the new data to the DataFrame
+        df['dl_image_path'] = dl_image_paths
+        df['image_matrix'] = image_matrices
+        df['target_matrix'] = target_matrices
+        df['dl_image_matrix'] = dl_image_matrices
+        df['difference_matrices'] = difference_matrices
+        return df
+    
+
+
+def load_df_from_pickle(filename='/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl'):
+    """Load the DataFrame from a Pickle file."""
+    try:
+        df = pd.read_pickle(filename)
+        print(f"DataFrame loaded from {filename}")
+        return df
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return None

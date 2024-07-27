@@ -1,53 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
-
-def display_patient_coronal(patient_folder_name, image, target, dl_image, difference_image, n, cmp="gray"):
-    """
-    Display medical images for a patient: input, target, deep learning output, and the difference.
-    """
-    colors = [(0.00, "orangered"), (0.40, "white"), (0.8, "white"), (1.00, "blue")]
-    cmap_name = 'custom_seismic_more_white'
-    cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=12)
-
-    fig, axs = plt.subplots(1, 4, figsize=(8, 4), gridspec_kw={'wspace':0, 'hspace':0})
-
-    # # Turn off axes
-    # for ax in axs:
-    #     ax.axis('off')
-
-    # Configure vmin and vmax for each image type
-    nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.7))
-    mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.7))
-    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.9))
-
-    # Input Image
-
-    input_slice = np.rot90(image[:, n, :])
-    axs[0].imshow(input_slice, cmap=cmp, vmin=nac_display_range[0], vmax=nac_display_range[1])
-
-    # Target Image
-    axs[1].set_title(patient_folder_name)
-    target_slice = np.rot90(target[:, n, :])
-    axs[1].imshow(target_slice, cmap=cmp, vmin=mac_display_range[0], vmax=mac_display_range[1])
-
-    # DL Image
- 
-    dl_slice = np.rot90(dl_image[:, n, ])
-    axs[2].imshow(dl_slice, cmap=cmp, vmin=dl_display_range[0], vmax=dl_display_range[1])
-
-    # Difference Image
-
-    difference_slice = np.rot90(difference_image[:, n, :])
-    axs[3].imshow(difference_slice, cmap=cm, vmin=-1, vmax=1)
-
-    plt.show()
-
-    # Configure vmin and vmax for each image type
-    nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.7))
-    mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.7))
-    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.7))
-
+import os
 
 def display_patient_transverse(patient_folder_name, image, target, dl_image, difference_image, n, cmp="gray"):
     """
@@ -94,6 +48,101 @@ def display_patient_transverse(patient_folder_name, image, target, dl_image, dif
     nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.7))
     mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.7))
     dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.7))
+
+from matplotlib.colors import LinearSegmentedColormap
+import matplotlib.pyplot as plt
+import numpy as np
+
+def display_patient_coronal(patient_folder_name, image, target, dl_image, difference_image, n, cmp="gray"):
+    """
+    Display medical images for a patient: input, target, deep learning output, and the difference.
+    """
+    colors = [(0.00, "orange"), (0.40, "white"), (0.8, "white"), (1.00, "blue")]
+    cmap_name = 'custom_seismic_more_white'
+    cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=12)
+
+    fig, axs = plt.subplots(1, 4, figsize=(12, 4), gridspec_kw={'wspace':0.3, 'hspace':0})
+
+    # Turn off axes
+    for ax in axs:
+        ax.axis('off')
+
+    # Configure vmin and vmax for each image type
+    nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.9))
+    mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.9))
+    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.9))
+
+    # Input Image
+    input_slice = np.rot90(image[:, n, :])
+    im0 = axs[0].imshow(input_slice, cmap=cmp, vmin=nac_display_range[0], vmax=nac_display_range[1])
+    fig.colorbar(im0, ax=axs[0], fraction=0.046, pad=0.04)
+
+    # Target Image
+    axs[1].set_title(patient_folder_name)
+    target_slice = np.rot90(target[:, n, :])
+    im1 = axs[1].imshow(target_slice, cmap=cmp, vmin=mac_display_range[0], vmax=mac_display_range[1])
+    fig.colorbar(im1, ax=axs[1], fraction=0.046, pad=0.04)
+
+    # DL Image
+    dl_slice = np.rot90(dl_image[:, n, :])
+    im2 = axs[2].imshow(dl_slice, cmap=cmp, vmin=dl_display_range[0], vmax=dl_display_range[1])
+    fig.colorbar(im2, ax=axs[2], fraction=0.046, pad=0.04)
+
+    # Difference Image
+    difference_slice = np.rot90(difference_image[:, n, :])
+    im3 = axs[3].imshow(difference_slice, cmap=cm, vmin=-1, vmax=1)
+    fig.colorbar(im3, ax=axs[3], fraction=0.046, pad=0.04)
+
+    plt.show()
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.colors import LinearSegmentedColormap
+import streamlit as st
+
+def dash_plot_artifact(patient_folder_name, image, target, dl_image, difference_image, n, cmp="gray"):
+    """
+    Display medical images for a patient: input, target, deep learning output, and the difference.
+    """
+    colors = [(0.00, "orange"), (0.40, "white"), (0.8, "white"), (1.00, "blue")]
+    cmap_name = 'custom_seismic_more_white'
+    cm = LinearSegmentedColormap.from_list(cmap_name, colors, N=12)
+
+    fig, axs = plt.subplots(1, 4, figsize=(12, 4), gridspec_kw={'wspace':0.3, 'hspace':0})
+
+    # Turn off axes
+    for ax in axs:
+        ax.axis('off')
+
+    # Configure vmin and vmax for each image type
+    nac_display_range = (np.percentile(image, 0), np.percentile(image, 99.9))
+    mac_display_range = (np.percentile(target, 0), np.percentile(target, 99.9))
+    dl_display_range = (np.percentile(dl_image, 0), np.percentile(dl_image, 99.9))
+
+    # Input Image
+    input_slice = np.rot90(image[:, n, :])
+    im0 = axs[0].imshow(input_slice, cmap=cmp, vmin=nac_display_range[0], vmax=nac_display_range[1])
+    fig.colorbar(im0, ax=axs[0], fraction=0.046, pad=0.04)
+
+    # Target Image
+    axs[1].set_title(patient_folder_name)
+    target_slice = np.rot90(target[:, n, :])
+    im1 = axs[1].imshow(target_slice, cmap=cmp, vmin=mac_display_range[0], vmax=mac_display_range[1])
+    fig.colorbar(im1, ax=axs[1], fraction=0.046, pad=0.04)
+
+    # DL Image
+    dl_slice = np.rot90(dl_image[:, n, :])
+    im2 = axs[2].imshow(dl_slice, cmap=cmp, vmin=dl_display_range[0], vmax=dl_display_range[1])
+    fig.colorbar(im2, ax=axs[2], fraction=0.046, pad=0.04)
+
+    # Difference Image
+    difference_slice = np.rot90(difference_image[:, n, :])
+    im3 = axs[3].imshow(difference_slice, cmap=cm, vmin=-1, vmax=1)
+    fig.colorbar(im3, ax=axs[3], fraction=0.046, pad=0.04)
+
+    # Instead of plt.show(), use st.pyplot() to display the figure in Streamlit
+    st.pyplot(fig)
 
 
 def plot_adcm_final_trans(nac_img, dl_adcm_im, dl_final, mac_images, title_prefix=''):
