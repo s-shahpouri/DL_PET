@@ -398,3 +398,6 @@ def visualize_coronal_masked(masked_nac_img, masked_predicted_img, masked_refere
 
     plt.tight_layout()
     plt.show() 
+
+
+

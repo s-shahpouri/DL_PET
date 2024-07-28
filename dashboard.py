@@ -8,6 +8,7 @@ from src.vis import visualize_axial_slice, visualize_coronal_slice, dash_plot_ar
 from src.model_manager import ModelLoader
 import pandas as pd
 import os
+import plotly.graph_objs as go
 
 config_file = 'src/config.json'
 config = Config(config_file)
@@ -15,8 +16,49 @@ config = Config(config_file)
 
 # Example usage
 df = load_df_from_pickle('/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl')
+# Define paths to loss data
+df_losses_paths = {
+    "ADCM": '/students/2023-2024/master/Shahpouri/DATA/adcm_loss.pkl',
+    "IMCM": '/students/2023-2024/master/Shahpouri/DATA/imcm_loss.pkl'
+}
 
+# Define the function for plotting training and validation losses
+def plot_losses(df_losses, method):
+    # Average the losses per epoch for each type (Training and Validation)
+    df_avg_losses = df_losses.groupby(['Epoch', 'Type']).mean().reset_index()
 
+    # Filter data based on selections
+    traces = []
+    
+    train_losses = df_avg_losses[df_avg_losses['Type'] == 'Training']
+    train_trace = go.Scatter(
+        x=train_losses['Epoch'],
+        y=train_losses['Loss'],
+        mode='lines',
+        name='Training Loss',
+        line=dict(color='blue')
+    )
+    traces.append(train_trace)
+
+    val_losses = df_avg_losses[df_avg_losses['Type'] == 'Validation']
+    val_trace = go.Scatter(
+        x=val_losses['Epoch'],
+        y=val_losses['Loss'],
+        mode='lines',
+        name='Validation Loss',
+        line=dict(color='red')
+    )
+    traces.append(val_trace)
+
+    layout = go.Layout(
+        title=f'{method} Training and Validation Losses',
+        xaxis=dict(title='Epoch'),
+        yaxis=dict(title='Loss'),
+        hovermode='closest'
+    )
+
+    fig = go.Figure(data=traces, layout=layout)
+    return fig
 
 
 # Define tabs
@@ -48,10 +90,17 @@ with tab4:
 
 # Tab 4 content
 with tab5:
-    st.write("Content for Tab 4 goes here.")
-    st.line_chart([10, 20, 30, 40])
+    st.sidebar.title("Model Options")
+    
+    # Select method - Placeholder for future use
+    method = st.sidebar.selectbox("Select Method", ["ADCM", "IMCM"], index=0)
 
+    # Load the appropriate DataFrame based on the selected method
+    df_losses = load_df_from_pickle(df_losses_paths[method])
 
+    # Plot the losses using the function
+    fig = plot_losses(df_losses, method)
+    st.plotly_chart(fig)
 # Add divider for clarity
 st.sidebar.markdown("---")
 
