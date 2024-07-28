@@ -16,35 +16,7 @@ config = Config(config_file)
 # Example usage
 df = load_df_from_pickle('/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl')
 
-hint = 'dl4_23'  # Replace with the actual hint
-n = 85  # You can choose any valid slice index
 
-# # Function to plot a sample patient
-# def plot_sample_patient(df, patient_name):
-#     # Find the patient data in the DataFrame
-#     patient_data = df[df['name'] == patient_name]
-    
-#     if patient_data.empty:
-#         st.write(f"No data found for patient {patient_name}")
-#         return
-    
-#     # Extract the image matrices
-#     image = patient_data['image_matrix'].values[0]
-#     target = patient_data['target_matrix'].values[0]
-#     dl_image = patient_data['dl_image_matrix'].values[0]
-#     difference_image = patient_data['difference_matrices'].values[0]
-    
-
-
-#     # Display the images using the provided function
-#     dash_plot_artifact(patient_name, image, target, dl_image, difference_image, n, cmp="gist_yarg")
-
-
-
-#################################################################
-# Sidebar for selecting a patient
-st.sidebar.title("Select a Patient")
-selected_patient = st.sidebar.selectbox("Patient Name", df['name'])
 
 
 # Define tabs
@@ -80,9 +52,17 @@ with tab5:
     st.line_chart([10, 20, 30, 40])
 
 
-with tab6:
+# Add divider for clarity
+st.sidebar.markdown("---")
 
-# Function to plot a sample patient
+# Artifacts tab content
+with tab6:
+    # Sidebar for selecting a patient
+    st.sidebar.title("Select a Patient")
+    selected_patient = st.sidebar.selectbox("Patient Name", df['name'])
+    st.header(f"Artifacts for Patient: {selected_patient}")
+    
+    # Function to get patient data
     @st.cache_data(show_spinner=False)
     def get_patient_data(patient_name):
         patient_data = df[df['name'] == patient_name]
@@ -98,7 +78,11 @@ with tab6:
         image, target, dl_image, difference_image = get_patient_data(selected_patient)
 
     if image is not None:
-        st.header(f"Artifacts for Patient: {selected_patient}")
-        dash_plot_artifact(selected_patient, image, target, dl_image, difference_image, n, cmp="gist_yarg")
+        # Add a slider for slice index selection
+        num_slices = image.shape[1]  # Assuming images are 3D arrays with shape (x, y, z)
+        slice_index = st.slider("Select Slice Index", 0, num_slices - 1, 85)  # Default to 85 or any valid slice index
+        
+        # Display the selected slice using the provided function
+        dash_plot_artifact(image, target, dl_image, difference_image, slice_index)
     else:
         st.write(f"No data found for patient {selected_patient}.")

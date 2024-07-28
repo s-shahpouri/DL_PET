@@ -386,9 +386,9 @@ class CustomSegResNetDS(SegResNetDS):
 
 import os
 import glob
+import nibabel as nib
 import numpy as np
 import pandas as pd
-import nibabel as nib
 
 class ImageProcessor:
     def __init__(self, artifact_output_dir, nac_factor, mac_factor, hint):
@@ -438,6 +438,12 @@ class ImageProcessor:
                 difference = (target - dl_image) / self.mac_factor
                 difference = np.clip(difference, -1, 1)
                 
+                # # Apply rotation to each slice in the 3D array
+                # rotated_image = np.array([np.rot90(slice) for slice in image])
+                # rotated_target = np.array([np.rot90(slice) for slice in target])
+                # rotated_dl = np.array([np.rot90(slice) for slice in dl_image])
+                # rotated_difference = np.array([np.rot90(slice) for slice in difference])
+
                 # Append the matrices to the lists
                 image_matrices.append(image)
                 target_matrices.append(target)
@@ -459,6 +465,7 @@ class ImageProcessor:
         df['dl_image_matrix'] = dl_image_matrices
         df['difference_matrices'] = difference_matrices
         return df
+
     
 
 
