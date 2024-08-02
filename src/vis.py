@@ -401,3 +401,75 @@ def visualize_coronal_masked(masked_nac_img, masked_predicted_img, masked_refere
 
 
 
+def plot_losses(df_losses, method):
+    # Average the losses per epoch for each type (Training and Validation)
+    df_avg_losses = df_losses.groupby(['Epoch', 'Type']).mean().reset_index()
+
+    # Filter data based on selections
+    traces = []
+    
+    train_losses = df_avg_losses[df_avg_losses['Type'] == 'Training']
+    train_trace = go.Scatter(
+        x=train_losses['Epoch'],
+        y=train_losses['Loss'],
+        mode='lines',
+        name='Training Loss',
+        line=dict(color='blue')
+    )
+    traces.append(train_trace)
+
+    val_losses = df_avg_losses[df_avg_losses['Type'] == 'Validation']
+    val_trace = go.Scatter(
+        x=val_losses['Epoch'],
+        y=val_losses['Loss'],
+        mode='lines',
+        name='Validation Loss',
+        line=dict(color='red')
+    )
+    traces.append(val_trace)
+
+    layout = go.Layout(
+        title=f'{method} Training and Validation Losses',
+        xaxis=dict(title='Epoch'),
+        yaxis=dict(title='Loss'),
+        hovermode='closest'
+    )
+
+    fig = go.Figure(data=traces, layout=layout)
+    return fig
+
+
+def plot_metric(result_df, metric, subtitle, dataset_labels, colors, grouping_column, tickvals, ticktext):
+    fig = go.Figure()
+    for dataset in dataset_labels:
+        for group in result_df[grouping_column].unique():
+            filtered_data = result_df[(result_df['Dataset'] == dataset) & (result_df[grouping_column] == group)]
+            color_idx = (dataset_labels.index(dataset) * len(result_df[grouping_column].unique()) + list(result_df[grouping_column].unique()).index(group)) % len(colors)
+            fig.add_trace(go.Box(
+                y=filtered_data[metric],
+                name=f"{dataset} ({group})",
+                boxmean=True,
+                marker_color=colors[color_idx],
+                boxpoints='suspectedoutliers'
+            ))
+
+    fig.update_layout(
+        title=f"                    {metric}",
+        yaxis_title=subtitle,
+        boxmode='group',
+        legend=dict(font=dict(size=6)),
+        margin=dict(l=0, r=0, t=40, b=40),
+        height=250,
+        width=600,
+        xaxis=dict(
+            linecolor='black',
+            tickvals=tickvals,
+            ticktext=ticktext,
+            tickangle=0
+        ),
+        yaxis=dict(
+            linecolor='black',
+            tickangle=0
+        )
+    )
+    return fig

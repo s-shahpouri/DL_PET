@@ -1,0 +1,128 @@
+/* Sidebar Styling with Two Background Images */
+[data-testid="stSidebar"] {
+    background-image: 
+        url('https://impetus.aau.at/wp-content/uploads/2019/09/logo_hanze.png'),
+        url('https://bereausk.sirv.com/bfe-ea/2022/09/InselGruppe_Logo_RGB-1.png');
+    background-size: 100px, 120px;
+    background-repeat: no-repeat, no-repeat;
+    background-position: 10px 20px, 120px 20px; /* Adjust as needed */
+    padding-top: 20px; /* Adjust this to ensure there's space for content below the logos */
+}
+
+/* General Styling for Sidebar */
+.sidebar-logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Card */
+/* Adapted from https://startbootstrap.com/theme/sb-admin-2 */
+div.css-1r6slb0.e1tzin5v2 {
+background-color: #FFFFFF;
+border: 1px solid #CCCCCC;
+padding: 5% 5% 5% 10%;
+border-radius: 5px;
+
+border-left: 0.5rem solid #9AD8E1 !important;
+box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+
+}
+
+label.css-mkogse.e16fv1kl2 {
+color: #36b9cc !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+}
+
+
+/* Move block container higher */
+div.block-container.css-18e3th9.egzxvld2 {
+margin-top: -5em;
+}
+
+
+/* Hide hamburger menu and footer */
+div.css-r698ls.e8zbici2 {
+display: none;
+}
+
+footer.css-ipbk5a.egzxvld4 {
+display: none;
+}
+
+footer.css-12gp8ed.eknhn3m4 {
+display: none;
+}
+
+div.vg-tooltip-element {
+display: none;
+}
+
+.header {
+    text-align: center;
+    font-size: 24px;
+    color: #003366;
+    font-weight: bold;
+    margin-top: -50px;
+}
+
+.subheader {
+    text-align: center;
+    font-size: 18px;
+    color: #003366;
+    margin-bottom: 10px;
+}
+.centered-lottie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the container takes full width */
+    height: auto; /* Optional: define a height if necessary */
+    margin-top: 20px;
+}
+.logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.logos img {
+    width: 150px;
+    margin: 0 20px; /* Adjusted for better spacing */
+}
+
+
+/* Style for the legend in the plotly plots */
+.legend {
+    font-size: 10px;
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+/* Custom style for Streamlit tabs */
+div[role="tab"] {
+    font-size: 28px !important; /* Increase font size */
+    font-weight: bold !important; /* Make the text bold */
+    color: #003366 !important; /* Customize the text color */
+}
+/* Custom style for Streamlit tabs */
+div[data-baseweb="tab"] {
+    font-size: 18px !important; /* Adjust font size as needed */
+    font-weight: bold !important; /* Make text bold */
+    color: #003366 !important; /* Customize text color */
+    border: 2px solid #003366 !important; /* Add border around each tab */
+    border-radius: 5px; /* Add rounded corners */
+    padding: 5px 10px; /* Add padding for better spacing */
+    margin-right: 10px; /* Space between tabs */
+    margin-bottom: 0px; /* Remove bottom margin */
+    text-align: center; /* Center the text */
+    display: inline-block; /* Ensure border wraps around text */
+}
+
+div[data-baseweb="tab-list"] > div {
+    margin-right: 5px !important; /* Space between tabs */
+}
