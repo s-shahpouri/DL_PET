@@ -126,3 +126,7 @@ div[data-baseweb="tab"] {
 div[data-baseweb="tab-list"] > div {
     margin-right: 5px !important; /* Space between tabs */
 }
+
+.small-font {
+    font-size:12px !important;
+}
