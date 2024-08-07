@@ -390,6 +390,9 @@ import nibabel as nib
 import numpy as np
 import pandas as pd
 
+import os
+import glob
+
 class ImageProcessor:
     def __init__(self, artifact_output_dir, nac_factor, mac_factor, hint):
         self.artifact_output_dir = artifact_output_dir
@@ -400,7 +403,14 @@ class ImageProcessor:
     def find_dl_image_path(self, patient_folder_name_image):
         """Find the deep learning image path based on the patient folder name and hint."""
         search_pattern = os.path.join(self.artifact_output_dir, "**", f"{patient_folder_name_image}*{self.hint}.nii.gz")
+        print(f"Searching for DL image with pattern: {search_pattern}")  # Debug print
+
+        # Print all files in the directory for verification
+        all_files = glob.glob(os.path.join(self.artifact_output_dir, "**"), recursive=True)
+        print(f"All files in directory: {all_files}")
+
         found_paths = glob.glob(search_pattern, recursive=True)
+        print(f"Found paths: {found_paths}")  # Debug print
         if found_paths:
             return found_paths[0]  # Return the first match
         else:
@@ -437,12 +447,6 @@ class ImageProcessor:
                 dl_image = (nib.load(dl_image_path).get_fdata()) * self.mac_factor
                 difference = (target - dl_image) / self.mac_factor
                 difference = np.clip(difference, -1, 1)
-                
-                # # Apply rotation to each slice in the 3D array
-                # rotated_image = np.array([np.rot90(slice) for slice in image])
-                # rotated_target = np.array([np.rot90(slice) for slice in target])
-                # rotated_dl = np.array([np.rot90(slice) for slice in dl_image])
-                # rotated_difference = np.array([np.rot90(slice) for slice in difference])
 
                 # Append the matrices to the lists
                 image_matrices.append(image)
@@ -465,9 +469,6 @@ class ImageProcessor:
         df['dl_image_matrix'] = dl_image_matrices
         df['difference_matrices'] = difference_matrices
         return df
-
-    
-
 
 def load_df_from_pickle(filename='/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl'):
     """Load the DataFrame from a Pickle file."""
