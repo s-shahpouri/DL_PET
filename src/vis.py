@@ -160,22 +160,48 @@ high_contrast_greys = [
     [1.0, 'rgb(0, 0, 0)']         # Pure black for hot spots
 ]
 
-def rotate_and_flip(image, target, dl_image, difference_image, n):
+def rotate_and_flip_cor(image, target, dl_image, difference_image=None, n=None):
     """
     Rotate and flip the images for correct display orientation.
     """
     input_slice = np.rot90(image[:, n, :])
     target_slice = np.rot90(target[:, n, :])
     dl_slice = np.rot90(dl_image[:, n, :])
-    difference_slice = np.rot90(difference_image[:, n, :])
 
     # Flip the slices vertically to match Bokeh's default origin
     input_slice = np.flipud(input_slice)
     target_slice = np.flipud(target_slice)
     dl_slice = np.flipud(dl_slice)
-    difference_slice = np.flipud(difference_slice)
+
+    if difference_image is not None:
+        difference_slice = np.rot90(difference_image[:, n, :])
+        difference_slice = np.flipud(difference_slice)
+    else:
+        difference_slice = None
 
     return input_slice, target_slice, dl_slice, difference_slice
+
+def rotate_and_flip_axial(image, target, dl_image, difference_image=None, n=None):
+    """
+    Rotate and flip the images for correct display orientation.
+    """
+    input_slice = np.rot90(image[:, :, n])
+    target_slice = np.rot90(target[:, :, n])
+    dl_slice = np.rot90(dl_image[:, :, n])
+
+    # Flip the slices vertically to match Bokeh's default origin
+    input_slice = np.flipud(input_slice)
+    target_slice = np.flipud(target_slice)
+    dl_slice = np.flipud(dl_slice)
+
+    if difference_image is not None:
+        difference_slice = np.rot90(difference_image[:, :, n])
+        difference_slice = np.flipud(difference_slice)
+    else:
+        difference_slice = None
+
+    return input_slice, target_slice, dl_slice, difference_slice
+
 
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -188,7 +214,7 @@ def dash_plot_artifact(image, target, dl_image, difference_image, n):
     n = min(n, image.shape[1] - 1)
 
     # Extract the nth slice without any rotation or normalization
-    input_slice, target_slice, dl_slice, difference_slice = rotate_and_flip(image, target, dl_image, difference_image, n)
+    input_slice, target_slice, dl_slice, difference_slice = rotate_and_flip_cor(image, target, dl_image, difference_image, n)
 
     # Create a subplot grid in Plotly
     fig = make_subplots(rows=1, cols=4, subplot_titles=("Input", "Target", "DL Output", "Difference"))
@@ -213,6 +239,97 @@ def dash_plot_artifact(image, target, dl_image, difference_image, n):
     st.plotly_chart(fig)
 
 
+up = 99.5
+down = 0.0
+
+def auto_adjust_contrast(slice_data, lower_percentile=0.2, upper_percentile=99.8):
+    """
+    Automatically adjust contrast by setting intensity limits based on percentiles.
+    """
+    vmin = np.percentile(slice_data, lower_percentile)
+    vmax = np.percentile(slice_data, upper_percentile)
+    return vmin, vmax
+
+def dash_plot_model(input_slice, target_slice, dl_slice, colormap='Jet', title="", width=700, height=500):
+    """
+    Display medical images for a patient: input, target, deep learning output, and the difference.
+    """
+    # Auto-adjust contrast for each slice
+    vmin_input, vmax_input = auto_adjust_contrast(input_slice)
+    vmin_target, vmax_target = auto_adjust_contrast(target_slice)
+    vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+
+    # Create a subplot grid in Plotly
+    fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
+
+    # Input Image
+    fig.add_trace(go.Heatmap(z=input_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.28, thickness=10, len=1),
+                             zmin=vmin_input, zmax=vmax_input), row=1, col=1)
+
+    # Target Image
+    fig.add_trace(go.Heatmap(z=target_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.635, thickness=10, len=1),
+                             zmin=vmin_target, zmax=vmax_target), row=1, col=2)
+
+    # DL Image
+    fig.add_trace(go.Heatmap(z=dl_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.99, thickness=10, len=1),
+                             zmin=vmin_dl, zmax=vmax_dl), row=1, col=3)
+    
+    # Turn off axis labels for the second and third plots
+    fig.update_xaxes(showticklabels=False, row=1, col=2)
+    fig.update_xaxes(showticklabels=False, row=1, col=3)
+    fig.update_yaxes(showticklabels=False, row=1, col=2)
+    fig.update_yaxes(showticklabels=False, row=1, col=3)
+
+    # Adjust the layout to ensure the colorbars don't overlap
+    fig.update_layout(
+        margin=dict(l=10, r=10, t=30, b=10)
+    )
+
+    # Display the plot in Streamlit
+    st.plotly_chart(fig)
+
+def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', title=""):
+    """
+    Display medical images for a patient: input, target, deep learning output, and the difference.
+    """
+    # Calculate 99.8th percentile for contrast adjustment
+    vmin_input, vmax_input = auto_adjust_contrast(input_slice)
+    vmin_target, vmax_target = auto_adjust_contrast(target_slice)
+    vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+    # Create a subplot grid in Plotly
+    fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
+
+    # Input Image
+    fig.add_trace(go.Heatmap(z=input_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.28, thickness=10, len=1),
+                             zmin=vmin_input, zmax=vmax_input), row=1, col=1)
+
+    # Target Image
+    fig.add_trace(go.Heatmap(z=target_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.635, thickness=10, len=1),
+                             zmin=vmin_target, zmax=vmax_target), row=1, col=2)
+
+    # DL Image
+    fig.add_trace(go.Heatmap(z=dl_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.99, thickness=10, len=1),
+                             zmin=vmin_dl, zmax=vmax_dl), row=1, col=3)
+    # Adjust axis numbers sizes and remove them from the second and third plots
+    fig.update_xaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
+    fig.update_yaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
+
+    # Turn off axis labels for the second and third plots
+    fig.update_xaxes(showticklabels=False, row=1, col=2)
+    fig.update_xaxes(showticklabels=False, row=1, col=3)
+    fig.update_yaxes(showticklabels=False, row=1, col=2)
+    fig.update_yaxes(showticklabels=False, row=1, col=3)
+
+
+    # Adjust the layout to ensure the colorbars don't overlap
+    fig.update_layout(
+        width=800,      # Set the width of the plot
+        height=250,    # Set the height of the plot
+        margin=dict(l=10, r=10, t=30, b=10)
+    )
+
+    # Display the plot in Streamlit
+    st.plotly_chart(fig)
 
 
 def plot_adcm_final_trans(nac_img, dl_adcm_im, dl_final, mac_images, title_prefix=''):
@@ -430,3 +547,35 @@ def plot_metric(result_df, metric, subtitle, dataset_labels, colors, grouping_co
         )
     )
     return fig
+
+
+def model_visualize_coronal_dash(data, predict, n, title, cm, Norm=False):
+    fig, axes = plt.subplots(1, 3, figsize=(12, 6))  # Adjusted for three plots
+
+    titles = ["Input", "Ground_truth", title]
+    slices = [
+        np.rot90(data["image"][0, 0, :, n, :]),
+        np.rot90(data["target"][0, 0, :, n, :]),
+        np.rot90(predict.detach().cpu()[0, 0, :, n, :])
+    ]
+
+    vmin, vmax = None, None
+    if Norm:
+        # Find the min and max of all colors for use in setting the color scale.
+        vmin = min(slice.min() for slice in slices)
+        vmax = max(slice.max() for slice in slices)
+
+    # Display the images with color bars
+    for ax, slice, title in zip(axes, slices, titles):
+        img = ax.imshow(slice, cmap=cm, vmin=vmin, vmax=vmax)
+        ax.set_title(title)
+        ax.axis('off')
+        fig.colorbar(img, ax=ax, orientation='vertical', fraction=0.046, pad=0.04)
+
+    plt.tight_layout()
+    # Instead of plt.show(), use st.pyplot to display the plot in Streamlit
+    st.pyplot(fig)
+
+    # Close the figure after displaying it to avoid memory leaks
+    plt.close(fig)
+

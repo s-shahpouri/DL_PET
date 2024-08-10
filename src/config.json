@@ -11,8 +11,8 @@
     "artifact_dir": "/students/2023-2024/master/Shahpouri/DATA/ARTIFACTUAL_TOTAL",
     "artifact_dir_dash": "/students/2023-2024/master/Shahpouri/DATA/ARTIFACT_DASH",
     "artifact_output_dir": "/students/2023-2024/master/Shahpouri/ARTIFACT_OUTPUT__TOTAL",
-    "dash_output_dir": "/students/2023-2024/master/Shahpouri/ARTIFACT_DASH",
-    
+    "dash_output_dir_artifact": "!!!/students/2023-2024/master/Shahpouri/ARTIFACT_DASH",
+    "dash_output_dir": "/students/2023-2024/master/Shahpouri/DASH_OUTPUT",
     
  
     "artifact_repeated_dir":"/students/2023-2024/master/Shahpouri/DATA/Repeated",
@@ -28,10 +28,10 @@
     "nac_factor_fdg":2,
     "mac_factor_fdg":7,
 
-    "external_centers": [],
-    "train_percent": 0.0,
-    "val_percent": 0.0,
-    "test_percent": 1.0,
+    "external_centers": ["C5"],
+    "train_percent": 0.8,
+    "val_percent": 0.1,
+    "test_percent": 0.1,
     
 
     "learning_rate": 0.001,

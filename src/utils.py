@@ -479,3 +479,82 @@ def load_df_from_pickle(filename='/students/2023-2024/master/Shahpouri/DATA/Arti
     except FileNotFoundError:
         print(f"File {filename} not found.")
         return None
+    
+
+
+import os
+from src.data_preparation import LoaderFactory
+import torch
+from monai.inferers import sliding_window_inference
+from src.model_manager import ModelLoader
+from plotly.subplots import make_subplots
+import numpy as np
+from monai.transforms import Compose, Invertd, SaveImaged
+from monai.data import decollate_batch
+import nibabel as nib
+from src.utils import Config
+
+
+# Load configuration
+config_file = 'src/config.json'
+config = Config(config_file)
+
+
+# Utility functions
+def get_image_paths(single_test_file):
+    base_name = os.path.splitext(os.path.splitext(os.path.basename(single_test_file['image']))[0])[0]
+    subfolder_path = os.path.join(config.dash_output_dir, base_name)
+    dl_image_path = os.path.join(subfolder_path, base_name, f"{base_name}_dash.nii.gz")
+    return base_name, subfolder_path, dl_image_path
+
+def load_images(single_test_file, dl_image_path):
+    input_image = nib.load(single_test_file['image']).get_fdata()
+    target_image = nib.load(single_test_file['target']).get_fdata()
+    dl_image = nib.load(dl_image_path).get_fdata() if os.path.exists(dl_image_path) else None
+    return input_image, target_image, dl_image
+
+def run_model_and_save(single_test_file, subfolder_path, dl_image_path):
+    loader_factory = LoaderFactory(
+        train_files=None,
+        val_files=None,
+        test_files=[single_test_file],
+        patch_size=config.patch_size,
+        spacing=config.spacing,
+        spatial_size=config.spatial_size,
+        normalize=config.normalize
+    )
+
+    single_test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=config.num_workers['test'], shuffle=False)
+    model_loader = ModelLoader(config)
+    model = model_loader.call_model()
+    model_path = 'Results/model_4_24_23_17.pth'
+
+    if os.path.exists(model_path):
+        model.load_state_dict(torch.load(model_path))
+        model.eval()
+    else:
+        raise FileNotFoundError(f"Model in {model_path} not found.")
+
+    post_transforms = Compose(
+        [
+            Invertd(
+                keys="pred",
+                transform=loader_factory.get_test_transforms(),
+                orig_keys="image",
+                meta_keys="pred_meta_dict",
+                orig_meta_keys="image_meta_dict",
+                meta_key_postfix="meta_dict",
+                nearest_interp=False,
+                to_tensor=True,
+            ),
+            SaveImaged(keys="pred", meta_keys="pred_meta_dict", output_dir=subfolder_path, output_postfix="dash", resample=False), 
+        ]
+    )
+
+    with torch.no_grad():
+        for data in single_test_loader:
+            data["pred"] = sliding_window_inference(data["image"].to(config.device), (168, 168, 16), 64, model, progress=True, overlap=0.70)
+            post_processed = [post_transforms(i) for i in decollate_batch(data)]
+
+    dl_image = nib.load(dl_image_path).get_fdata()
+    return dl_image

@@ -62,7 +62,7 @@ display: none;
 
 .header {
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     color: #003366;
     font-weight: bold;
     margin-top: -50px;
@@ -129,4 +129,14 @@ div[data-baseweb="tab-list"] > div {
 
 .small-font {
     font-size:12px !important;
+}
+
+/* Reduce the margin above the tabs */
+.css-1d391kg {
+    margin-top: -20px;
+}
+
+/* Optional: Adjust the padding or margin of other elements as needed */
+.css-12oz5g7 {
+    margin-top: 0px;
 }
