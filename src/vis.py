@@ -239,10 +239,8 @@ def dash_plot_artifact(image, target, dl_image, difference_image, n):
     st.plotly_chart(fig)
 
 
-up = 99.5
-down = 0.0
 
-def auto_adjust_contrast(slice_data, lower_percentile=0.2, upper_percentile=99.8):
+def auto_adjust_contrast(slice_data, lower_percentile=0.1, upper_percentile=99.9):
     """
     Automatically adjust contrast by setting intensity limits based on percentiles.
     """
@@ -250,14 +248,21 @@ def auto_adjust_contrast(slice_data, lower_percentile=0.2, upper_percentile=99.8
     vmax = np.percentile(slice_data, upper_percentile)
     return vmin, vmax
 
-def dash_plot_model(input_slice, target_slice, dl_slice, colormap='Jet', title="", width=700, height=500):
+# Updated `dash_plot_model` function to include the `auto_adjust` option
+def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=800, height=400):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
     """
-    # Auto-adjust contrast for each slice
-    vmin_input, vmax_input = auto_adjust_contrast(input_slice)
-    vmin_target, vmax_target = auto_adjust_contrast(target_slice)
-    vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+    if auto_adjust:
+        # Auto-adjust contrast for each slice
+        vmin_input, vmax_input = auto_adjust_contrast(input_slice)
+        vmin_target, vmax_target = auto_adjust_contrast(target_slice)
+        vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+    else:
+        # Use full range of the data
+        vmin_input, vmax_input = input_slice.min(), input_slice.max()
+        vmin_target, vmax_target = target_slice.min(), target_slice.max()
+        vmin_dl, vmax_dl = dl_slice.min(), dl_slice.max()
 
     # Create a subplot grid in Plotly
     fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
@@ -273,29 +278,45 @@ def dash_plot_model(input_slice, target_slice, dl_slice, colormap='Jet', title="
     # DL Image
     fig.add_trace(go.Heatmap(z=dl_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.99, thickness=10, len=1),
                              zmin=vmin_dl, zmax=vmax_dl), row=1, col=3)
-    
+
+    # Adjust axis numbers sizes and remove them from the second and third plots
+    fig.update_xaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
+    fig.update_yaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
+
     # Turn off axis labels for the second and third plots
     fig.update_xaxes(showticklabels=False, row=1, col=2)
     fig.update_xaxes(showticklabels=False, row=1, col=3)
     fig.update_yaxes(showticklabels=False, row=1, col=2)
     fig.update_yaxes(showticklabels=False, row=1, col=3)
 
-    # Adjust the layout to ensure the colorbars don't overlap
+    # Adjust the layout to ensure the colorbars don't overlap and set custom size
     fig.update_layout(
+        title=title,
+        width=width,      # Set the width of the plot
+        height=height,    # Set the height of the plot
         margin=dict(l=10, r=10, t=30, b=10)
     )
 
     # Display the plot in Streamlit
     st.plotly_chart(fig)
 
-def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', title=""):
+    
+
+def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=800, height=250):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
     """
-    # Calculate 99.8th percentile for contrast adjustment
-    vmin_input, vmax_input = auto_adjust_contrast(input_slice)
-    vmin_target, vmax_target = auto_adjust_contrast(target_slice)
-    vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+    if auto_adjust:
+        # Auto-adjust contrast for each slice
+        vmin_input, vmax_input = auto_adjust_contrast(input_slice)
+        vmin_target, vmax_target = auto_adjust_contrast(target_slice)
+        vmin_dl, vmax_dl = auto_adjust_contrast(dl_slice)
+    else:
+        # Use full range of the data
+        vmin_input, vmax_input = input_slice.min(), input_slice.max()
+        vmin_target, vmax_target = target_slice.min(), target_slice.max()
+        vmin_dl, vmax_dl = dl_slice.min(), dl_slice.max()
+
     # Create a subplot grid in Plotly
     fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
 
@@ -323,13 +344,75 @@ def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', t
 
     # Adjust the layout to ensure the colorbars don't overlap
     fig.update_layout(
-        width=800,      # Set the width of the plot
-        height=250,    # Set the height of the plot
+        width=width,      # Set the width of the plot
+        height=height,    # Set the height of the plot
         margin=dict(l=10, r=10, t=30, b=10)
     )
-
     # Display the plot in Streamlit
     st.plotly_chart(fig)
+
+
+# Main visualization function
+def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
+
+    if not os.path.exists(dl_image_path):
+        os.makedirs(subfolder_path, exist_ok=True)
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
+    else:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+
+    if dl_image is not None:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+        input_slice, target_slice, dl_slice, _ = rotate_and_flip_cor(
+            input_image,
+            target_image,
+            dl_image,
+            None,
+            slice_number
+        )
+        dash_plot_model_cor(
+            input_slice,
+            target_slice,
+            dl_slice,
+            colormap=colormap,
+            title="",
+            auto_adjust=auto_adjust
+        )
+    else:
+        st.write("Failed to load or generate DL image.")
+
+from src.utils import get_image_paths, run_model_and_save, load_images
+
+def vis_model_dash_axial(single_test_file, slice_number=100, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
+
+    if not os.path.exists(dl_image_path):
+        os.makedirs(subfolder_path, exist_ok=True)
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
+    else:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+
+    if dl_image is not None:
+        input_slice, target_slice, dl_slice, _ = rotate_and_flip_axial(
+            input_image,
+            target_image,
+            dl_image,
+            None,
+            slice_number
+        )
+        dash_plot_model_axial(
+            input_slice,
+            target_slice,
+            dl_slice,
+            colormap=colormap,
+            title="",
+            auto_adjust=auto_adjust
+        )
+    else:
+        st.write("Failed to load or generate DL image.")
+
+
 
 
 def plot_adcm_final_trans(nac_img, dl_adcm_im, dl_final, mac_images, title_prefix=''):

@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import json
 from streamlit_lottie import st_lottie
 from src.utils import Config, get_image_paths, run_model_and_save, load_images
-from src.vis import rotate_and_flip_cor, rotate_and_flip_axial, dash_plot_model, dash_plot_model_axial
+from src.vis import rotate_and_flip_cor, rotate_and_flip_axial, dash_plot_model_cor, dash_plot_model_axial
 import os
 from src.data_preparation import LoaderFactory
 import torch
@@ -48,61 +48,7 @@ test_name = [
     for file_info in test_files
 ]
 
-# Main visualization functions
-def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet'):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
-
-    if not os.path.exists(dl_image_path):
-        os.makedirs(subfolder_path, exist_ok=True)
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
-    else:
-        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
-
-    if dl_image is not None:
-        input_slice, target_slice, dl_slice, _ = rotate_and_flip_cor(
-            input_image,
-            target_image,
-            dl_image,
-            None,
-            slice_number
-        )
-        dash_plot_model(
-            input_slice,
-            target_slice,
-            dl_slice,
-            colormap=colormap,
-            title="DL Post-Processed (Coronal View)"
-        )
-    else:
-        st.write("Failed to load or generate DL image.")
-
-def vis_model_dash_axial(single_test_file, slice_number=100, colormap='Jet'):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
-
-    if not os.path.exists(dl_image_path):
-        os.makedirs(subfolder_path, exist_ok=True)
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
-    else:
-        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
-
-    if dl_image is not None:
-        input_slice, target_slice, dl_slice, _ = rotate_and_flip_axial(
-            input_image,
-            target_image,
-            dl_image,
-            None,
-            slice_number
-        )
-        dash_plot_model_axial(
-            input_slice,
-            target_slice,
-            dl_slice,
-            colormap=colormap,
-            title="DL Post-Processed (Axial View)"
-        )
-    else:
-        st.write("Failed to load or generate DL image.")
-
+from src.vis import vis_model_dash_axial, vis_model_dash_cor
 # Layout setup and execution
 col1, col2, col3 = st.columns([1, 8, 1])
 with col2:
@@ -121,7 +67,7 @@ with st.sidebar:
 
     # Sidebar or main interface for selecting the color map
     selected_colormap = st.selectbox("Select a Color Map", available_colormaps, index=0)
-
+    auto_adjust = st.checkbox("Auto Adjust Contrast", value=False)
     st.sidebar.markdown("---")
 
 with tab1:
@@ -136,17 +82,17 @@ with tab1:
     if single_test_file:
         # Create layout for coronal and axial views
 
-        col1, col2 = st.columns([1, 3])
+        col1, col2 = st.columns([1, 5])
         with col1:
             slice_number_coronal = st.slider("Select Coronal Slice Index", 0, nib.load(single_test_file['image']).get_fdata().shape[1] - 1, 85)
         with col2:
-            vis_model_dash_cor(single_test_file, slice_number=slice_number_coronal, colormap=selected_colormap)
+            vis_model_dash_cor(single_test_file, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust = auto_adjust)
 
 
-        col3, col4 = st.columns([1, 3])
+        col3, col4 = st.columns([1, 5])
         with col3:
             slice_number_axial = st.slider("Select Axial Slice Index", 0, nib.load(single_test_file['image']).get_fdata().shape[2] - 1, 85)
         with col4:
-            vis_model_dash_axial(single_test_file, slice_number=slice_number_axial, colormap=selected_colormap)
+            vis_model_dash_axial(single_test_file, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust = auto_adjust)
     else:
         st.write("Test file not found.")
