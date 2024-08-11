@@ -513,7 +513,9 @@ def load_images(single_test_file, dl_image_path):
     dl_image = nib.load(dl_image_path).get_fdata() if os.path.exists(dl_image_path) else None
     return input_image, target_image, dl_image
 
-def run_model_and_save(single_test_file, subfolder_path, dl_image_path):
+import time
+import streamlit as st
+def run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progress_bar, st_progress_text):
     loader_factory = LoaderFactory(
         train_files=None,
         val_files=None,
@@ -553,8 +555,24 @@ def run_model_and_save(single_test_file, subfolder_path, dl_image_path):
 
     with torch.no_grad():
         for data in single_test_loader:
-            data["pred"] = sliding_window_inference(data["image"].to(config.device), (168, 168, 16), 64, model, progress=True, overlap=0.70)
-            post_processed = [post_transforms(i) for i in decollate_batch(data)]
+            # Simulate progress bar updates
+            for progress in np.linspace(0, 0.7, num=7):
+                time.sleep(0.1)  # Sleep to simulate processing time
+                st_progress_bar.progress(progress)
+                st_progress_text.text(f"Processing: {int(progress * 100)}% complete")
 
-    dl_image = nib.load(dl_image_path).get_fdata()
+            # Perform actual inference
+            data["pred"] = sliding_window_inference(
+                data["image"].to(config.device), 
+                (168, 168, 16), 
+                64, 
+                model, 
+                progress=False,  # Disable internal progress to avoid conflict
+                overlap=0.70
+            )
+
+            # Apply post-processing
+            post_processed = [post_transforms(i) for i in decollate_batch(data)]
+        dl_image = nib.load(dl_image_path).get_fdata()
+
     return dl_image

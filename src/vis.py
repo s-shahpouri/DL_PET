@@ -249,7 +249,7 @@ def auto_adjust_contrast(slice_data, lower_percentile=0.1, upper_percentile=99.9
     return vmin, vmax
 
 # Updated `dash_plot_model` function to include the `auto_adjust` option
-def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=800, height=400):
+def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=700, height=350):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
     """
@@ -265,7 +265,7 @@ def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', tit
         vmin_dl, vmax_dl = dl_slice.min(), dl_slice.max()
 
     # Create a subplot grid in Plotly
-    fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
+    fig = make_subplots(rows=1, cols=3, subplot_titles=("Non-ASC", "CT-ASC", "DL-ASC"))
 
     # Input Image
     fig.add_trace(go.Heatmap(z=input_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.28, thickness=10, len=1),
@@ -301,8 +301,78 @@ def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', tit
     st.plotly_chart(fig)
 
     
+def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
 
-def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=800, height=250):
+    if not os.path.exists(dl_image_path):
+        os.makedirs(subfolder_path, exist_ok=True)
+
+        # Initialize Streamlit progress bar and text
+        st_progress_bar = st.progress(0)
+        st_progress_text = st.empty()
+
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progress_bar, st_progress_text)
+
+        # Clear progress bar and text after completion
+        st_progress_bar.empty()
+        st_progress_text.empty()
+
+    else:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+
+    if dl_image is not None:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+        input_slice, target_slice, dl_slice, _ = rotate_and_flip_cor(
+            input_image,
+            target_image,
+            dl_image,
+            None,
+            slice_number
+        )
+        dash_plot_model_cor(
+            input_slice,
+            target_slice,
+            dl_slice,
+            colormap=colormap,
+            title="",
+            auto_adjust=auto_adjust
+        )
+    else:
+        st.write("Failed to load or generate DL image.")
+
+def vis_model_dash_axial(single_test_file, slice_number=100, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
+
+    if not os.path.exists(dl_image_path):
+        os.makedirs(subfolder_path, exist_ok=True)
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
+    else:
+        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
+
+    if dl_image is not None:
+        input_slice, target_slice, dl_slice, _ = rotate_and_flip_axial(
+            input_image,
+            target_image,
+            dl_image,
+            None,
+            slice_number
+        )
+        dash_plot_model_axial(
+            input_slice,
+            target_slice,
+            dl_slice,
+            colormap=colormap,
+            title="",
+            auto_adjust=auto_adjust
+        )
+    else:
+        st.write("Failed to load or generate DL image.")
+
+
+
+
+
+def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', title="", auto_adjust=False, width=700, height=200):
     """
     Display medical images for a patient: input, target, deep learning output, and the difference.
     """
@@ -318,7 +388,7 @@ def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', t
         vmin_dl, vmax_dl = dl_slice.min(), dl_slice.max()
 
     # Create a subplot grid in Plotly
-    fig = make_subplots(rows=1, cols=3, subplot_titles=("Input", "Target", "DL"))
+    fig = make_subplots(rows=1, cols=3)
 
     # Input Image
     fig.add_trace(go.Heatmap(z=input_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.28, thickness=10, len=1),
@@ -352,66 +422,9 @@ def dash_plot_model_axial(input_slice, target_slice, dl_slice, colormap='Jet', t
     st.plotly_chart(fig)
 
 
-# Main visualization function
-def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_adjust=False):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
 
-    if not os.path.exists(dl_image_path):
-        os.makedirs(subfolder_path, exist_ok=True)
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
-    else:
-        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
-
-    if dl_image is not None:
-        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
-        input_slice, target_slice, dl_slice, _ = rotate_and_flip_cor(
-            input_image,
-            target_image,
-            dl_image,
-            None,
-            slice_number
-        )
-        dash_plot_model_cor(
-            input_slice,
-            target_slice,
-            dl_slice,
-            colormap=colormap,
-            title="",
-            auto_adjust=auto_adjust
-        )
-    else:
-        st.write("Failed to load or generate DL image.")
 
 from src.utils import get_image_paths, run_model_and_save, load_images
-
-def vis_model_dash_axial(single_test_file, slice_number=100, colormap='Jet', auto_adjust=False):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
-
-    if not os.path.exists(dl_image_path):
-        os.makedirs(subfolder_path, exist_ok=True)
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
-    else:
-        input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
-
-    if dl_image is not None:
-        input_slice, target_slice, dl_slice, _ = rotate_and_flip_axial(
-            input_image,
-            target_image,
-            dl_image,
-            None,
-            slice_number
-        )
-        dash_plot_model_axial(
-            input_slice,
-            target_slice,
-            dl_slice,
-            colormap=colormap,
-            title="",
-            auto_adjust=auto_adjust
-        )
-    else:
-        st.write("Failed to load or generate DL image.")
-
 
 
 

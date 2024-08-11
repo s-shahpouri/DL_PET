@@ -2,18 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objs as go
 import json
-from streamlit_lottie import st_lottie
-from src.utils import Config, get_image_paths, run_model_and_save, load_images
-from src.vis import rotate_and_flip_cor, rotate_and_flip_axial, dash_plot_model_cor, dash_plot_model_axial
+from src.vis import  vis_model_dash_axial, vis_model_dash_cor
 import os
-from src.data_preparation import LoaderFactory
-import torch
-from monai.inferers import sliding_window_inference
-from src.model_manager import ModelLoader
-from plotly.subplots import make_subplots
-import numpy as np
-from monai.transforms import Compose, Invertd, SaveImaged
-from monai.data import decollate_batch
 import nibabel as nib
 
 st.set_page_config(
@@ -47,8 +37,10 @@ test_name = [
     )
     for file_info in test_files
 ]
+dataset_labels = ['IMCM', 'ADCM']
 
-from src.vis import vis_model_dash_axial, vis_model_dash_cor
+
+
 # Layout setup and execution
 col1, col2, col3 = st.columns([1, 8, 1])
 with col2:
@@ -84,15 +76,19 @@ with tab1:
 
         col1, col2 = st.columns([1, 5])
         with col1:
-            slice_number_coronal = st.slider("Select Coronal Slice Index", 0, nib.load(single_test_file['image']).get_fdata().shape[1] - 1, 85)
+            slice_number_coronal = st.slider("Select Coronal Slice", 0, nib.load(single_test_file['image']).get_fdata().shape[1] - 1, 85)
+            st.markdown("")
+            st.header("")
+            st.header("")
+            st.header("")
+            st.markdown("")
+            st.divider()
+            
+            slice_number_axial = st.slider("Select Axial Slice", 0, nib.load(single_test_file['image']).get_fdata().shape[2] - 1, 85)
+
         with col2:
-            vis_model_dash_cor(single_test_file, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust = auto_adjust)
+            vis_model_dash_cor(single_test_file, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust=auto_adjust)
+            vis_model_dash_axial(single_test_file, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust=auto_adjust)
 
-
-        col3, col4 = st.columns([1, 5])
-        with col3:
-            slice_number_axial = st.slider("Select Axial Slice Index", 0, nib.load(single_test_file['image']).get_fdata().shape[2] - 1, 85)
-        with col4:
-            vis_model_dash_axial(single_test_file, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust = auto_adjust)
     else:
         st.write("Test file not found.")
