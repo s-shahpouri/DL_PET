@@ -212,6 +212,8 @@ def calculate_adcm(nac_img, mac_img, epsilon):
     
     return adcm
 
+
+
 def calculate_dl_mac(nac_img, dl_adcm_img, nac_factor, mac_factor, val):
 
     dl_adcm_img = dl_adcm_img * val
@@ -224,7 +226,6 @@ def calculate_dl_mac(nac_img, dl_adcm_img, nac_factor, mac_factor, val):
     dl_final[mask] = (dl_adcm_img[mask] * nac_img[mask]) / mac_factor
     
     return dl_final
-
 
 
 def calculate_adcm_stat(nac_img, mac_img, epsilon):
@@ -501,10 +502,10 @@ config = Config(config_file)
 
 
 # Utility functions
-def get_image_paths(single_test_file):
+def get_image_paths(single_test_file, selected_model):
     base_name = os.path.splitext(os.path.splitext(os.path.basename(single_test_file['image']))[0])[0]
     subfolder_path = os.path.join(config.dash_output_dir, base_name)
-    dl_image_path = os.path.join(subfolder_path, base_name, f"{base_name}_dash.nii.gz")
+    dl_image_path = os.path.join(subfolder_path, base_name, f"{base_name}_{selected_model}.nii.gz")
     return base_name, subfolder_path, dl_image_path
 
 def load_images(single_test_file, dl_image_path):
@@ -515,7 +516,7 @@ def load_images(single_test_file, dl_image_path):
 
 import time
 import streamlit as st
-def run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progress_bar, st_progress_text):
+def run_model_and_save(single_test_file, subfolder_path, dl_image_path, selected_model, st_progress_bar, st_progress_text):
     loader_factory = LoaderFactory(
         train_files=None,
         val_files=None,
@@ -529,7 +530,11 @@ def run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progr
     single_test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=config.num_workers['test'], shuffle=False)
     model_loader = ModelLoader(config)
     model = model_loader.call_model()
-    model_path = 'Results/model_4_24_23_17.pth'
+
+    if selected_model == "ADCM":
+        model_path = 'Results/model_5_2_14_27.pth'
+    else:
+        model_path = 'Results/model_4_24_23_17.pth'
 
     if os.path.exists(model_path):
         model.load_state_dict(torch.load(model_path))
@@ -549,7 +554,7 @@ def run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progr
                 nearest_interp=False,
                 to_tensor=True,
             ),
-            SaveImaged(keys="pred", meta_keys="pred_meta_dict", output_dir=subfolder_path, output_postfix="dash", resample=False), 
+            SaveImaged(keys="pred", meta_keys="pred_meta_dict", output_dir=subfolder_path, output_postfix=selected_model, resample=False), 
         ]
     )
 
@@ -566,13 +571,29 @@ def run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progr
                 data["image"].to(config.device), 
                 (168, 168, 16), 
                 64, 
-                model, 
-                progress=False,  # Disable internal progress to avoid conflict
+                model,
                 overlap=0.70
             )
 
-            # Apply post-processing
+            # Apply post-processing (which will save the processed image)
             post_processed = [post_transforms(i) for i in decollate_batch(data)]
-        dl_image = nib.load(dl_image_path).get_fdata()
+
+            if selected_model == 'ADCM':
+                original_nii = nib.load(dl_image_path)  # Load the original NIfTI image to get the meta
+                dl_adcm = original_nii.get_fdata()
+                nac_img = nib.load(single_test_file['image']).get_fdata()
+                # Apply your custom calculation
+                dl_final = calculate_dl_mac(nac_img, dl_adcm, 2, 5, 50)
+
+                # Create a new NIfTI image with the same header and affine as the original
+                dl_final_nii = nib.Nifti1Image(dl_final, affine=original_nii.affine, header=original_nii.header)
+
+                # Save the final NIfTI image to the same path
+                nib.save(dl_final_nii, dl_image_path)
+
+
+
+            # Load the final processed image
+            dl_image = nib.load(dl_image_path).get_fdata()
 
     return dl_image

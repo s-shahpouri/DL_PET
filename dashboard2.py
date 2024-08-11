@@ -5,6 +5,9 @@ import json
 from src.vis import  vis_model_dash_axial, vis_model_dash_cor
 import os
 import nibabel as nib
+from src.utils import Config, load_df_from_pickle
+from src.vis import dash_plot_artifact
+
 
 st.set_page_config(
     page_title="DL ASC PET App",
@@ -37,9 +40,7 @@ test_name = [
     )
     for file_info in test_files
 ]
-dataset_labels = ['IMCM', 'ADCM']
-
-
+df = load_df_from_pickle('/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl')
 
 # Layout setup and execution
 col1, col2, col3 = st.columns([1, 8, 1])
@@ -51,16 +52,32 @@ tab0, tab1, tab2 = st.tabs(["Home 🏠", "Model 🤖 ", "Artifacts 🩻"])
 
 # Sidebar
 with st.sidebar:
+        # Model selection
+    model_labels = ['IMCM', 'ADCM']
+    selected_model = st.selectbox("Select a Model", model_labels, index=0)
+
     st.sidebar.markdown("---")
-    selected_one = st.sidebar.selectbox("Select a Test File", [name[0] for name in test_name])
+    selected_one = st.sidebar.selectbox("Select a patient", [name[0] for name in test_name])
 
     # List of available color maps in Plotly
-    available_colormaps = ['Jet', 'Viridis', 'Plasma', 'Magma', 'Cividis', 'Turbo', 'RdBu']
+    # available_colormaps = ['Jet', 'Viridis', 'Plasma', 'Magma', 'Cividis', 'Turbo', 'RdBu']
+    available_colormaps = [
+    'Jet', 'Viridis', 'Plasma', 'Magma', 'Cividis', 'Turbo', 'RdBu', 
+    'Inferno', 'Blues', 'Greens', 'Greys', 'Oranges', 'Purples', 'Reds', 
+    'Purpor', 'Sunset', 'Sunsetdark', 'Teal', 'Tealgrn', 'Temps', 
+    'Thermal', 'Aggrnyl', 'Agsunset', 'Amp', 'Deep', 'Dense', 'Earth', 
+    'Electric', 'Pink', 'Portland', 'Rainbow', 'Spectral', 'Tropic', 
+    'Brwnyl', 'Picnic', 'Puor', 'RdGy', 'RdYlBu', 'RdYlGn', 'Geyser', 
+    'Icefire', 'Phase', 'Twilight', 'TwilightShifted', 
+    'Bluered', 'Blackbody']
 
     # Sidebar or main interface for selecting the color map
-    selected_colormap = st.selectbox("Select a Color Map", available_colormaps, index=0)
+    selected_colormap = st.selectbox("Change Color Map", available_colormaps, index=0)
     auto_adjust = st.checkbox("Auto Adjust Contrast", value=False)
     st.sidebar.markdown("---")
+
+
+    selected_patient = st.sidebar.selectbox("Select a artifactual data", df['name'])
 
 with tab1:
     single_test_file = next(
@@ -74,21 +91,68 @@ with tab1:
     if single_test_file:
         # Create layout for coronal and axial views
 
-        col1, col2 = st.columns([1, 5])
+        col1, col2, col3 = st.columns([1,0.1, 5])
         with col1:
+            st.markdown("")
             slice_number_coronal = st.slider("Select Coronal Slice", 0, nib.load(single_test_file['image']).get_fdata().shape[1] - 1, 85)
+
             st.markdown("")
             st.header("")
             st.header("")
             st.header("")
             st.markdown("")
-            st.divider()
+
             
             slice_number_axial = st.slider("Select Axial Slice", 0, nib.load(single_test_file['image']).get_fdata().shape[2] - 1, 85)
 
         with col2:
-            vis_model_dash_cor(single_test_file, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust=auto_adjust)
-            vis_model_dash_axial(single_test_file, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust=auto_adjust)
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+
+                
+        with col3:
+            vis_model_dash_cor(single_test_file, selected_model, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust=auto_adjust)
+            vis_model_dash_axial(single_test_file, selected_model, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust=auto_adjust)
 
     else:
         st.write("Test file not found.")
+
+
+with tab2:
+    st.markdown(f"Artifacts for Patient: {selected_patient}")
+    
+    # Function to get patient data
+    @st.cache_data(show_spinner=False)
+    def get_patient_data(patient_name):
+        patient_data = df[df['name'] == patient_name]
+        if patient_data.empty:
+            return None, None, None, None
+        image = patient_data['image_matrix'].values[0]
+        target = patient_data['target_matrix'].values[0]
+        dl_image = patient_data['dl_image_matrix'].values[0]
+        difference_image = patient_data['difference_matrices'].values[0]
+        return image, target, dl_image, difference_image
+
+    with st.spinner(f"Loading data for {selected_patient}..."):
+        image, target, dl_image, difference_image = get_patient_data(selected_patient)
+
+    if image is not None:
+        # Add a slider for slice index selection
+        num_slices = image.shape[1]  # Assuming images are 3D arrays with shape (x, y, z)
+        slice_index = st.slider("Select Slice Index", 0, num_slices - 1, 85)  # Default to 85 or any valid slice index
+        
+        # Display the selected slice using the provided function
+        dash_plot_artifact(image, target, dl_image, difference_image, slice_index)
+    else:
+        st.write(f"No data found for patient {selected_patient}.")

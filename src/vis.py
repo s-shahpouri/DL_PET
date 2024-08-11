@@ -301,8 +301,8 @@ def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', tit
     st.plotly_chart(fig)
 
     
-def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_adjust=False):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
+def vis_model_dash_cor(single_test_file, selected_model, slice_number=85, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file, selected_model)
 
     if not os.path.exists(dl_image_path):
         os.makedirs(subfolder_path, exist_ok=True)
@@ -311,7 +311,7 @@ def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_a
         st_progress_bar = st.progress(0)
         st_progress_text = st.empty()
 
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path, st_progress_bar, st_progress_text)
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path, selected_model, st_progress_bar, st_progress_text)
 
         # Clear progress bar and text after completion
         st_progress_bar.empty()
@@ -340,12 +340,12 @@ def vis_model_dash_cor(single_test_file, slice_number=85, colormap='Jet', auto_a
     else:
         st.write("Failed to load or generate DL image.")
 
-def vis_model_dash_axial(single_test_file, slice_number=100, colormap='Jet', auto_adjust=False):
-    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file)
+def vis_model_dash_axial(single_test_file, selected_model, slice_number=100, colormap='Jet', auto_adjust=False):
+    base_name, subfolder_path, dl_image_path = get_image_paths(single_test_file, selected_model)
 
     if not os.path.exists(dl_image_path):
         os.makedirs(subfolder_path, exist_ok=True)
-        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path)
+        dl_image = run_model_and_save(single_test_file, subfolder_path, dl_image_path, selected_model)
     else:
         input_image, target_image, dl_image = load_images(single_test_file, dl_image_path)
 
