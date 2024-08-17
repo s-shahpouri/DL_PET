@@ -6,7 +6,7 @@ from src.vis import  vis_model_dash_axial, vis_model_dash_cor
 import os
 import nibabel as nib
 from src.utils import Config, load_df_from_pickle
-from src.vis import dash_plot_artifact
+from src.vis import vis_artifact_dash_cor, vis_artifact_dash_axial
 
 
 st.set_page_config(
@@ -130,8 +130,8 @@ with tab1:
 
 
 with tab2:
-    st.markdown(f"Artifacts for Patient: {selected_patient}")
-    
+    st.session_state.active_tab = "Artifacts 🩻"
+    selected_colormap = 'Greys'
     # Function to get patient data
     @st.cache_data(show_spinner=False)
     def get_patient_data(patient_name):
@@ -143,16 +143,51 @@ with tab2:
         dl_image = patient_data['dl_image_matrix'].values[0]
         difference_image = patient_data['difference_matrices'].values[0]
         return image, target, dl_image, difference_image
-
+    
     with st.spinner(f"Loading data for {selected_patient}..."):
         image, target, dl_image, difference_image = get_patient_data(selected_patient)
 
-    if image is not None:
-        # Add a slider for slice index selection
-        num_slices = image.shape[1]  # Assuming images are 3D arrays with shape (x, y, z)
-        slice_index = st.slider("Select Slice Index", 0, num_slices - 1, 85)  # Default to 85 or any valid slice index
+
+        col1, col2, col3 = st.columns([1,0.1, 5])
         
-        # Display the selected slice using the provided function
-        dash_plot_artifact(image, target, dl_image, difference_image, slice_index)
-    else:
-        st.write(f"No data found for patient {selected_patient}.")
+        with col1:
+            st.markdown("")
+            num_slices_cor = image.shape[1]  # Assuming images are 3D arrays with shape (x, y, z)
+            slice_index_cor = st.slider("Select Slice Index", 0, num_slices_cor - 1, 85)  # Default to 85 or any valid slice index
+        
+            st.markdown("")
+            st.header("")
+            st.header("")
+            st.header("")
+            st.markdown("")
+
+            num_slices_axial = image.shape[2]
+            slice_index_axial = st.slider("Select Axial Slice", 0, num_slices_axial - 1, 110)
+
+        with col2:
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
+
+                
+        with col3:
+            # vis_model_dash_cor(single_test_file, selected_model, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust=auto_adjust)
+            # vis_model_dash_axial(single_test_file, selected_model, slice_number=slice_number_axial, colormap=selected_colormap, auto_adjust=auto_adjust)
+            if image is not None:
+
+            # Display the selected slice using the provided function
+                vis_artifact_dash_cor(image, target, dl_image, difference_image, slice_index_cor, colormap=selected_colormap, auto_adjust=auto_adjust)
+                vis_artifact_dash_axial(image, target, dl_image, difference_image, slice_index_axial, colormap=selected_colormap, auto_adjust=auto_adjust)
+
+            else:
+                st.write(f"No data found for patient {selected_patient}.")
