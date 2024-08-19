@@ -145,6 +145,7 @@ class PairFinder:
                 center_triples[center] = []
 
             mac_search_pattern = os.path.join(self.mac_data_dir, f'{common_name}*.nii.gz')
+            print(mac_search_pattern)
             nac_search_pattern = os.path.join(self.nac_data_dir, f'{common_name}*.nii.gz')
             found_mac_files = glob.glob(mac_search_pattern)
             found_nac_files = glob.glob(nac_search_pattern)

@@ -48,7 +48,7 @@ with col2:
     st.markdown("<div class='header'>Deep Learning-Based PET Image Correction Toward Quantitative Imaging</div>", unsafe_allow_html=True)
 
 # Define tabs
-tab0, tab1, tab2 = st.tabs(["Home 🏠", "Model 🤖 ", "Artifacts 🩻"])
+tab0, tab1, tab2 = st.tabs(["Home 🏠", " Model Evaluation 🧠 ", " Artifacts Detection 🩻 "])
 
 # Sidebar
 with st.sidebar:
@@ -130,7 +130,7 @@ with tab1:
 
 
 with tab2:
-    st.session_state.active_tab = "Artifacts 🩻"
+    st.session_state.active_tab = " Artifacts Detection 🩻 "
     selected_colormap = 'Greys'
     # Function to get patient data
     @st.cache_data(show_spinner=False)
