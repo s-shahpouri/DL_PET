@@ -14,6 +14,8 @@ from plotly.subplots import make_subplots
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from src.utils import calculate_dl_mac
+
 
 custom_colorscale = [
     [0.0, "red"],
