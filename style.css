@@ -3,6 +3,7 @@
     background-image: 
         url('https://impetus.aau.at/wp-content/uploads/2019/09/logo_hanze.png'),
         url('https://bereausk.sirv.com/bfe-ea/2022/09/InselGruppe_Logo_RGB-1.png');
+    background-color: #c9b3ff2d; 
     background-size: 100px, 120px;
     background-repeat: no-repeat, no-repeat;
     background-position: 10px 20px, 120px 20px; /* Adjust as needed */
@@ -62,8 +63,8 @@ display: none;
 
 .header {
     text-align: center;
-    font-size: 24px;
-    color: #003366;
+    font-size: 28px;
+    color: #762EB1;
     font-weight: bold;
     margin-top: -50px;
 }
@@ -71,7 +72,7 @@ display: none;
 .subheader {
     text-align: center;
     font-size: 18px;
-    color: #003366;
+    color: #762EB1;
     margin-bottom: 10px;
 }
 .centered-lottie {
@@ -107,14 +108,14 @@ display: none;
 div[role="tab"] {
     font-size: 28px !important; /* Increase font size */
     font-weight: bold !important; /* Make the text bold */
-    color: #003366 !important; /* Customize the text color */
+    color: #762EB1 !important; /* Customize the text color */
 }
 /* Custom style for Streamlit tabs */
 div[data-baseweb="tab"] {
     font-size: 18px !important; /* Adjust font size as needed */
     font-weight: bold !important; /* Make text bold */
-    color: #003366 !important; /* Customize text color */
-    border: 2px solid #003366 !important; /* Add border around each tab */
+    color: #762EB1 !important; /* Customize text color */
+    border: 2px solid #762EB1 !important; /* Add border around each tab */
     border-radius: 5px; /* Add rounded corners */
     padding: 5px 10px; /* Add padding for better spacing */
     margin-right: 10px; /* Space between tabs */

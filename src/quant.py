@@ -1,18 +1,47 @@
+"""
+This module provides a set of functions to compute various metrics for evaluating 
+the quality of predicted medical images against reference images. The metrics include 
+errors, relative errors, root mean squared error (RMSE), peak signal-to-noise ratio 
+(PSNR), and structural similarity index (SSIM). The module also includes utilities 
+for loading NIfTI images, applying masks, and aggregating metric results across multiple image pairs.
+
+Key Functions:
+- mean_error: Computes the mean error between predicted and reference images.
+- mean_absolute_error: Computes the mean absolute error between predicted and reference images.
+- relative_error: Computes the relative error between predicted and reference images.
+- absolute_relative_error: Computes the absolute relative error between predicted and reference images.
+- rmse: Computes the root mean squared error between predicted and reference images.
+- psnr: Computes the peak signal-to-noise ratio between predicted and reference images.
+- calculate_ssim: Computes the structural similarity index between predicted and reference images.
+- load_nifti_image: Loads a NIfTI image and returns its data as a NumPy array.
+- masked_SUV_img: Applies a mask to SUV images based on a threshold value.
+- calculate_metrics_for_pair: Computes various metrics for a pair of images with masking applied.
+- aggregate_metrics: Aggregates metrics across multiple pairs of images, returning mean and standard deviation.
+- extract_suv_values: Extracts SUV values from masked images for further analysis.
+
+Author: Sama Shahpouri
+Last Edit: 25-08-2024
+"""
+
 import numpy as np
 import nibabel as nib
 from math import sqrt, log10
 from skimage.metrics import structural_similarity as ssim
 
+
 def mean_error(predicted, reference):
     return np.mean(predicted - reference)
 
+
 def mean_absolute_error(predicted, reference):
     return np.mean(np.abs(predicted - reference))
+
 
 def relative_error(predicted, reference):
 
     re = np.mean((predicted - reference) / (reference )) * 100
     return re
+
 
 def absolute_relative_error(predicted, reference):
     # Create a mask for pixels in the reference image above the threshold
@@ -22,21 +51,24 @@ def absolute_relative_error(predicted, reference):
     
     return are
 
+
 def rmse(predicted, reference):
     return sqrt(np.mean((predicted - reference) ** 2))
+
 
 def psnr(predicted, reference, peak):
     mse = np.mean((predicted - reference) ** 2)
     return 20 * log10(peak / sqrt(mse))
 
+
 def calculate_ssim(predicted, reference):
     return ssim(predicted, reference, data_range=reference.max() - reference.min())
+
 
 def load_nifti_image(path):
     """Load a NIfTI image and return its data as a NumPy array."""
     return nib.load(path).get_fdata()
 
-import numpy as np
 
 def masked_SUV_img(nac_path, predicted_path, reference_path, nac_factor, mac_factor, mask_val):
     predicted_img = load_nifti_image(predicted_path) * mac_factor
@@ -57,6 +89,7 @@ def masked_SUV_img(nac_path, predicted_path, reference_path, nac_factor, mac_fac
     # print(f"Valid data points after masking: {np.count_nonzero(~np.isnan(masked_predicted_img))}")
 
     return masked_nac_img, masked_predicted_img, masked_reference_img
+
 
 def calculate_metrics_for_pair(nac_path, predicted_path, reference_path, nac_factor, mac_factor, mask_val):
     """
@@ -101,7 +134,6 @@ def aggregate_metrics(metrics_list):
     return {metric: (np.mean(values), np.std(values)) for metric, values in aggregated_metrics.items()}
 
 
-
 def extract_suv_values(predicted_path, reference_path, scaling_factor, mask_val):
     """
     Extract SUV values for a single pair of images, applying a scaling factor to the images.
@@ -129,93 +161,3 @@ def extract_suv_values(predicted_path, reference_path, scaling_factor, mask_val)
     assert predicted_flat.shape == reference_flat.shape, "Flattened arrays must have the same shape."
     
     return predicted_flat, reference_flat
-
-
-
-# import numpy as np
-# import nibabel as nib
-# from math import sqrt, log10
-# from skimage.metrics import structural_similarity as ssim
-
-# def mean_error(predicted, reference):
-#     errors = predicted - reference
-#     return np.mean(errors), np.std(errors)
-
-# def mean_absolute_error(predicted, reference):
-#     abs_errors = np.abs(predicted - reference)
-#     return np.mean(abs_errors), np.std(abs_errors)
-
-# def relative_error(predicted, reference):
-#     re_errors = (predicted - reference) / reference
-#     return np.mean(re_errors) * 100, np.std(re_errors) * 100
-
-# def absolute_relative_error(predicted, reference):
-#     are_errors = np.abs(predicted - reference) / reference
-#     return np.mean(are_errors) * 100, np.std(are_errors) * 100
-
-# def rmse(predicted, reference):
-#     mse = np.mean((predicted - reference) ** 2)
-#     return sqrt(mse), np.std((predicted - reference) ** 2) ** 0.5
-
-# def psnr(predicted, reference, peak):
-#     mse = np.mean((predicted - reference) ** 2)
-#     psnr_value = 20 * log10(peak / sqrt(mse))
-#     return psnr_value, 0
-
-# def calculate_ssim(predicted, reference):
-#     ssim_value = ssim(predicted, reference, data_range=reference.max() - reference.min())
-#     return ssim_value, 0
-
-# def load_nifti_image(path):
-#     """Load a NIfTI image and return its data as a NumPy array."""
-#     return nib.load(path).get_fdata()
-
-# def calculate_metrics_for_pair(predicted_path, reference_path, scaling_factor, mask_val):
-#     predicted_img = load_nifti_image(predicted_path) * scaling_factor
-#     reference_img = load_nifti_image(reference_path) * scaling_factor
-#     mask = reference_img > mask_val
-#     masked_predicted_img = predicted_img[mask]
-#     masked_reference_img = reference_img[mask]
-#     peak = np.max([masked_predicted_img.max(), masked_reference_img.max()])
-#     metrics = {
-#         "mean_error": mean_error(masked_predicted_img, masked_reference_img),
-#         "mean_absolute_error": mean_absolute_error(masked_predicted_img, masked_reference_img),
-#         "relative_error": relative_error(masked_predicted_img, masked_reference_img),
-#         "absolute_relative_error": absolute_relative_error(masked_predicted_img, masked_reference_img),
-#         "rmse": rmse(masked_predicted_img, masked_reference_img),
-#         # PSNR and SSIM are typically single-value metrics based on the overall image comparison
-#         "psnr": psnr(masked_predicted_img, masked_reference_img, peak),
-#         "ssim": calculate_ssim(masked_predicted_img, masked_reference_img)
-#     }
-#     # print(metrics)
-#     return metrics
-
-
-# def aggregate_metrics(metrics_list):
-#     aggregated_metrics = {}
-#     for metric in metrics_list[0].keys():  # Assuming all metrics are present in each entry
-#         means = [pair_metrics[metric][0] for pair_metrics in metrics_list]
-#         sds = [pair_metrics[metric][1] for pair_metrics in metrics_list]
-        
-#         # Calculate overall mean and pooled standard deviation
-#         overall_mean = np.mean(means)
-#         # For pooled standard deviation, considering simple averaging of individual variances
-#         overall_sd = sqrt(np.mean([sd**2 for sd in sds]))
-        
-#         aggregated_metrics[metric] = (overall_mean, overall_sd)
-#     return aggregated_metrics
-
-
-
-# from quant import calculate_metrics_for_pair, aggregate_metrics
-# # Calculate metrics for each pair and aggregate results
-# all_metrics_dl3_18 = [calculate_metrics_for_pair(
-#     pair['predicted'], pair['reference'],
-#     scaling_factor=5, mask_val = 0.3)
-#     for pair in all_pairs_dl3_18]
-
-# metric_means_sds = aggregate_metrics(all_metrics_dl3_18)
-
-# # Print aggregated metrics
-# for metric, (mean, sd) in metric_means_sds.items():
-#     print(f"{metric}: {mean:.2f} ± {sd:.4f}")

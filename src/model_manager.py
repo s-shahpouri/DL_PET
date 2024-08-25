@@ -1,9 +1,20 @@
+"""
+Module for loading, configuring, and managing deep learning models.
+
+Author: Sama Shahpouri
+Last Edit: 25-08-2024
+"""
+
 import torch
 from src.utils import get_kernels_strides, add_activation_before_output, CustomSegResNetDS
 import torch.nn as nn
 from monai.networks.nets import DynUNet
 
 class ModelLoader:
+    """
+    A class to load and configure deep learning models based on a given configuration.
+    Attributes: config (object): Configuration object containing model parameters and settings."""
+    
     def __init__(self, config):
         self.config = config
 

@@ -1,3 +1,21 @@
+"""
+This module provides a comprehensive set of tools for processing and analyzing 
+pairing of NAC and MAC image files, the loading and processing of (DL) model outputs,
+and various utility functions for handling and normalizing image data.
+Plus, it includes support for configuration management, model loading, and inference execution 
+with MONAI-based models.
+
+Key Classes and Functions:
+- PairFinder: Identifies and pairs NAC, MAC, and DL images based on common naming patterns.
+- Pairs: Finds and pairs NAC and MAC image files.
+- ImageProcessor: Handles loading, scaling, and storing of medical images into DataFrames.
+- Config: Manages configuration settings and device selection.
+- CustomDynUNet, CustomSegResNetDS: Custom MONAI models with added activation layers.
+- Various utility functions for data normalization, ADCM calculation, model inference, and result saving.
+
+Author: Sama Shahpouri
+Last Edit: 25-08-2024
+"""
 import os
 import random
 from collections import defaultdict
@@ -5,6 +23,133 @@ import glob
 import nibabel as nib
 import numpy as np
 import re
+import json
+import torch
+from torch import nn
+from monai.networks.nets import DynUNet
+from monai.networks.nets import SegResNetDS
+
+class PairFinder:
+    """
+    A class to organize and pair NAC, MAC, and DL images using common naming patterns.
+
+    Attributes:
+        nac_data_dir (str): Path to NAC images.
+        mac_data_dir (str): Path to MAC images.
+        dl_data_dir (str): Path to DL images.
+        hint (str): A specific suffix in filenames to identify and pair files.
+
+    Methods:
+        extract_common_name(filename):
+            Removes the hint and extension from a filename to extract the common name.
+        
+        identify_center(filename):
+            Identifies and returns the center (e.g., 'C1', 'C2') from the filename.
+            Returns 'rest' if not found.
+    """
+    def __init__(self, nac_data_dir, mac_data_dir, dl_data_dir, hint):
+        self.nac_data_dir = nac_data_dir
+        self.mac_data_dir = mac_data_dir
+        self.dl_data_dir = dl_data_dir
+        self.hint = hint
+
+    def extract_common_name(self, filename):
+        # Extracts the common name from a filename by removing the hint and extension
+        return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
+
+    def identify_center(self, filename):
+        # Identifies the center from the filename
+        parts = filename.split('_')
+        if len(parts) > 1:
+            if parts[1].startswith("C") and parts[1][1:].isdigit():
+                return parts[1]  # Directly return 'C1', 'C2', etc.
+            elif parts[1] == "dataset" and len(parts) > 2:
+                center_part = 'C' + parts[2][1]  # Convert '06', '07' to 'C6', 'C7'
+                if center_part in ['C6', 'C7']:
+                    return center_part
+        return 'rest'
+
+
+    def find_file_triples(self):
+        # Finds triples of files: NAC, MAC, and DL based on the hint
+        # and directories specified
+        dl_files = glob.glob(os.path.join(
+            self.dl_data_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
+        center_triples = { 
+            'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [],
+            'C6': [], 'C7': [], 'rest': [] }
+
+      
+        for dl_path in dl_files:
+            common_name = self.extract_common_name(dl_path)
+            center = self.identify_center(common_name)
+
+            # Ensure the dictionary initialization covers this center
+            if center not in center_triples:
+                print(f"Unexpected center {center} found, adding to dictionary.")
+                center_triples[center] = []
+
+            mac_search_pattern = os.path.join(
+                self.mac_data_dir, f'{common_name}*.nii.gz')
+            print(mac_search_pattern)
+            nac_search_pattern = os.path.join(self.nac_data_dir, f'{common_name}*.nii.gz')
+            found_mac_files = glob.glob(mac_search_pattern)
+            found_nac_files = glob.glob(nac_search_pattern)
+            
+            if found_mac_files and found_nac_files:
+                triple_dict = {
+                    'predicted': dl_path,
+                    'reference': found_mac_files[0],
+                    'nac': found_nac_files[0],
+                    'center': center,
+                    'common_name': common_name
+                }
+                
+                center_triples[center].append(triple_dict)
+
+        return center_triples
+
+
+
+class Pairs:
+    """
+    A class to find and pair NAC and MAC image files based on common names.
+
+    Attributes:
+        nac_data_dir (str): Path to the NAC image directory.
+        mac_data_dir (str): Path to the MAC image directory.
+
+    Methods:
+        extract_common_name(filename):
+            Extracts the common name from a filename for pairing.
+        
+        find_file_pairs():
+            Finds and returns pairs of NAC and MAC files with matching common names.
+    """
+    def __init__(self, nac_data_dir, mac_data_dir):
+        self.nac_data_dir = nac_data_dir
+        self.mac_data_dir = mac_data_dir
+
+    def extract_common_name(self, filename):
+        # Generalize this method based on how the filenames can be normalized to form pairs
+        return os.path.basename(filename).split('_')[0]
+
+    def find_file_pairs(self):
+        # Finds pairs of files from NAC and MAC directories based on common names
+        nac_files = glob.glob(os.path.join(self.nac_data_dir, '*.nii.gz'))
+        mac_files = glob.glob(os.path.join(self.mac_data_dir, '*.nii.gz'))
+        
+        nac_dict = {self.extract_common_name(path): path for path in nac_files}
+        mac_dict = {self.extract_common_name(path): path for path in mac_files}
+
+        all_pairs = []
+        for common_name, nac_path in nac_dict.items():
+            mac_path = mac_dict.get(common_name)
+            if mac_path:
+                all_pairs.append((nac_path, mac_path))
+        return all_pairs
+
+
 
 def group_patients_by_center(data_dicts):
     '''Gathering patients from different centers'''
@@ -18,15 +163,20 @@ def group_patients_by_center(data_dicts):
 
 
 def split_data_for_center(center_data, train_ratio, val_ratio, data_dir, seed=None):
+    """Splits a list of data files into training, validation, and test sets
+    based on specified ratios."""
     random.seed(seed)
     total_samples = len(center_data)
     train_samples = int(total_samples * train_ratio)
     val_samples = int(total_samples * val_ratio)
 
     random.shuffle(center_data)
-    train_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[:train_samples]]
-    val_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples:train_samples + val_samples]]
-    test_set = [{"image": os.path.join(data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples + val_samples:]]
+    train_set = [{"image": os.path.join(
+        data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[:train_samples]]
+    val_set = [{"image": os.path.join(
+        data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples:train_samples + val_samples]]
+    test_set = [{"image": os.path.join(
+        data_dir, "NAC", data), "target": os.path.join(data_dir, "MAC", data)} for data in center_data[train_samples + val_samples:]]
     return train_set, val_set, test_set
 
 
@@ -89,6 +239,7 @@ def extract_id(filepath):
     # Extracts an identifier from the file path, this would depend on your file naming convention
     return os.path.basename(filepath).split('_')[0]
 
+
 def ids(s):
     # This will match consecutive digits at the beginning of the string
     match = re.match(r"(\d+)", s)
@@ -97,103 +248,9 @@ def ids(s):
     else:
         return None  # or an empty string if you prefer
     
-
-
-
     
 def normalize_data(data):
     return (data - np.min(data)) / (np.max(data) - np.min(data))
-
-
-class PairFinder:
-    def __init__(self, nac_data_dir, mac_data_dir, dl_data_dir, hint):
-        self.nac_data_dir = nac_data_dir
-        self.mac_data_dir = mac_data_dir
-        self.dl_data_dir = dl_data_dir
-        self.hint = hint
-
-    def extract_common_name(self, filename):
-        # Extracts the common name from a filename by removing the hint and extension
-        return os.path.basename(filename).replace(f'_{self.hint}', '').split('.')[0]
-
-    def identify_center(self, filename):
-        # Identifies the center from the filename
-        parts = filename.split('_')
-        if len(parts) > 1:
-            if parts[1].startswith("C") and parts[1][1:].isdigit():
-                return parts[1]  # Directly return 'C1', 'C2', etc.
-            elif parts[1] == "dataset" and len(parts) > 2:
-                center_part = 'C' + parts[2][1]  # Convert '06', '07' to 'C6', 'C7'
-                if center_part in ['C6', 'C7']:
-                    return center_part
-        return 'rest'
-
-
-    def find_file_triples(self):
-        # Finds triples of files: NAC, MAC, and DL based on the hint and directories specified
-        dl_files = glob.glob(os.path.join(self.dl_data_dir, f'**/*{self.hint}*.nii.gz'), recursive=True)
-        center_triples = { 'C1': [], 'C2': [], 'C3': [], 'C4': [], 'C5': [], 'C6': [], 'C7': [], 'rest': [] }
-
-      
-        for dl_path in dl_files:
-            common_name = self.extract_common_name(dl_path)
-            center = self.identify_center(common_name)
-
-            # Ensure the dictionary initialization covers this center
-            if center not in center_triples:
-                print(f"Unexpected center {center} found, adding to dictionary.")
-                center_triples[center] = []
-
-            mac_search_pattern = os.path.join(self.mac_data_dir, f'{common_name}*.nii.gz')
-            print(mac_search_pattern)
-            nac_search_pattern = os.path.join(self.nac_data_dir, f'{common_name}*.nii.gz')
-            found_mac_files = glob.glob(mac_search_pattern)
-            found_nac_files = glob.glob(nac_search_pattern)
-            
-            if found_mac_files and found_nac_files:
-                triple_dict = {
-                    'predicted': dl_path,
-                    'reference': found_mac_files[0],
-                    'nac': found_nac_files[0],
-                    'center': center,
-                    'common_name': common_name
-                }
-                
-                center_triples[center].append(triple_dict)
-
-        return center_triples
-
-
-
-class Pairs:
-    def __init__(self, nac_data_dir, mac_data_dir):
-        self.nac_data_dir = nac_data_dir
-        self.mac_data_dir = mac_data_dir
-
-    def extract_common_name(self, filename):
-        # Generalize this method based on how the filenames can be normalized to form pairs
-        return os.path.basename(filename).split('_')[0]
-
-    def find_file_pairs(self):
-        # Finds pairs of files from NAC and MAC directories based on common names
-        nac_files = glob.glob(os.path.join(self.nac_data_dir, '*.nii.gz'))
-        mac_files = glob.glob(os.path.join(self.mac_data_dir, '*.nii.gz'))
-        
-        nac_dict = {self.extract_common_name(path): path for path in nac_files}
-        mac_dict = {self.extract_common_name(path): path for path in mac_files}
-
-        all_pairs = []
-        for common_name, nac_path in nac_dict.items():
-            mac_path = mac_dict.get(common_name)
-            if mac_path:
-                # pair_dict = {
-                #     'nac': nac_path,
-                #     'mac': mac_path
-                # }
-                # all_pairs.append(pair_dict)
-                all_pairs.append((nac_path, mac_path))
-        return all_pairs
-
 
 
 def calculate_adcm(nac_img, mac_img, epsilon):
@@ -212,7 +269,6 @@ def calculate_adcm(nac_img, mac_img, epsilon):
     adcm[~mask] = mac_img[~mask]
     
     return adcm
-
 
 
 def calculate_dl_mac(nac_img, dl_adcm_img, nac_factor, mac_factor, val):
@@ -280,11 +336,18 @@ def export_final_adcm_image(nac_path, dl_final_img, output_path):
     nib.save(dl_final_nii, output_path)
 
 
-
-import json
-import torch
-
 class Config:
+    """
+    A class to handle configuration settings from a JSON file and manage device selection.
+
+    Attributes:
+        config_file (str): Path to the JSON configuration file.
+        device (torch.device): The device (CPU or CUDA) selected based on the configuration.
+
+    Methods:
+        get_device():
+            Determines and returns the appropriate computation device (CPU or CUDA).
+    """
     def __init__(self, config_file):
         with open(config_file, 'r') as f:
             config = json.load(f)
@@ -314,11 +377,6 @@ class Config:
             print("Using CPU as default device.")
             return torch.device("cpu")
 
-# models.py
-from torch import nn
-from monai.networks.nets import UNet
-from monai.networks.layers import Norm
-from monai.networks.nets import DynUNet
 
 def get_kernels_strides(patch_size, spacing):
     """
@@ -348,7 +406,6 @@ def get_kernels_strides(patch_size, spacing):
     return kernels, strides
 
 
-
 def add_activation_before_output(model, activation_fn):
     """
     Adds an activation function just before the output of the network.
@@ -373,7 +430,6 @@ class CustomDynUNet(DynUNet):
         )
 
 
-from monai.networks.nets import SegResNetDS
 class CustomSegResNetDS(SegResNetDS):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -386,16 +442,23 @@ class CustomSegResNetDS(SegResNetDS):
             self.up_layers[i]['head'] = nn.Sequential(head_conv, relu)
 
 
-import os
-import glob
-import nibabel as nib
-import numpy as np
-import pandas as pd
-
-import os
-import glob
-
 class ImageProcessor:
+    """
+    A class to handle the processing of medical images, including loading, scaling, and storing them into a DataFrame.
+
+    Attributes:
+        artifact_output_dir (str): Directory where deep learning (DL) images are stored.
+        nac_factor (float): Scaling factor for NAC images.
+        mac_factor (float): Scaling factor for MAC images.
+        hint (str): A hint to help identify specific DL images.
+
+    Methods:
+        find_dl_image_path(patient_folder_name_image):
+            Finds and returns the path of the deep learning image based on the patient folder name and hint.
+        
+        load_and_store_images_to_df(df, test_files):
+            Loads images, processes them, and stores the results in a DataFrame.
+    """
     def __init__(self, artifact_output_dir, nac_factor, mac_factor, hint):
         self.artifact_output_dir = artifact_output_dir
         self.nac_factor = nac_factor
@@ -471,130 +534,3 @@ class ImageProcessor:
         df['dl_image_matrix'] = dl_image_matrices
         df['difference_matrices'] = difference_matrices
         return df
-
-def load_df_from_pickle(filename='/students/2023-2024/master/Shahpouri/DATA/Artifact_data.pkl'):
-    """Load the DataFrame from a Pickle file."""
-    try:
-        df = pd.read_pickle(filename)
-        print(f"DataFrame loaded from {filename}")
-        return df
-    except FileNotFoundError:
-        print(f"File {filename} not found.")
-        return None
-    
-
-
-import os
-from src.data_preparation import LoaderFactory
-import torch
-from monai.inferers import sliding_window_inference
-from src.model_manager import ModelLoader
-from plotly.subplots import make_subplots
-import numpy as np
-from monai.transforms import Compose, Invertd, SaveImaged
-from monai.data import decollate_batch
-import nibabel as nib
-from src.utils import Config
-
-
-# Load configuration
-config_file = 'src/config.json'
-config = Config(config_file)
-
-
-# Utility functions
-def get_image_paths(single_test_file, selected_model):
-    base_name = os.path.splitext(os.path.splitext(os.path.basename(single_test_file['image']))[0])[0]
-    subfolder_path = os.path.join(config.dash_output_dir, base_name)
-    dl_image_path = os.path.join(subfolder_path, base_name, f"{base_name}_{selected_model}.nii.gz")
-    return base_name, subfolder_path, dl_image_path
-
-def load_images(single_test_file, dl_image_path):
-    input_image = nib.load(single_test_file['image']).get_fdata()
-    target_image = nib.load(single_test_file['target']).get_fdata()
-    dl_image = nib.load(dl_image_path).get_fdata() if os.path.exists(dl_image_path) else None
-    return input_image, target_image, dl_image
-
-import time
-import streamlit as st
-def run_model_and_save(single_test_file, subfolder_path, dl_image_path, selected_model, st_progress_bar, st_progress_text):
-    loader_factory = LoaderFactory(
-        train_files=None,
-        val_files=None,
-        test_files=[single_test_file],
-        patch_size=config.patch_size,
-        spacing=config.spacing,
-        spatial_size=config.spatial_size,
-        normalize=config.normalize
-    )
-
-    single_test_loader = loader_factory.get_loader('test', batch_size=1, num_workers=config.num_workers['test'], shuffle=False)
-    model_loader = ModelLoader(config)
-    model = model_loader.call_model()
-
-    if selected_model == "ADCM":
-        model_path = 'Results/model_5_2_14_27.pth'
-    else:
-        model_path = 'Results/model_4_24_23_17.pth'
-
-    if os.path.exists(model_path):
-        model.load_state_dict(torch.load(model_path))
-        model.eval()
-    else:
-        raise FileNotFoundError(f"Model in {model_path} not found.")
-
-    post_transforms = Compose(
-        [
-            Invertd(
-                keys="pred",
-                transform=loader_factory.get_test_transforms(),
-                orig_keys="image",
-                meta_keys="pred_meta_dict",
-                orig_meta_keys="image_meta_dict",
-                meta_key_postfix="meta_dict",
-                nearest_interp=False,
-                to_tensor=True,
-            ),
-            SaveImaged(keys="pred", meta_keys="pred_meta_dict", output_dir=subfolder_path, output_postfix=selected_model, resample=False), 
-        ]
-    )
-
-    with torch.no_grad():
-        for data in single_test_loader:
-            # Simulate progress bar updates
-            for progress in np.linspace(0, 0.7, num=7):
-                time.sleep(0.1)  # Sleep to simulate processing time
-                st_progress_bar.progress(progress)
-                st_progress_text.text(f"Processing: {int(progress * 100)}% complete")
-
-            # Perform actual inference
-            data["pred"] = sliding_window_inference(
-                data["image"].to(config.device), 
-                (168, 168, 16), 
-                64, 
-                model,
-                overlap=0.70
-            )
-
-            # Apply post-processing (which will save the processed image)
-            post_processed = [post_transforms(i) for i in decollate_batch(data)]
-
-            if selected_model == 'ADCM':
-                original_nii = nib.load(dl_image_path)  # Load the original NIfTI image to get the meta
-                dl_adcm = original_nii.get_fdata()
-                nac_img = nib.load(single_test_file['image']).get_fdata()
-                # Apply your custom calculation
-                dl_final = calculate_dl_mac(nac_img, dl_adcm, 2, 5, 50)
-
-                # Create a new NIfTI image with the same header and affine as the original
-                dl_final_nii = nib.Nifti1Image(dl_final, affine=original_nii.affine, header=original_nii.header)
-
-                # Save the final NIfTI image to the same path
-                nib.save(dl_final_nii, dl_image_path)
-
-
-
-            # Load the final processed image
-            dl_image = nib.load(dl_image_path).get_fdata()
-
-    return dl_image

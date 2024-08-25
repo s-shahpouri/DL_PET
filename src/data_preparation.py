@@ -6,32 +6,33 @@ from collections import defaultdict
 from monai.transforms import Compose, LoadImaged, EnsureChannelFirstd, Spacingd, SpatialPadd, RandSpatialCropSamplesd, CenterSpatialCropd
 from monai.data import CacheDataset, DataLoader, Dataset
 from monai.transforms import NormalizeIntensityd
-import matplotlib.pyplot as plt
 import numpy as np
-import os
-import glob
-from sklearn.model_selection import train_test_split
-import os
-import glob
-import numpy as np
-
-import os
-import glob
-import random
-import math
 from collections import defaultdict
+from monai.transforms import RandAffined, RandGaussianNoised
+import re
+import pandas as pd
+from monai.transforms import MapTransform
 
-#If the external_center is specified and has data, it should be removed from the dataset and added to the test set.
-# If the external_center is specified but has no data, print a message and do nothing.
-# If the external_center is not found in the data, print a message and do nothing.
 
-import os
-import glob
-import random
-import math
-from collections import defaultdict
 
 class DataHandling:
+    """
+    A class to manage and split medical imaging data into training, validation, and test sets.
+
+    Attributes:
+        data_dir (str): Directory where the imaging data is stored.
+        train_mode (str): Subdirectory name for the training images (e.g., "NAC").
+        target_mode (str): Subdirectory name for the target images (e.g., "MAC").
+        external_centers (list): List of external centers whose data should be used for testing.
+        train_percent (float): Proportion of data to allocate to the training set.
+        val_percent (float): Proportion of data to allocate to the validation set.
+        test_percent (float): Proportion of data to allocate to the test set.
+
+    Methods:
+        get_data_split(split_name):
+            Returns the data files for the specified split ('train', 'val', or 'test').
+    """
+
     def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", external_centers=None, train_percent=0.8, val_percent=0.1, test_percent=0.1):
         self.data_dir = data_dir
         self.train_mode = train_mode
@@ -80,7 +81,7 @@ class DataHandling:
             train_files = []
             val_files = []
             for center, files in data_by_center.items():
-                print(files)
+                # print(files)
                 if len(files) < 10:
                     print(f"Not enough data to split for center {center}. Minimum required is 10, but found {len(files)}.")
                     continue
@@ -121,60 +122,27 @@ class DataHandling:
             raise ValueError("Invalid split name. Choose among 'train', 'val', or 'test'.")
 
 
-class ExternalRadioSetHandling:
-    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", test_ratio=None, random_seed=42):
-        self.data_dir = data_dir
-        self.train_mode = train_mode
-        self.target_mode = target_mode
-        self.test_ratio = test_ratio
-        self.random_seed = random_seed
-        self.data_dicts = []
-
-        self._load_data()
-        
-    def _load_data(self):
-        train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
-        target_images = sorted(glob.glob(os.path.join(self.data_dir, self.target_mode, "*.nii.gz")))
-        self.data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
-
-    def _split_data(self, data, split_ratio):
-        np.random.seed(self.random_seed)
-        np.random.shuffle(data)
-        split_index = int(len(data) * split_ratio)
-        return data[:split_index], data[split_index:]
-
-    def get_split_data(self):
-        # Shuffle data with a fixed random seed for reproducibility
-        np.random.seed(self.random_seed)
-        np.random.shuffle(self.data_dicts)
-        
-        if self.test_ratio is None:  # Default to 70-15-15 split
-            train_ratio = 0.70
-            val_ratio = 0.15
-        else:  # Custom split based on the specified test ratio
-            test_ratio = self.test_ratio
-            remaining = 1 - test_ratio
-            train_ratio = remaining * 0.8
-            val_ratio = remaining * 0.2
-
-        # Calculate the number of samples for each set
-        num_data = len(self.data_dicts)
-        num_train = int(num_data * train_ratio)
-        num_val = int(num_data * val_ratio)
-
-        # Split the data
-        train_data = self.data_dicts[:num_train]
-        val_data = self.data_dicts[num_train:num_train + num_val]
-        test_data = self.data_dicts[num_train + num_val:]
-
-        return train_data, val_data, test_data
-
-
-
-
-from monai.transforms import RandAffined, RandGaussianNoised
-
 class LoaderFactory:
+    """
+    A factory class for creating DataLoaders with specified preprocessing transforms 
+    for training, validation, and testing datasets.
+
+    Attributes:
+        train_files (list): List of file paths for the training dataset.
+        val_files (list): List of file paths for the validation dataset.
+        test_files (list): List of file paths for the testing dataset.
+        patch_size (list): Patch size for spatial cropping.
+        spacing (list): Spacing for image resampling.
+        spatial_size (tuple): Target spatial size for padding and cropping.
+        normalize (str): Type of normalization to apply ('minmax', 'suvscale', or None).
+
+    Methods:
+        get_test_transforms():
+            Returns the transformation pipeline for testing data.
+        
+        get_loader(dataset_type="train", batch_size=4, num_workers=2, shuffle=True):
+            Returns a DataLoader for the specified dataset type with appropriate transformations.
+    """
     def __init__(self, train_files=None, val_files=None, test_files=None,
                  patch_size=[168, 168, 16], spacing=[4.07, 4.07, 3.00],
                  spatial_size=(168, 168, 320), normalize=False):
@@ -248,10 +216,6 @@ class ScaleIntensity:
         return data
     
 
-
-
-
-from monai.transforms import MapTransform
 class ClampNegative(MapTransform):
     """
     A MONAI transform that sets negative pixel values to zero within a dictionary format.
@@ -277,9 +241,55 @@ class ClampNegative(MapTransform):
         return data
 
 
+class ExternalRadioSetHandling:
+    def __init__(self, data_dir, train_mode="NAC", target_mode="MAC", test_ratio=None, random_seed=42):
+        self.data_dir = data_dir
+        self.train_mode = train_mode
+        self.target_mode = target_mode
+        self.test_ratio = test_ratio
+        self.random_seed = random_seed
+        self.data_dicts = []
 
-import re
-import pandas as pd
+        self._load_data()
+        
+    def _load_data(self):
+        train_images = sorted(glob.glob(os.path.join(self.data_dir, self.train_mode, "*.nii.gz")))
+        target_images = sorted(glob.glob(os.path.join(self.data_dir, self.target_mode, "*.nii.gz")))
+        self.data_dicts = [{"image": img, "target": tar} for img, tar in zip(train_images, target_images)]
+
+    def _split_data(self, data, split_ratio):
+        np.random.seed(self.random_seed)
+        np.random.shuffle(data)
+        split_index = int(len(data) * split_ratio)
+        return data[:split_index], data[split_index:]
+
+    def get_split_data(self):
+        # Shuffle data with a fixed random seed for reproducibility
+        np.random.seed(self.random_seed)
+        np.random.shuffle(self.data_dicts)
+        
+        if self.test_ratio is None:  # Default to 70-15-15 split
+            train_ratio = 0.70
+            val_ratio = 0.15
+        else:  # Custom split based on the specified test ratio
+            test_ratio = self.test_ratio
+            remaining = 1 - test_ratio
+            train_ratio = remaining * 0.8
+            val_ratio = remaining * 0.2
+
+        # Calculate the number of samples for each set
+        num_data = len(self.data_dicts)
+        num_train = int(num_data * train_ratio)
+        num_val = int(num_data * val_ratio)
+
+        # Split the data
+        train_data = self.data_dicts[:num_train]
+        val_data = self.data_dicts[num_train:num_train + num_val]
+        test_data = self.data_dicts[num_train + num_val:]
+
+        return train_data, val_data, test_data
+
+
 def parse_log_file(filepath):
     train_loss_pattern = r'(\d+)/\d+, train_loss: ([0-9.]+)'
     val_loss_pattern = r'Validation loss: ([0-9.]+)'
@@ -302,7 +312,6 @@ def parse_log_file(filepath):
             loss_data.append({'Epoch': current_epoch, 'Loss': val_loss, 'Type': 'Validation'})
     
     return pd.DataFrame(loss_data)
-
 
 
 def save_df_to_pickle(df, filename):

@@ -1,17 +1,49 @@
+"""
+This Streamlit application serves as a dashboard for evaluating and visualizing deep learning-based
+attenuation scatter correction (ASC) in 68Ga-PSMA PET/CT imaging. The application provides tools for
+visualizing model outputs, artifact detection, and an overview of the project's objectives.
+
+
+Tabs:
+1. **Model Evaluation 🧠**:
+    - Allows users to select a deep learning model and a patient, adjust the colormap, and visualize slices of the image.
+    - Users can adjust the slice index for coronal and axial views to inspect different parts of the PET/CT images.
+
+2. **Artifacts Detection 🩻**:
+    - Focuses on detecting artifacts within the PET/CT images.
+    - Provides similar controls for slice selection and colormap adjustment, with an additional focus on visualizing discrepancies between the predicted and actual images.
+
+3. **About 📜**:
+    - Offers background information on the project and how it contributes to advancing quantitative imaging in PET/CT.
+    - Contact details and links to relevant profiles and resources are provided.
+
+Usage:
+- Run the application in a Python environment with Streamlit installed.
+- The interface allows users to interactively explore deep learning models' outputs and artifact detection results.
+- Suitable for researchers and practitioners working on medical imaging, particularly in the context of PET/CT.
+
+Author: Sama Shahpouri
+Last Edit: 25-08-2024
+
+Example:
+```bash
+streamlit run dashboard.py"""
+
+
 import streamlit as st
 import pandas as pd
 import plotly.graph_objs as go
 import json
-from src.vis import  vis_model_dash_axial, vis_model_dash_cor
+from src.dash import  vis_model_dash_axial, vis_model_dash_cor
 import os
 import nibabel as nib
-from src.utils import Config, load_df_from_pickle
-from src.vis import vis_artifact_dash_cor, vis_artifact_dash_axial
+from src.dash import Config, load_df_from_pickle
+from src.dash import vis_artifact_dash_cor, vis_artifact_dash_axial
 
 
 st.set_page_config(
     page_title="DL ASC PET App",
-    page_icon="📊",
+    page_icon="/students/2023-2024/master/Shahpouri/DL_PET/info/PET_ICONE.png",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -45,7 +77,7 @@ df = load_df_from_pickle('/students/2023-2024/master/Shahpouri/DATA/Artifact_dat
 # Layout setup and execution
 col1, col2, col3 = st.columns([1, 8, 1])
 with col2:
-    st.markdown("<div class='header'>CT-free ASC of PET images</div>", unsafe_allow_html=True)
+    st.markdown("<div class='header'>CT-free ASC of PET images Application</div>", unsafe_allow_html=True)
 
 # Define tabs
 tab1, tab2, tab0 = st.tabs([" Model Evaluation 🧠 |", " Artifacts Detection 🩻 |", " About 📜 |"])
@@ -71,9 +103,12 @@ with st.sidebar:
 
 
     selected_patient = st.sidebar.selectbox("Select an artifactual data", df['name'])
+
+    st.markdown("")
+    st.markdown("")
     st.divider()
-    st.caption("Data Contributors")
-    st.caption("[Artificial Intelligence in Cardiac Imaging Laboratory](https://inselgruppe.ch/de/die-insel-gruppe)", unsafe_allow_html=True)
+    st.caption(f"Data Contributors: [Inselgruppe](https://inselgruppe.ch/de/die-insel-gruppe)",unsafe_allow_html=True)
+
 
 with tab1:
     single_test_file = next(
@@ -195,23 +230,33 @@ with tab2:
 
 
 with tab0:
+    st.markdown("")
+    st.markdown("")
     st.markdown("""
-    **Deep Learning-Based PET Image Correction Toward Quantitative Imaging**
+        <div style="text-align: center; color: #762EB1; font-weight: bold; font-size: 20px;">
+        Deep Learning-Based PET Image Correction Toward Quantitative Imaging
+        </div>
+        """, unsafe_allow_html=True)
+    st.markdown("")
+    st.markdown("""This dashboard is part of a master's thesis project focused on developing deep learning models to enhance PET imaging by directly correcting attenuation and scatter without relying on anatomical information from CT scans.
+                    The primary goal is to create a universal model that works across different scanners,
+                    And ensuring accurate artifact detection and correction in 68Ga-PET imaging.""")
 
-    This dashboard is part of a master's thesis project focused on developing deep learning models to enhance PET imaging by directly correcting attenuation and scatter without relying on anatomical information from CT scans.
-                The primary goal is to create a universal model that works across different scanners,
-                And ensuring accurate artifact detection and correction in 68Ga-PET imaging. 
+    
+    st.markdown("")
+    st.markdown("")
+    st.markdown("""        <p style="font-weight: bold"> Key Features:</p>
+        <ul>
+        <li>Direct Attenuation and Scatter Correction (ASC) without CT data</li>
+        <li>Universal model applicable to different scanners</li>
+        <li>Artifact detection and correction for multi-center PET datasets</li>
+        </ul>
+        <p>Explore the different tabs to evaluate model performance and view artifact corrections.</p>
+        """, unsafe_allow_html=True)
 
-
-    **Key Features:**
-    - Direct Attenuation and Scatter Correction (ASC) without CT data
-    - Universal model applicable to different scanners
-    - Artifact detection and correction for multi-center PET datasets
-
-    Explore the different tabs to evaluate model performance and view artifact corrections.
-                
-    """)
     st.divider()
-    st.markdown("Contact")
-    st.markdown("Author: [Sama Shahpouri](https://www.linkedin.com/in/zohreh-shahpouri/)", unsafe_allow_html=True)
-    st.markdown("Email: [z.shahpouri@gmail.com](mailto:z.shahpouri@gmail.com)")
+    st.markdown("""
+        <div style="color: #762EB1;">
+        Contact: <a href="mailto:z.shahpouri@gmail.com" style="color: #762EB1;">z.shahpouri@gmail.com</a>
+        </div>
+        """, unsafe_allow_html=True)
