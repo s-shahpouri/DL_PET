@@ -20,9 +20,10 @@ This research will aim to be a demonstration of the possibility, as well as the 
 - `Archive/`: Archived notbooks nessasary for further investigation.
 - `Analysis/`: Archived notbooks about data pre processing, statistical testing and so on.
 - `Other_Models/`: Archived models notbooks we could'nt get good results or needing for further progress.
-- `Info/`: Documentation and additional notes on the project.
+- `info/`: Documentation and additional notes on the project.
 - `Results/`: Analysis output, plots, model structure and images used in the thesis for demonstration, such as artefact corrections.
-- `Inference.ipynb`: Jupyter notebooks illustrating the model evaluation process.
+
+
 
 
 ## Setup and Installation
@@ -30,7 +31,6 @@ Ensure you have Python 3.8+ installed, then run:
 ```bash
 pip install -r requirements.txt
 ```
-
 
 Usage
 To train the model:
@@ -43,14 +43,20 @@ To evaluate the model:
 python Inference.ipynb
 ```
 
-Results
+To use the application:
+```bash
+streamlit run dashboard.py
+```
+
+
+## Results
 This project achieved notable improvements in artefact detection and attenuation/scatter correction. Refer to the results/ directory for detailed performance metrics and visual results.
 
-## Artifact Correction Demonstration
+### Artifact Correction Demonstration
 
 This section showcases the results of the artifact correction applied using the IMCM model:
 
-![Artifact Correction](Results/artifact_correction_before_after.png)
+![Artifact Correction](info/artifact_correction_before_after.png)
 
 The following demonstrates an animation of CT-based ASC of images (left) and their DL (right). Look at the differences, which are artifact-corrected in the DL version showing with red-color:
 (/students/2023-2024/master/Shahpouri/DL_PET/info/artifact2.gif)
