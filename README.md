@@ -58,8 +58,6 @@ This section showcases the results of the artifact correction applied using the 
 
 ![Artifact Correction](info/artifact_correction_before_after.png)
 
-The following demonstrates an animation of CT-based ASC of images (left) and their DL (right). Look at the differences, which are artifact-corrected in the DL version showing with red-color:
-(/students/2023-2024/master/Shahpouri/DL_PET/info/artifact2.gif)
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
