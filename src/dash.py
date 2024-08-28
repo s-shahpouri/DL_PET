@@ -263,7 +263,6 @@ def vis_artifact_dash_cor(input_slice, target_slice, dl_slice, difference_slice,
         vmin_target, vmax_target = target_slice.min(), target_slice.max()
         vmin_dl, vmax_dl = dl_slice.min(), dl_slice.max()
 
-
     input_slice, target_slice, dl_slice, difference_slice = rotate_and_flip_cor(input_slice, target_slice, dl_slice, difference_slice, slice_number)
 
     # Create a subplot grid in Plotly
@@ -281,19 +280,19 @@ def vis_artifact_dash_cor(input_slice, target_slice, dl_slice, difference_slice,
     fig.add_trace(go.Heatmap(z=dl_slice, colorscale=colormap, showscale=True, colorbar=dict(x=0.725, thickness=10, len=1),
                              zmin=vmin_dl, zmax=vmax_dl), row=1, col=3)
 
+    # Difference Image
     fig.add_trace(go.Heatmap(z=difference_slice, colorscale=custom_colorscale, showscale=True, colorbar=dict(x=0.99, thickness=10, len=1)),
                             row=1, col=4)
 
-    # Adjust axis numbers sizes and remove them from the second and third plots
+    # Adjust axis numbers sizes and remove them from the second to fourth plots
     fig.update_xaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
     fig.update_yaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
 
-    # Turn off axis labels for the second and third plotcd
-    fig.update_xaxes(showticklabels=False, row=1, col=2)
-    fig.update_xaxes(showticklabels=False, row=1, col=3)
-    fig.update_yaxes(showticklabels=False, row=1, col=2)
-    fig.update_yaxes(showticklabels=False, row=1, col=3)
-    fig.update_yaxes(showticklabels=False, row=1, col=4)
+    # Turn off axis labels for all columns except the first one
+    for col in range(2, 5):  # Columns 2 to 4
+        fig.update_xaxes(showticklabels=False, row=1, col=col)
+        fig.update_yaxes(showticklabels=False, row=1, col=col)
+
     # Adjust the layout to ensure the colorbars don't overlap and set custom size
     fig.update_layout(
         title=title,
@@ -304,7 +303,6 @@ def vis_artifact_dash_cor(input_slice, target_slice, dl_slice, difference_slice,
 
     # Display the plot in Streamlit
     st.plotly_chart(fig)
-
 
 def vis_artifact_dash_axial(input_slice, target_slice, dl_slice, difference_slice, slice_number, colormap='Greys', title="", auto_adjust=False, width=800, height=200):
     """
@@ -346,12 +344,11 @@ def vis_artifact_dash_axial(input_slice, target_slice, dl_slice, difference_slic
     fig.update_xaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
     fig.update_yaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
 
-    # Turn off axis labels for the second and third plotcd
-    fig.update_xaxes(showticklabels=False, row=1, col=2)
-    fig.update_xaxes(showticklabels=False, row=1, col=3)
-    fig.update_yaxes(showticklabels=False, row=1, col=2)
-    fig.update_yaxes(showticklabels=False, row=1, col=3)
-    fig.update_yaxes(showticklabels=False, row=1, col=4)
+    # Turn off axis labels for all columns except the first one
+    for col in range(2, 5): 
+        fig.update_xaxes(showticklabels=False, row=1, col=col)
+        fig.update_yaxes(showticklabels=False, row=1, col=col)
+
     # Adjust the layout to ensure the colorbars don't overlap and set custom size
     fig.update_layout(
         title=title,
@@ -398,11 +395,10 @@ def dash_plot_model_cor(input_slice, target_slice, dl_slice, colormap='Jet', tit
     fig.update_xaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
     fig.update_yaxes(tickfont=dict(size=8), ticklen=0, automargin=True)
 
-    # Turn off axis labels for the second and third plots
-    fig.update_xaxes(showticklabels=False, row=1, col=2)
-    fig.update_xaxes(showticklabels=False, row=1, col=3)
-    fig.update_yaxes(showticklabels=False, row=1, col=2)
-    fig.update_yaxes(showticklabels=False, row=1, col=3)
+    # Turn off axis labels for all columns except the first one
+    for col in range(2, 5):  # Columns 2 to 4
+        fig.update_xaxes(showticklabels=False, row=1, col=col)
+        fig.update_yaxes(showticklabels=False, row=1, col=col)
 
     # Adjust the layout to ensure the colorbars don't overlap and set custom size
     fig.update_layout(
