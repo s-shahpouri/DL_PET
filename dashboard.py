@@ -106,6 +106,17 @@ with st.sidebar:
 
     st.markdown("")
     st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
+    st.markdown("")
     st.divider()
     st.caption(f"Data Contributors: [Inselgruppe](https://inselgruppe.ch/de/die-insel-gruppe)",unsafe_allow_html=True)
 
@@ -214,7 +225,10 @@ with tab2:
             st.markdown("")
             st.markdown(".")
             st.markdown("")
-
+            st.markdown(".")
+            st.markdown("")
+            st.markdown(".")
+            st.markdown("")
                 
         with col3:
             # vis_model_dash_cor(single_test_file, selected_model, slice_number=slice_number_coronal, colormap=selected_colormap, auto_adjust=auto_adjust)
@@ -233,16 +247,18 @@ with tab0:
     st.markdown("")
     st.markdown("")
     st.markdown("""
-        <div style="text-align: center; color: #762EB1; font-weight: bold; font-size: 20px;">
+        <div style="text-align: center; color: #762EB1; font-weight: bold; font-size: 24px;">
         Deep Learning-Based PET Image Correction Toward Quantitative Imaging
         </div>
         """, unsafe_allow_html=True)
+    st.markdown("")
     st.markdown("")
     st.markdown("""This dashboard is part of a master's thesis project focused on developing deep learning models to enhance PET imaging by directly correcting attenuation and scatter without relying on anatomical information from CT scans.
                     The primary goal is to create a universal model that works across different scanners,
                     And ensuring accurate artifact detection and correction in 68Ga-PET imaging.""")
 
     
+    st.markdown("")
     st.markdown("")
     st.markdown("")
     st.markdown("""        <p style="font-weight: bold"> Key Features:</p>
@@ -254,6 +270,7 @@ with tab0:
         <p>Explore the different tabs to evaluate model performance and view artifact corrections.</p>
         """, unsafe_allow_html=True)
 
+    st.markdown("")
     st.divider()
     st.markdown("""
         <div style="color: #762EB1;">

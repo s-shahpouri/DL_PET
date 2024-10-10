@@ -63,7 +63,7 @@ display: none;
 
 .header {
     text-align: center;
-    font-size: 28px;
+    font-size: 32px;
     color: #762EB1;
     font-weight: bold;
     margin-top: -50px;
@@ -71,7 +71,7 @@ display: none;
 
 .subheader {
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
     color: #762EB1;
     margin-bottom: 10px;
 }
